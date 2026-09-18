@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SNAPBOOTH — Independent K-Style Photo Studio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SNAPBOOTH — Mobile-Ready K-Style Photo Studio</title>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -29,10 +29,10 @@
                         hand: ['Caveat', 'cursive']
                     },
                     boxShadow: {
-                        'solid': '4px 4px 0px #111111',
-                        'solid-lg': '7px 7px 0px #111111',
+                        'solid': '3px 3px 0px #111111',
+                        'solid-lg': '6px 6px 0px #111111',
                         'solid-sm': '2px 2px 0px #111111',
-                        'solid-blue': '5px 5px 0px #2563EB',
+                        'solid-blue': '4px 4px 0px #2563EB',
                     }
                 }
             }
@@ -48,70 +48,85 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
             font-family: 'Space Grotesk', sans-serif;
             background-color: #F9F8F6;
             color: #111111;
             background-image: radial-gradient(#111111 0.75px, transparent 0.75px);
-            background-size: 24px 24px;
+            background-size: 20px 20px;
             background-position: 0 0;
             min-height: 100vh;
+            touch-action: manipulation;
         }
 
-        /* Tactile Studio Box Styling (Sharp 0px geometry) */
+        /* Tactile Mobile & Desktop Studio Box Geometry */
         .studio-box {
             background-color: #FFFFFF;
             border: 2px solid #111111;
-            box-shadow: 4px 4px 0px #111111;
+            box-shadow: 3px 3px 0px #111111;
             border-radius: 0px;
         }
 
-        .studio-box-lg {
-            background-color: #FFFFFF;
-            border: 3px solid #111111;
-            box-shadow: 8px 8px 0px #111111;
-            border-radius: 0px;
+        @media (min-width: 640px) {
+            .studio-box {
+                box-shadow: 4px 4px 0px #111111;
+            }
         }
 
         .studio-card-interactive {
             background-color: #FFFFFF;
             border: 2px solid #111111;
-            box-shadow: 4px 4px 0px #111111;
-            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+            box-shadow: 3px 3px 0px #111111;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
             border-radius: 0px;
             cursor: pointer;
         }
 
+        .studio-card-interactive:active,
         .studio-card-interactive:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px #111111;
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 0px #111111;
             background-color: #FAFAF8;
         }
 
         .studio-card-interactive.selected {
             background-color: #EEF2FF;
             border-color: #2563EB;
-            box-shadow: 5px 5px 0px #2563EB;
+            box-shadow: 4px 4px 0px #2563EB;
         }
 
+        /* Responsive Mobile Touch Button Styles */
         .studio-btn {
             border: 2px solid #111111;
             box-shadow: 3px 3px 0px #111111;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.04em;
             transition: all 0.1s ease;
             border-radius: 0px;
-        }
-
-        .studio-btn:hover {
-            transform: translate(-1px, -1px);
-            box-shadow: 5px 5px 0px #111111;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
         }
 
         .studio-btn:active {
-            transform: translate(2px, 2px);
-            box-shadow: 1px 1px 0px #111111;
+            transform: translate(2px, 2px) !important;
+            box-shadow: 1px 1px 0px #111111 !important;
+        }
+
+        /* Touch Scrollable Horizontal Tab Containers */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
         /* Photo Filters */
@@ -133,7 +148,7 @@
             opacity: 1;
         }
 
-        /* Interactive Sticker Overlay */
+        /* Interactive Sticker Drag Layer for Touch & Mouse */
         .placed-sticker {
             position: absolute;
             cursor: move;
@@ -142,44 +157,34 @@
             transform-origin: center center;
             z-index: 30;
             border: 1px dashed transparent;
+            padding: 2px;
         }
+        .placed-sticker:active,
         .placed-sticker:hover {
             border-color: #2563EB;
-        }
-
-        /* Minimal Scrollbars */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #F9F8F6;
-            border-left: 1px solid #111111;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #111111;
+            background-color: rgba(37, 99, 235, 0.1);
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen text-studio-ink antialiased">
+<body class="flex flex-col min-h-screen text-studio-ink antialiased selection:bg-blue-600 selection:text-white">
 
-    <header class="w-full bg-white border-b-2 border-studio-ink py-4 px-6 sticky top-0 z-40 flex items-center justify-between">
-        <div class="flex items-center gap-4 cursor-pointer" onclick="app.navigateTo('home')">
-            <div class="w-9 h-9 bg-studio-ink text-white font-mono font-bold text-lg flex items-center justify-center border border-studio-ink shadow-solid-sm">
+    <header class="w-full bg-white border-b-2 border-studio-ink py-3 px-3 sm:px-6 sticky top-0 z-40 flex items-center justify-between">
+        <div class="flex items-center gap-2.5 sm:gap-4 cursor-pointer" onclick="app.navigateTo('home')">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 bg-studio-ink text-white font-mono font-bold text-sm sm:text-lg flex items-center justify-center border border-studio-ink shadow-solid-sm">
                 SB
             </div>
             <div>
-                <span class="text-xl font-extrabold tracking-tighter uppercase block leading-none">
+                <span class="text-base sm:text-xl font-extrabold tracking-tighter uppercase block leading-none">
                     SNAPBOOTH
                 </span>
-                <span class="text-[10px] font-mono tracking-widest text-slate-600 block uppercase mt-0.5">
-                    EST. 2026 // K-STYLE PHOTO STUDIO
+                <span class="text-[9px] sm:text-[10px] font-mono tracking-widest text-slate-600 block uppercase mt-0.5">
+                    K-STYLE PHOTO STUDIO
                 </span>
             </div>
         </div>
 
-        <!-- Workflow Tracker -->
-        <div id="stepIndicator" class="hidden md:flex items-center gap-1 font-mono text-xs font-bold border-2 border-studio-ink bg-studio-bg px-3 py-1.5 shadow-solid-sm">
+        <!-- Workflow Tracker for Tablet / Desktop -->
+        <div id="stepIndicator" class="hidden lg:flex items-center gap-1 font-mono text-xs font-bold border-2 border-studio-ink bg-studio-bg px-3 py-1.5 shadow-solid-sm">
             <span id="step1" class="text-blue-600">01.SHOTS</span>
             <span class="text-slate-400">/</span>
             <span id="step2" class="text-slate-400">02.CAMERA</span>
@@ -191,327 +196,350 @@
             <span id="step5" class="text-slate-400">05.EXPORT</span>
         </div>
 
+        <!-- Mobile Step Badge -->
+        <div id="mobileStepBadge" class="flex lg:hidden font-mono text-[10px] font-bold border border-studio-ink bg-blue-50 text-blue-700 px-2 py-1">
+            <span id="mobileStepText">01.SHOTS</span>
+        </div>
+
         <!-- Audio & Session Controls -->
         <div class="flex items-center gap-2">
-            <button id="soundToggleBtn" onclick="app.toggleSound()" title="Sound Effects" class="w-9 h-9 bg-white border-2 border-studio-ink hover:bg-slate-100 flex items-center justify-center shadow-solid-sm transition-all">
+            <button id="soundToggleBtn" onclick="app.toggleSound()" title="Sound Effects" class="w-8 h-8 sm:w-9 sm:h-9 bg-white border-2 border-studio-ink hover:bg-slate-100 flex items-center justify-center shadow-solid-sm transition-all">
                 <i class="fa-solid fa-volume-high text-xs"></i>
             </button>
-            <button id="resetHeaderBtn" onclick="app.startOverPrompt()" class="hidden text-xs bg-rose-50 text-rose-700 border-2 border-rose-700 px-3 py-1.5 font-bold hover:bg-rose-100 transition-all shadow-solid-sm">
-                <i class="fa-solid fa-arrow-rotate-left mr-1"></i> RESET
+            <button id="resetHeaderBtn" onclick="app.startOverPrompt()" class="hidden text-[10px] sm:text-xs bg-rose-50 text-rose-700 border-2 border-rose-700 px-2.5 sm:px-3 py-1 font-bold hover:bg-rose-100 transition-all shadow-solid-sm">
+                <i class="fa-solid fa-arrow-rotate-left mr-0.5"></i> RESET
             </button>
         </div>
     </header>
 
-    <!-- Main Workflow View Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col justify-center items-center">
+    <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 flex flex-col justify-center items-center">
 
-        <section id="screen-home" class="w-full max-w-4xl text-center py-6 flex flex-col items-center justify-center my-auto">
-            <div class="inline-flex items-center gap-2 px-3 py-1 border-2 border-studio-ink bg-white font-mono text-xs font-bold mb-6 shadow-solid-sm">
-                <span class="w-2 h-2 bg-blue-600 inline-block"></span> RAW WEBCAM PRINT ENGINE v2.6
+        <!-- SCREEN 0: Home -->
+        <section id="screen-home" class="w-full max-w-4xl text-center py-4 sm:py-8 flex flex-col items-center justify-center my-auto">
+            <div class="inline-flex items-center gap-2 px-3 py-1 border-2 border-studio-ink bg-white font-mono text-[11px] sm:text-xs font-bold mb-4 sm:mb-6 shadow-solid-sm">
+                <span class="w-2 h-2 bg-blue-600 inline-block"></span> RAW WEBCAM PRINT ENGINE v2.8
             </div>
 
-            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-none mb-6">
+            <h1 class="text-3xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-none mb-4 sm:mb-6">
                 ARCHITECTURAL <br/>
-                <span class="bg-studio-ink text-white px-3 py-1 inline-block transform -rotate-1 mt-2">PHOTO STRIP</span> STUDIO
+                <span class="bg-studio-ink text-white px-2 sm:px-3 py-0.5 sm:py-1 inline-block transform -rotate-1 mt-1 sm:mt-2">PHOTO STRIP</span> STUDIO
             </h1>
 
-            <p class="text-slate-700 font-medium text-base sm:text-lg max-w-2xl mb-10 leading-relaxed">
-                Clean, tactile photobooth experience inspired by Korean self-photo booths. Choose your shot count first, capture real-time poses, design custom layouts, and export 300 DPI high-res prints.
+            <p class="text-slate-700 font-medium text-sm sm:text-lg max-w-2xl mb-8 sm:mb-10 leading-relaxed px-2">
+                Minimalist, tactile photobooth experience tailored for all mobile screens and laptops. Pick your shot count first, capture real-time poses, design custom layouts, and export 300 DPI high-res prints.
             </p>
 
-            <button onclick="app.navigateTo('shot-select')" class="studio-btn px-10 py-5 bg-blue-600 text-white hover:bg-blue-700 text-lg flex items-center gap-3 shadow-solid-lg">
-                <i class="fa-solid fa-camera"></i>
+            <button onclick="app.navigateTo('shot-select')" class="studio-btn w-full sm:w-auto px-8 sm:px-10 py-4 bg-blue-600 text-white hover:bg-blue-700 text-base sm:text-lg flex items-center justify-center gap-3 shadow-solid-lg">
+                <i class="fa-solid fa-camera text-base"></i>
                 <span>START PHOTOBOOTH</span>
             </button>
 
-            <!-- Feature Specs -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 w-full text-left">
-                <div class="studio-box p-4">
-                    <span class="font-mono text-xs text-blue-600 font-bold block mb-1">01 / SHOT FORMATS</span>
-                    <h3 class="font-extrabold uppercase text-sm">2, 3, 4 & 6 Shots</h3>
-                    <p class="text-xs text-slate-600 mt-1">Select exact count prior to camera activation.</p>
+            <!-- Mobile-Friendly Feature Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 mt-10 sm:mt-16 w-full text-left">
+                <div class="studio-box p-3 sm:p-4">
+                    <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">01 / SHOT FORMATS</span>
+                    <h3 class="font-extrabold uppercase text-xs sm:text-sm">2, 3, 4 & 6 Shots</h3>
+                    <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Select exact count prior to camera activation.</p>
                 </div>
-                <div class="studio-box p-4">
-                    <span class="font-mono text-xs text-blue-600 font-bold block mb-1">02 / GRAPHIC THEMES</span>
-                    <h3 class="font-extrabold uppercase text-sm">Korean Studio Vibe</h3>
-                    <p class="text-xs text-slate-600 mt-1">Minimal, Film, Monochrome, Y2K & Retro.</p>
+                <div class="studio-box p-3 sm:p-4">
+                    <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">02 / KOREAN THEMES</span>
+                    <h3 class="font-extrabold uppercase text-xs sm:text-sm">Studio Aesthetic</h3>
+                    <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Minimal, Film, Monochrome, Y2K & Retro.</p>
                 </div>
-                <div class="studio-box p-4">
-                    <span class="font-mono text-xs text-blue-600 font-bold block mb-1">03 / CANVAS TOOLS</span>
-                    <h3 class="font-extrabold uppercase text-sm">Stickers & Text</h3>
-                    <p class="text-xs text-slate-600 mt-1">Draggable overlays, date stamps & typography.</p>
+                <div class="studio-box p-3 sm:p-4">
+                    <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">03 / CANVAS TOOLS</span>
+                    <h3 class="font-extrabold uppercase text-xs sm:text-sm">Stickers & Text</h3>
+                    <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Touch draggable overlays & typography.</p>
                 </div>
-                <div class="studio-box p-4">
-                    <span class="font-mono text-xs text-blue-600 font-bold block mb-1">04 / EXPORT ENGINE</span>
-                    <h3 class="font-extrabold uppercase text-sm">300 DPI Rendering</h3>
-                    <p class="text-xs text-slate-600 mt-1">Export clean JPG or PNG files directly.</p>
+                <div class="studio-box p-3 sm:p-4">
+                    <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">04 / EXPORT ENGINE</span>
+                    <h3 class="font-extrabold uppercase text-xs sm:text-sm">300 DPI Rendering</h3>
+                    <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Export clean JPG or PNG files directly.</p>
                 </div>
             </div>
         </section>
 
-        <section id="screen-shot-select" class="w-full max-w-4xl hidden flex-col items-center py-4">
-            <div class="text-center mb-8">
-                <span class="font-mono text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 01 / Selection</span>
-                <h2 class="text-3xl sm:text-4xl font-black uppercase tracking-tight mt-2">How many shots would you like?</h2>
-                <p class="text-slate-600 text-sm mt-1">Your selection dictates the camera loop, review grid, and layout options.</p>
+        <!-- SCREEN 1: Shot Selection -->
+        <section id="screen-shot-select" class="w-full max-w-4xl hidden flex-col items-center py-2 sm:py-4">
+            <div class="text-center mb-6 sm:mb-8">
+                <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 01 / Selection</span>
+                <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-tight mt-1.5 sm:mt-2">How many shots would you like?</h2>
+                <p class="text-slate-600 text-xs sm:text-sm mt-1 px-2">Your choice determines the capture sequence, review grid, and layout geometries.</p>
             </div>
 
-            <!-- 4 Option Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full mb-8">
+            <!-- Responsive 2x2 on Mobile, 4x1 on Desktop -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 w-full mb-6 sm:mb-8">
                 <!-- 2 Shots -->
-                <div onclick="app.selectShotOption(2)" id="shot-opt-2" class="studio-card-interactive p-5 flex flex-col items-center justify-between group">
-                    <div class="text-center w-full mb-3">
-                        <span class="font-mono text-xs text-slate-500 block">OPTION A</span>
-                        <span class="text-2xl font-black uppercase">2 Shots 📸</span>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Duo Vertical / Mini Strip</p>
+                <div onclick="app.selectShotOption(2)" id="shot-opt-2" class="studio-card-interactive p-3 sm:p-5 flex flex-col items-center justify-between group">
+                    <div class="text-center w-full mb-2 sm:mb-3">
+                        <span class="font-mono text-[10px] sm:text-xs text-slate-500 block">OPTION A</span>
+                        <span class="text-lg sm:text-2xl font-black uppercase">2 Shots 📸</span>
+                        <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Vertical Duo / Mini Strip</p>
                     </div>
-                    <div class="w-24 h-32 bg-slate-100 border-2 border-studio-ink p-2 flex flex-col gap-2 justify-center my-2">
-                        <div class="w-full h-11 bg-white border border-studio-ink flex items-center justify-center font-mono text-[9px] font-bold">#1</div>
-                        <div class="w-full h-11 bg-white border border-studio-ink flex items-center justify-center font-mono text-[9px] font-bold">#2</div>
+                    <div class="w-20 sm:w-24 h-28 sm:h-32 bg-slate-100 border-2 border-studio-ink p-1.5 sm:p-2 flex flex-col gap-1.5 sm:gap-2 justify-center my-1 sm:my-2">
+                        <div class="w-full h-10 sm:h-11 bg-white border border-studio-ink flex items-center justify-center font-mono text-[9px] font-bold">#1</div>
+                        <div class="w-full h-10 sm:h-11 bg-white border border-studio-ink flex items-center justify-center font-mono text-[9px] font-bold">#2</div>
                     </div>
-                    <div class="w-full text-center py-2 bg-studio-ink text-white font-mono text-xs font-bold uppercase mt-2">
+                    <div class="w-full text-center py-1.5 sm:py-2 bg-studio-ink text-white font-mono text-[10px] sm:text-xs font-bold uppercase mt-2">
                         Select 2 Shots
                     </div>
                 </div>
 
                 <!-- 3 Shots -->
-                <div onclick="app.selectShotOption(3)" id="shot-opt-3" class="studio-card-interactive p-5 flex flex-col items-center justify-between group">
-                    <div class="text-center w-full mb-3">
-                        <span class="font-mono text-xs text-slate-500 block">OPTION B</span>
-                        <span class="text-2xl font-black uppercase">3 Shots 📸</span>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Trio Strip & Polaroid</p>
+                <div onclick="app.selectShotOption(3)" id="shot-opt-3" class="studio-card-interactive p-3 sm:p-5 flex flex-col items-center justify-between group">
+                    <div class="text-center w-full mb-2 sm:mb-3">
+                        <span class="font-mono text-[10px] sm:text-xs text-slate-500 block">OPTION B</span>
+                        <span class="text-lg sm:text-2xl font-black uppercase">3 Shots 📸</span>
+                        <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Trio Strip & Polaroid</p>
                     </div>
-                    <div class="w-24 h-32 bg-slate-100 border-2 border-studio-ink p-2 flex flex-col gap-1.5 justify-center my-2">
-                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#1</div>
-                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#2</div>
-                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#3</div>
+                    <div class="w-20 sm:w-24 h-28 sm:h-32 bg-slate-100 border-2 border-studio-ink p-1.5 sm:p-2 flex flex-col gap-1 justify-center my-1 sm:my-2">
+                        <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#1</div>
+                        <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#2</div>
+                        <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#3</div>
                     </div>
-                    <div class="w-full text-center py-2 bg-studio-ink text-white font-mono text-xs font-bold uppercase mt-2">
+                    <div class="w-full text-center py-1.5 sm:py-2 bg-studio-ink text-white font-mono text-[10px] sm:text-xs font-bold uppercase mt-2">
                         Select 3 Shots
                     </div>
                 </div>
 
                 <!-- 4 Shots -->
-                <div onclick="app.selectShotOption(4)" id="shot-opt-4" class="studio-card-interactive selected p-5 flex flex-col items-center justify-between group">
-                    <div class="text-center w-full mb-3">
-                        <span class="font-mono text-xs text-slate-500 block">OPTION C</span>
-                        <span class="text-2xl font-black uppercase">4 Shots 📸</span>
-                        <p class="text-[11px] text-slate-500 mt-0.5">Classic K-Style 4-Cut Grid</p>
+                <div onclick="app.selectShotOption(4)" id="shot-opt-4" class="studio-card-interactive selected p-3 sm:p-5 flex flex-col items-center justify-between group">
+                    <div class="text-center w-full mb-2 sm:mb-3">
+                        <span class="font-mono text-[10px] sm:text-xs text-slate-500 block">OPTION C</span>
+                        <span class="text-lg sm:text-2xl font-black uppercase">4 Shots 📸</span>
+                        <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Classic K-Style 4-Cut</p>
                     </div>
-                    <div class="w-24 h-32 bg-slate-100 border-2 border-studio-ink p-2 grid grid-cols-2 gap-1.5 items-center my-2">
-                        <div class="w-full h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#1</div>
-                        <div class="w-full h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#2</div>
-                        <div class="w-full h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#3</div>
-                        <div class="w-full h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#4</div>
+                    <div class="w-20 sm:w-24 h-28 sm:h-32 bg-slate-100 border-2 border-studio-ink p-1.5 sm:p-2 grid grid-cols-2 gap-1 sm:gap-1.5 items-center my-1 sm:my-2">
+                        <div class="w-full h-9 sm:h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#1</div>
+                        <div class="w-full h-9 sm:h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#2</div>
+                        <div class="w-full h-9 sm:h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#3</div>
+                        <div class="w-full h-9 sm:h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#4</div>
                     </div>
-                    <div class="w-full text-center py-2 bg-studio-ink text-white font-mono text-xs font-bold uppercase mt-2">
+                    <div class="w-full text-center py-1.5 sm:py-2 bg-studio-ink text-white font-mono text-[10px] sm:text-xs font-bold uppercase mt-2">
                         Select 4 Shots
                     </div>
                 </div>
 
                 <!-- 6 Shots -->
-                <div onclick="app.selectShotOption(6)" id="shot-opt-6" class="studio-card-interactive p-5 flex flex-col items-center justify-between group">
-                    <div class="text-center w-full mb-3">
-                        <span class="font-mono text-xs text-slate-500 block">OPTION D</span>
-                        <span class="text-2xl font-black uppercase">6 Shots 📸</span>
-                        <p class="text-[11px] text-slate-500 mt-0.5">3x2 Grid & Deluxe Collage</p>
+                <div onclick="app.selectShotOption(6)" id="shot-opt-6" class="studio-card-interactive p-3 sm:p-5 flex flex-col items-center justify-between group">
+                    <div class="text-center w-full mb-2 sm:mb-3">
+                        <span class="font-mono text-[10px] sm:text-xs text-slate-500 block">OPTION D</span>
+                        <span class="text-lg sm:text-2xl font-black uppercase">6 Shots 📸</span>
+                        <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">3x2 Grid & Deluxe Collage</p>
                     </div>
-                    <div class="w-24 h-32 bg-slate-100 border-2 border-studio-ink p-1.5 grid grid-cols-2 gap-1 items-center my-2">
-                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#1</div>
-                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#2</div>
-                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#3</div>
-                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#4</div>
-                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#5</div>
-                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#6</div>
+                    <div class="w-20 sm:w-24 h-28 sm:h-32 bg-slate-100 border-2 border-studio-ink p-1 sm:p-1.5 grid grid-cols-2 gap-1 items-center my-1 sm:my-2">
+                        <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#1</div>
+                        <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#2</div>
+                        <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#3</div>
+                        <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#4</div>
+                        <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#5</div>
+                        <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#6</div>
                     </div>
-                    <div class="w-full text-center py-2 bg-studio-ink text-white font-mono text-xs font-bold uppercase mt-2">
+                    <div class="w-full text-center py-1.5 sm:py-2 bg-studio-ink text-white font-mono text-[10px] sm:text-xs font-bold uppercase mt-2">
                         Select 6 Shots
                     </div>
                 </div>
             </div>
 
-            <div id="shotSelectionSummary" class="w-full max-w-xl studio-box p-6 text-center">
-                <span class="font-mono text-xs uppercase text-slate-500 block">CONFIRMED SELECTION</span>
-                <h3 id="selectedShotText" class="text-2xl font-black uppercase text-blue-600 mt-0.5">4 Shots Selected</h3>
-                <p id="selectedShotDesc" class="text-sm text-slate-600 mt-1 mb-5">You will take exactly 4 photos in sequence for your studio strip.</p>
+            <div id="shotSelectionSummary" class="w-full max-w-xl studio-box p-4 sm:p-6 text-center">
+                <span class="font-mono text-[10px] sm:text-xs uppercase text-slate-500 block">CONFIRMED SELECTION</span>
+                <h3 id="selectedShotText" class="text-xl sm:text-2xl font-black uppercase text-blue-600 mt-0.5">4 Shots Selected</h3>
+                <p id="selectedShotDesc" class="text-xs sm:text-sm text-slate-600 mt-1 mb-4 sm:mb-5">You will take exactly 4 photos in sequence for your studio strip.</p>
 
-                <button onclick="app.confirmShotsAndOpenCamera()" class="studio-btn w-full py-4 bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center justify-center gap-2 shadow-solid-sm">
+                <button onclick="app.confirmShotsAndOpenCamera()" class="studio-btn w-full py-3.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base flex items-center justify-center gap-2 shadow-solid-sm">
                     <span>CONTINUE TO CAMERA</span>
-                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                    <i class="fa-solid fa-arrow-right text-xs sm:text-sm"></i>
                 </button>
             </div>
         </section>
 
+        <!-- SCREEN 2: Camera Viewport -->
         <section id="screen-camera" class="w-full max-w-4xl hidden flex-col items-center">
-            <div class="flex items-center justify-between w-full mb-4">
+            <div class="flex items-center justify-between w-full mb-3 sm:mb-4">
                 <div>
-                    <span class="font-mono text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 02 / Capture</span>
-                    <h2 class="text-2xl sm:text-3xl font-black uppercase mt-1">Camera Feed</h2>
+                    <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 02 / Capture</span>
+                    <h2 class="text-xl sm:text-3xl font-black uppercase mt-0.5">Camera Feed</h2>
                 </div>
-                <div class="border-2 border-studio-ink bg-white px-4 py-2 font-mono text-right shadow-solid-sm">
-                    <span class="text-[10px] text-slate-500 block uppercase font-bold">CURRENT SEQUENCE</span>
-                    <span id="cameraShotCounter" class="text-base font-black text-blue-600">SHOT 1 OF 4</span>
+                <div class="border-2 border-studio-ink bg-white px-3 sm:px-4 py-1.5 sm:py-2 font-mono text-right shadow-solid-sm">
+                    <span class="text-[9px] sm:text-[10px] text-slate-500 block uppercase font-bold">SEQUENCE</span>
+                    <span id="cameraShotCounter" class="text-sm sm:text-base font-black text-blue-600">SHOT 1 OF 4</span>
                 </div>
             </div>
 
-            <!-- Video / Fallback Viewport -->
-            <div class="relative w-full aspect-video bg-black border-3 border-studio-ink shadow-solid-lg overflow-hidden flex items-center justify-center">
+            <!-- Video / Fallback Viewport for Mobile & Desktop -->
+            <div class="relative w-full aspect-[4/3] sm:aspect-video bg-black border-2 sm:border-3 border-studio-ink shadow-solid-lg overflow-hidden flex items-center justify-center">
                 <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover transform -scale-x-100"></video>
                 <canvas id="fallbackCanvas" class="hidden w-full h-full object-cover"></canvas>
                 <div id="flashOverlay" class="absolute inset-0 bg-white z-20"></div>
 
-                <div id="countdownContainer" class="hidden absolute inset-0 z-30 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center border-4 border-studio-ink">
-                    <span id="countdownNumber" class="text-9xl font-black font-mono text-studio-ink">3</span>
-                    <span class="font-mono text-xs font-bold tracking-widest text-slate-800 uppercase mt-2 bg-studio-bg px-3 py-1 border border-studio-ink">POSING READY 📸</span>
+                <!-- Countdown Box -->
+                <div id="countdownContainer" class="hidden absolute inset-0 z-30 bg-white/85 backdrop-blur-sm flex flex-col items-center justify-center border-4 border-studio-ink">
+                    <span id="countdownNumber" class="text-8xl sm:text-9xl font-black font-mono text-studio-ink">3</span>
+                    <span class="font-mono text-[11px] sm:text-xs font-bold tracking-widest text-slate-800 uppercase mt-2 bg-studio-bg px-3 py-1 border border-studio-ink">POSING READY 📸</span>
                 </div>
 
-                <div id="cameraStatusToast" class="absolute bottom-3 left-3 right-3 bg-white border-2 border-studio-ink p-2.5 font-mono text-xs text-slate-800 flex items-center justify-between z-10 shadow-solid-sm">
-                    <span id="cameraStatusMsg" class="flex items-center gap-2 font-bold">
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE WEBCAM ACTIVE
+                <!-- Camera Status Bar -->
+                <div id="cameraStatusToast" class="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 bg-white/95 border-2 border-studio-ink p-2 sm:p-2.5 font-mono text-[10px] sm:text-xs text-slate-800 flex items-center justify-between z-10 shadow-solid-sm">
+                    <span id="cameraStatusMsg" class="flex items-center gap-1.5 font-bold truncate">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> LIVE CAMERA
                     </span>
-                    <div class="flex gap-2">
-                        <button onclick="app.switchCameraDevice()" class="underline font-bold text-blue-600 hover:text-blue-800 uppercase text-[11px]"><i class="fa-solid fa-camera-rotate mr-1"></i>SWITCH</button>
-                        <button onclick="app.enableFallbackCamera()" class="underline font-bold text-slate-600 hover:text-black uppercase text-[11px]">UPLOAD / DEMO MODE</button>
+                    <div class="flex gap-2 shrink-0">
+                        <button onclick="app.switchCameraDevice()" class="underline font-bold text-blue-600 hover:text-blue-800 uppercase text-[10px] sm:text-[11px] px-1 py-0.5">
+                            <i class="fa-solid fa-camera-rotate mr-0.5"></i> SWITCH
+                        </button>
+                        <button onclick="app.triggerFileUpload()" class="underline font-bold text-slate-600 hover:text-black uppercase text-[10px] sm:text-[11px] px-1 py-0.5">
+                            UPLOAD / DEMO
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <div class="flex flex-wrap gap-4 items-center justify-center mt-6 w-full">
-                <button id="startCaptureBtn" onclick="app.startPhotoCaptureSequence()" class="studio-btn px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center gap-3 shadow-solid-sm">
+            <!-- Touch Controls -->
+            <div class="flex flex-col sm:flex-row gap-3 items-center justify-center mt-4 sm:mt-6 w-full">
+                <button id="startCaptureBtn" onclick="app.startPhotoCaptureSequence()" class="studio-btn w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center justify-center gap-3 shadow-solid-sm">
                     <i class="fa-solid fa-camera-retro text-lg"></i>
                     <span>START CAPTURE SEQUENCE</span>
                 </button>
 
-                <button onclick="app.navigateTo('shot-select')" class="studio-btn px-6 py-4 bg-white hover:bg-slate-100 text-studio-ink text-xs shadow-solid-sm">
+                <button onclick="app.navigateTo('shot-select')" class="studio-btn w-full sm:w-auto px-5 py-3 bg-white hover:bg-slate-100 text-studio-ink text-xs shadow-solid-sm">
                     <i class="fa-solid fa-arrow-left mr-1"></i> CHANGE SHOT COUNT
                 </button>
             </div>
         </section>
 
+        <!-- SCREEN 3: Review Photos -->
         <section id="screen-review" class="w-full max-w-5xl hidden flex-col items-center">
-            <div class="text-center mb-6">
-                <span class="font-mono text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 03 / Review</span>
-                <h2 class="text-3xl font-black uppercase mt-1">Review Captured Shots</h2>
-                <p class="text-slate-600 text-sm mt-1">Inspect your images. You may retake individual shots or clear all.</p>
+            <div class="text-center mb-4 sm:mb-6">
+                <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 03 / Review</span>
+                <h2 class="text-2xl sm:text-3xl font-black uppercase mt-1">Review Captured Shots</h2>
+                <p class="text-slate-600 text-xs sm:text-sm mt-1 px-2">Inspect your photos. Tap retake on any single frame to replace it.</p>
             </div>
 
-            <div id="photoReviewGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full mb-8"></div>
+            <div id="photoReviewGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 w-full mb-6 sm:mb-8"></div>
 
-            <div class="flex flex-wrap gap-4 justify-center items-center w-full">
-                <button onclick="app.retakeAllPhotos()" class="studio-btn px-6 py-3.5 bg-rose-50 text-rose-700 border-rose-700 hover:bg-rose-100 text-xs shadow-solid-sm flex items-center gap-2">
+            <div class="flex flex-col sm:flex-row gap-3 justify-center items-center w-full">
+                <button onclick="app.retakeAllPhotos()" class="studio-btn w-full sm:w-auto px-6 py-3.5 bg-rose-50 text-rose-700 border-rose-700 hover:bg-rose-100 text-xs shadow-solid-sm flex items-center justify-center gap-2">
                     <i class="fa-solid fa-rotate-left"></i> RETAKE ALL PHOTOS
                 </button>
 
-                <button onclick="app.navigateTo('customize')" class="studio-btn px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm shadow-solid-sm flex items-center gap-2">
+                <button onclick="app.navigateTo('customize')" class="studio-btn w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm shadow-solid-sm flex items-center justify-center gap-2">
                     <span>CONTINUE TO LAYOUT DESIGN</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
         </section>
 
-        <section id="screen-customize" class="w-full max-w-6xl hidden flex-col lg:flex-row gap-8 items-start">
+        <!-- SCREEN 4: Customization Studio -->
+        <section id="screen-customize" class="w-full max-w-6xl hidden flex-col lg:flex-row gap-6 lg:gap-8 items-start">
             
-            <div class="w-full lg:w-1/2 flex flex-col items-center sticky top-24">
+            <!-- Preview Box (Top on Mobile, Left on Desktop) -->
+            <div class="w-full lg:w-1/2 flex flex-col items-center lg:sticky lg:top-20">
                 <div class="w-full flex items-center justify-between mb-2">
-                    <span class="font-mono text-xs font-bold text-slate-600 uppercase"><i class="fa-solid fa-eye mr-1"></i> LIVE CANVAS PREVIEW</span>
-                    <span id="currentShotBadge" class="font-mono text-xs bg-blue-100 text-blue-700 border border-blue-300 px-2.5 py-0.5 font-bold">4 SHOTS</span>
+                    <span class="font-mono text-[10px] sm:text-xs font-bold text-slate-600 uppercase"><i class="fa-solid fa-eye mr-1"></i> LIVE STRIP PREVIEW</span>
+                    <span id="currentShotBadge" class="font-mono text-[10px] sm:text-xs bg-blue-100 text-blue-700 border border-blue-300 px-2 py-0.5 font-bold">4 SHOTS</span>
                 </div>
 
-                <div id="photoboothPreviewContainer" class="relative w-full flex justify-center items-center p-6 studio-box min-h-[460px] bg-studio-bg">
-                    <div id="photoboothStrip" class="relative studio-box transition-all duration-200 flex flex-col items-center justify-between p-4" style="background-color: #FFFFFF; width: 100%; max-width: 320px;">
-                        <div id="stripHeaderTitle" class="w-full text-center mb-3 font-bold text-slate-800 text-sm uppercase tracking-wider hidden">
+                <div id="photoboothPreviewContainer" class="relative w-full flex justify-center items-center p-3 sm:p-6 studio-box min-h-[380px] sm:min-h-[460px] bg-studio-bg overflow-hidden">
+                    <div id="photoboothStrip" class="relative studio-box transition-all duration-200 flex flex-col items-center justify-between p-3 sm:p-4" style="background-color: #FFFFFF; w-full; max-width: 290px;">
+                        <div id="stripHeaderTitle" class="w-full text-center mb-2 font-bold text-slate-800 text-xs uppercase tracking-wider hidden">
                             SNAPBOOTH STUDIO
                         </div>
 
-                        <div id="stripPhotosContainer" class="w-full flex flex-col gap-3"></div>
+                        <div id="stripPhotosContainer" class="w-full flex flex-col gap-2 sm:gap-3"></div>
 
-                        <div id="stripFooterArea" class="w-full text-center mt-4 pt-2 border-t border-slate-200">
-                            <p id="stripTextMain" class="font-mono font-bold text-sm tracking-wider uppercase text-slate-900">SNAPBOOTH 2026</p>
-                            <p id="stripTextSub" class="font-mono text-[10px] text-slate-500 uppercase mt-0.5">KOREAN PHOTO STUDIO</p>
-                            <p id="stripDate" class="font-mono text-[9px] text-slate-400 mt-1">2026.09.18</p>
+                        <div id="stripFooterArea" class="w-full text-center mt-3 pt-2 border-t border-slate-200">
+                            <p id="stripTextMain" class="font-mono font-bold text-xs sm:text-sm tracking-wider uppercase text-slate-900">SNAPBOOTH 2026</p>
+                            <p id="stripTextSub" class="font-mono text-[9px] sm:text-[10px] text-slate-500 uppercase mt-0.5">KOREAN PHOTO STUDIO</p>
+                            <p id="stripDate" class="font-mono text-[8px] sm:text-[9px] text-slate-400 mt-0.5 sm:mt-1">2026.09.18</p>
                         </div>
 
+                        <!-- Draggable Sticker Container -->
                         <div id="placedStickersLayer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Design Control Sidebar -->
-            <div class="w-full lg:w-1/2 studio-box p-6 flex flex-col gap-6">
+            <!-- Customization Controls -->
+            <div class="w-full lg:w-1/2 studio-box p-4 sm:p-6 flex flex-col gap-4 sm:gap-6">
                 <div>
-                    <span class="font-mono text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 04 / Customization</span>
-                    <h2 class="text-2xl font-black uppercase mt-1">Customize Studio Strip</h2>
+                    <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 04 / Customization</span>
+                    <h2 class="text-xl sm:text-2xl font-black uppercase mt-1">Customize Studio Strip</h2>
                 </div>
 
-                <div class="flex border-b-2 border-studio-ink font-mono text-xs font-bold">
-                    <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="px-4 py-2 bg-studio-ink text-white">1. LAYOUTS</button>
-                    <button onclick="app.setControlTab('themes')" id="tabBtn-themes" class="px-4 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink">2. THEMES & COLOR</button>
-                    <button onclick="app.setControlTab('filters')" id="tabBtn-filters" class="px-4 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink">3. FILTERS</button>
-                    <button onclick="app.setControlTab('text')" id="tabBtn-text" class="px-4 py-2 bg-white text-studio-ink hover:bg-slate-100">4. TEXT & STICKERS</button>
+                <!-- Touch Scrollable Horizontal Tabs -->
+                <div class="flex border-b-2 border-studio-ink font-mono text-[11px] sm:text-xs font-bold overflow-x-auto no-scrollbar whitespace-nowrap">
+                    <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="px-3.5 py-2 bg-studio-ink text-white shrink-0">1. LAYOUTS</button>
+                    <button onclick="app.setControlTab('themes')" id="tabBtn-themes" class="px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink shrink-0">2. THEMES & COLOR</button>
+                    <button onclick="app.setControlTab('filters')" id="tabBtn-filters" class="px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink shrink-0">3. FILTERS</button>
+                    <button onclick="app.setControlTab('text')" id="tabBtn-text" class="px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 shrink-0">4. TEXT & STICKERS</button>
                 </div>
 
-                <div id="tabContent-layouts" class="flex flex-col gap-4">
-                    <span class="text-xs font-bold text-slate-600 font-mono uppercase">COMPATIBLE GEOMETRIES:</span>
-                    <div id="layoutOptionsGrid" class="grid grid-cols-2 gap-3"></div>
+                <!-- Tab 1: Layout Geometries -->
+                <div id="tabContent-layouts" class="flex flex-col gap-3">
+                    <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase">COMPATIBLE GEOMETRIES:</span>
+                    <div id="layoutOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
                 </div>
 
+                <!-- Tab 2: Themes & Color -->
                 <div id="tabContent-themes" class="hidden flex-col gap-4">
                     <div>
-                        <span class="text-xs font-bold text-slate-600 font-mono uppercase block mb-2">PRESET STUDIO THEMES:</span>
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-2">PRESET STUDIO THEMES:</span>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                            <button onclick="app.applyPresetTheme('classic')" class="studio-btn py-2.5 bg-white text-xs">CLASSIC</button>
-                            <button onclick="app.applyPresetTheme('minimal')" class="studio-btn py-2.5 bg-slate-100 text-xs">MINIMAL</button>
-                            <button onclick="app.applyPresetTheme('korean')" class="studio-btn py-2.5 bg-blue-50 text-blue-700 border-blue-700 text-xs">HARU BLUE</button>
-                            <button onclick="app.applyPresetTheme('film')" class="studio-btn py-2.5 bg-zinc-900 text-white text-xs">BLACK FILM</button>
-                            <button onclick="app.applyPresetTheme('cute')" class="studio-btn py-2.5 bg-pink-100 text-pink-700 text-xs">PASTEL PINK</button>
-                            <button onclick="app.applyPresetTheme('retro')" class="studio-btn py-2.5 bg-amber-100 text-amber-800 text-xs">VINTAGE</button>
-                            <button onclick="app.applyPresetTheme('party')" class="studio-btn py-2.5 bg-purple-100 text-purple-800 text-xs">PARTY Y2K</button>
-                            <button onclick="app.applyPresetTheme('wedding')" class="studio-btn py-2.5 bg-stone-100 text-stone-800 font-serif text-xs">EDITORIAL</button>
+                            <button onclick="app.applyPresetTheme('classic')" class="studio-btn py-2 text-xs min-h-[38px] bg-white">CLASSIC</button>
+                            <button onclick="app.applyPresetTheme('minimal')" class="studio-btn py-2 text-xs min-h-[38px] bg-slate-100">MINIMAL</button>
+                            <button onclick="app.applyPresetTheme('korean')" class="studio-btn py-2 text-xs min-h-[38px] bg-blue-50 text-blue-700 border-blue-700">HARU BLUE</button>
+                            <button onclick="app.applyPresetTheme('film')" class="studio-btn py-2 text-xs min-h-[38px] bg-zinc-900 text-white">BLACK FILM</button>
+                            <button onclick="app.applyPresetTheme('cute')" class="studio-btn py-2 text-xs min-h-[38px] bg-pink-100 text-pink-700">PASTEL PINK</button>
+                            <button onclick="app.applyPresetTheme('retro')" class="studio-btn py-2 text-xs min-h-[38px] bg-amber-100 text-amber-800">VINTAGE</button>
+                            <button onclick="app.applyPresetTheme('party')" class="studio-btn py-2 text-xs min-h-[38px] bg-purple-100 text-purple-800">PARTY Y2K</button>
+                            <button onclick="app.applyPresetTheme('wedding')" class="studio-btn py-2 text-xs min-h-[38px] bg-stone-100 text-stone-800 font-serif">EDITORIAL</button>
                         </div>
                     </div>
 
                     <div class="border-t border-slate-200 pt-3">
-                        <span class="text-xs font-bold text-slate-600 font-mono uppercase block mb-2">FRAME COLOR CUSTOMIZER:</span>
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-2">FRAME COLOR CUSTOMIZER:</span>
                         <div class="flex items-center gap-3">
-                            <input type="color" id="frameColorInput" value="#ffffff" onchange="app.updateFrameColor(this.value)" class="w-10 h-10 border-2 border-studio-ink cursor-pointer">
-                            <div class="flex gap-1.5 flex-wrap">
-                                <button onclick="app.updateFrameColor('#ffffff')" class="w-7 h-7 bg-white border border-studio-ink"></button>
-                                <button onclick="app.updateFrameColor('#111111')" class="w-7 h-7 bg-black border border-studio-ink"></button>
-                                <button onclick="app.updateFrameColor('#2563eb')" class="w-7 h-7 bg-blue-600 border border-studio-ink"></button>
-                                <button onclick="app.updateFrameColor('#fce7f3')" class="w-7 h-7 bg-pink-200 border border-studio-ink"></button>
-                                <button onclick="app.updateFrameColor('#fef3c7')" class="w-7 h-7 bg-amber-100 border border-studio-ink"></button>
-                                <button onclick="app.updateFrameColor('#d1fae5')" class="w-7 h-7 bg-emerald-100 border border-studio-ink"></button>
+                            <input type="color" id="frameColorInput" value="#ffffff" onchange="app.updateFrameColor(this.value)" class="w-10 h-10 border-2 border-studio-ink cursor-pointer p-0.5">
+                            <div class="flex gap-2 flex-wrap">
+                                <button onclick="app.updateFrameColor('#ffffff')" class="w-8 h-8 bg-white border border-studio-ink"></button>
+                                <button onclick="app.updateFrameColor('#111111')" class="w-8 h-8 bg-black border border-studio-ink"></button>
+                                <button onclick="app.updateFrameColor('#2563eb')" class="w-8 h-8 bg-blue-600 border border-studio-ink"></button>
+                                <button onclick="app.updateFrameColor('#fce7f3')" class="w-8 h-8 bg-pink-200 border border-studio-ink"></button>
+                                <button onclick="app.updateFrameColor('#fef3c7')" class="w-8 h-8 bg-amber-100 border border-studio-ink"></button>
+                                <button onclick="app.updateFrameColor('#d1fae5')" class="w-8 h-8 bg-emerald-100 border border-studio-ink"></button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div id="tabContent-filters" class="hidden flex-col gap-4">
-                    <span class="text-xs font-bold text-slate-600 font-mono uppercase block">APPLY FILTER TO ALL SNAPSHOTS:</span>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                        <button onclick="app.setFilter('original')" class="studio-btn py-3 bg-white text-xs">ORIGINAL</button>
-                        <button onclick="app.setFilter('bw')" class="studio-btn py-3 bg-zinc-800 text-white text-xs">B&W MONO</button>
-                        <button onclick="app.setFilter('vintage')" class="studio-btn py-3 bg-amber-50 text-amber-900 text-xs">VINTAGE</button>
-                        <button onclick="app.setFilter('sepia')" class="studio-btn py-3 bg-orange-100 text-orange-950 text-xs">SEPIA</button>
-                        <button onclick="app.setFilter('warm')" class="studio-btn py-3 bg-rose-50 text-rose-900 text-xs">WARM TONE</button>
-                        <button onclick="app.setFilter('cool')" class="studio-btn py-3 bg-sky-50 text-sky-900 text-xs">COOL BLUE</button>
-                        <button onclick="app.setFilter('contrast')" class="studio-btn py-3 bg-black text-white text-xs">HIGH CONTRAST</button>
-                        <button onclick="app.setFilter('bright')" class="studio-btn py-3 bg-emerald-50 text-emerald-900 text-xs">BRIGHT LEICA</button>
+                <!-- Tab 3: Photo Filters -->
+                <div id="tabContent-filters" class="hidden flex-col gap-3">
+                    <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block">APPLY FILTER TO ALL SNAPSHOTS:</span>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <button onclick="app.setFilter('original')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-white">ORIGINAL</button>
+                        <button onclick="app.setFilter('bw')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-zinc-800 text-white">B&W MONO</button>
+                        <button onclick="app.setFilter('vintage')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-amber-50 text-amber-900">VINTAGE</button>
+                        <button onclick="app.setFilter('sepia')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-orange-100 text-orange-950">SEPIA</button>
+                        <button onclick="app.setFilter('warm')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-rose-50 text-rose-900">WARM TONE</button>
+                        <button onclick="app.setFilter('cool')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-sky-50 text-sky-900">COOL BLUE</button>
+                        <button onclick="app.setFilter('contrast')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-black text-white">CONTRAST</button>
+                        <button onclick="app.setFilter('bright')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-emerald-50 text-emerald-900">LEICA BRIGHT</button>
                     </div>
                 </div>
 
+                <!-- Tab 4: Text & Touch Stickers -->
                 <div id="tabContent-text" class="hidden flex-col gap-4">
                     <div class="flex flex-col gap-2">
-                        <label class="text-xs font-mono font-bold text-slate-700">TITLE TEXT (LINE 1):</label>
-                        <input type="text" id="inputMainText" value="SNAPBOOTH 2026" oninput="app.updateTextContent()" class="p-2.5 border-2 border-studio-ink font-mono text-xs focus:outline-none focus:border-blue-600">
+                        <label class="text-[11px] font-mono font-bold text-slate-700">TITLE TEXT (LINE 1):</label>
+                        <input type="text" id="inputMainText" value="SNAPBOOTH 2026" oninput="app.updateTextContent()" class="p-2 sm:p-2.5 border-2 border-studio-ink font-mono text-xs focus:outline-none focus:border-blue-600">
 
-                        <label class="text-xs font-mono font-bold text-slate-700 mt-1">SUBTITLE / EVENT (LINE 2):</label>
-                        <input type="text" id="inputSubText" value="KOREAN PHOTO STUDIO" oninput="app.updateTextContent()" class="p-2.5 border-2 border-studio-ink font-mono text-xs focus:outline-none focus:border-blue-600">
+                        <label class="text-[11px] font-mono font-bold text-slate-700 mt-1">SUBTITLE / EVENT (LINE 2):</label>
+                        <input type="text" id="inputSubText" value="KOREAN PHOTO STUDIO" oninput="app.updateTextContent()" class="p-2 sm:p-2.5 border-2 border-studio-ink font-mono text-xs focus:outline-none focus:border-blue-600">
 
-                        <div class="grid grid-cols-2 gap-2 mt-2">
+                        <div class="grid grid-cols-2 gap-2 mt-1">
                             <div>
-                                <label class="text-xs font-mono font-bold text-slate-700">FONT STYLE:</label>
-                                <select id="fontSelect" onchange="app.updateFontFamily(this.value)" class="w-full p-2 border-2 border-studio-ink font-mono text-xs mt-1">
+                                <label class="text-[11px] font-mono font-bold text-slate-700">FONT STYLE:</label>
+                                <select id="fontSelect" onchange="app.updateFontFamily(this.value)" class="w-full p-2 border-2 border-studio-ink font-mono text-xs mt-0.5">
                                     <option value="font-mono">MONOSPACE</option>
                                     <option value="font-sans">SPACE GROTESK</option>
                                     <option value="font-serif">EDITORIAL SERIF</option>
@@ -519,47 +547,48 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="text-xs font-mono font-bold text-slate-700">DATE STAMP:</label>
-                                <input type="text" id="inputDateText" value="2026.09.18" oninput="app.updateTextContent()" class="w-full p-2 border-2 border-studio-ink font-mono text-xs mt-1">
+                                <label class="text-[11px] font-mono font-bold text-slate-700">DATE STAMP:</label>
+                                <input type="text" id="inputDateText" value="2026.09.18" oninput="app.updateTextContent()" class="w-full p-2 border-2 border-studio-ink font-mono text-xs mt-0.5">
                             </div>
                         </div>
                     </div>
 
                     <div class="border-t border-slate-200 pt-3">
-                        <span class="text-xs font-bold text-slate-600 font-mono uppercase block mb-2">ADD STICKERS (CLICK TO PLACE):</span>
+                        <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1.5">TAP TO PLACE STICKERS (DRAG ON STRIP):</span>
                         <div class="flex flex-wrap gap-2">
-                            <button onclick="app.addStickerToCanvas('📸')" class="studio-btn p-2 bg-white text-base">📸</button>
-                            <button onclick="app.addStickerToCanvas('🤍')" class="studio-btn p-2 bg-white text-base">🤍</button>
-                            <button onclick="app.addStickerToCanvas('✨')" class="studio-btn p-2 bg-white text-base">✨</button>
-                            <button onclick="app.addStickerToCanvas('🎀')" class="studio-btn p-2 bg-white text-base">🎀</button>
-                            <button onclick="app.addStickerToCanvas('⭐')" class="studio-btn p-2 bg-white text-base">⭐</button>
-                            <button onclick="app.addStickerToCanvas('🍒')" class="studio-btn p-2 bg-white text-base">🍒</button>
-                            <button onclick="app.addStickerToCanvas('🧸')" class="studio-btn p-2 bg-white text-base">🧸</button>
-                            <button onclick="app.addStickerToCanvas('🎟️')" class="studio-btn p-2 bg-white text-base">🎟️</button>
-                            <button onclick="app.clearStickers()" class="studio-btn py-2 px-3 bg-rose-100 text-rose-800 text-xs font-mono">CLEAR STICKERS</button>
+                            <button onclick="app.addStickerToCanvas('📸')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">📸</button>
+                            <button onclick="app.addStickerToCanvas('🤍')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">🤍</button>
+                            <button onclick="app.addStickerToCanvas('✨')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">✨</button>
+                            <button onclick="app.addStickerToCanvas('🎀')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">🎀</button>
+                            <button onclick="app.addStickerToCanvas('⭐')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">⭐</button>
+                            <button onclick="app.addStickerToCanvas('🍒')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">🍒</button>
+                            <button onclick="app.addStickerToCanvas('🧸')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">🧸</button>
+                            <button onclick="app.addStickerToCanvas('🎟️')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">🎟️</button>
+                            <button onclick="app.clearStickers()" class="studio-btn py-2 px-3 min-h-[38px] bg-rose-100 text-rose-800 text-xs font-mono">CLEAR ALL</button>
                         </div>
                     </div>
                 </div>
 
-                <button onclick="app.navigateTo('export')" class="studio-btn w-full py-4 bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center justify-center gap-2 mt-2 shadow-solid-sm">
+                <button onclick="app.navigateTo('export')" class="studio-btn w-full py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base flex items-center justify-center gap-2 mt-2 shadow-solid-sm">
                     <span>PROCEED TO FINAL EXPORT</span>
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
         </section>
 
+        <!-- SCREEN 5: High-Res Export -->
         <section id="screen-export" class="w-full max-w-4xl hidden flex-col items-center">
-            <div class="text-center mb-6">
-                <span class="font-mono text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 05 / Export</span>
-                <h2 class="text-3xl font-black uppercase mt-1">Final Photobooth Image</h2>
-                <p class="text-slate-600 text-sm mt-1">High-resolution canvas print render. Standard photo frame format.</p>
+            <div class="text-center mb-4 sm:mb-6">
+                <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 05 / Export</span>
+                <h2 class="text-2xl sm:text-3xl font-black uppercase mt-1">Final Photobooth Image</h2>
+                <p class="text-slate-600 text-xs sm:text-sm mt-1 px-2">High-resolution print render. Pure HTML Canvas image export.</p>
             </div>
 
-            <div class="studio-box p-6 flex items-center justify-center bg-studio-bg mb-8 w-full max-w-md">
+            <div class="studio-box p-3 sm:p-6 flex items-center justify-center bg-studio-bg mb-6 sm:mb-8 w-full max-w-sm sm:max-w-md">
                 <canvas id="exportCanvas" class="max-w-full h-auto border-2 border-studio-ink shadow-solid-md"></canvas>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-3 items-center justify-center w-full max-w-md">
+            <div class="flex flex-col sm:flex-row gap-2.5 sm:gap-3 items-center justify-center w-full max-w-md">
                 <button onclick="app.navigateTo('customize')" class="studio-btn w-full sm:w-auto px-5 py-3.5 bg-white hover:bg-slate-100 text-xs">
                     <i class="fa-solid fa-pen-to-square mr-1"></i> EDIT DESIGN
                 </button>
@@ -586,9 +615,9 @@
     <input type="file" id="fallbackFileInput" accept="image/*" multiple class="hidden" onchange="app.handleFileUploadFallback(event)">
 
     <!-- Footer -->
-    <footer class="w-full bg-white border-t-2 border-studio-ink py-4 px-6 text-center font-mono text-xs text-slate-600 flex flex-col sm:flex-row justify-between items-center gap-2 mt-auto">
+    <footer class="w-full bg-white border-t-2 border-studio-ink py-3 sm:py-4 px-4 text-center font-mono text-[10px] sm:text-xs text-slate-600 flex flex-col sm:flex-row justify-between items-center gap-1.5 sm:gap-2 mt-auto">
         <div>SNAPBOOTH STUDIO // K-STYLE SELF PHOTO BOOTH ENGINE</div>
-        <div>STRICT 0PX EDITORIAL GEOMETRY — NO AI GLASS GLOW</div>
+        <div>OPTIMIZED FOR ALL MOBILE TOUCHSCREENS & DESKTOPS</div>
     </footer>
 
     <script>
@@ -632,6 +661,8 @@
             try {
                 if (!this.audioCtx) this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 const ctx = this.audioCtx;
+                if (ctx.state === 'suspended') ctx.resume();
+
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.connect(gain);
@@ -698,15 +729,17 @@
             } else if (screenId === 'export') {
                 this.renderExportCanvas();
             }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
         updateStepIndicator(screenId) {
             const steps = {
-                'shot-select': 'step1',
-                'camera': 'step2',
-                'review': 'step3',
-                'customize': 'step4',
-                'export': 'step5'
+                'shot-select': { id: 'step1', name: '01.SHOTS' },
+                'camera': { id: 'step2', name: '02.CAMERA' },
+                'review': { id: 'step3', name: '03.REVIEW' },
+                'customize': { id: 'step4', name: '04.LAYOUT' },
+                'export': { id: 'step5', name: '05.EXPORT' }
             };
             
             ['step1', 'step2', 'step3', 'step4', 'step5'].forEach(st => {
@@ -714,10 +747,15 @@
                 if (el) el.className = 'text-slate-400';
             });
 
-            const activeStep = steps[screenId];
-            if (activeStep) {
-                const el = document.getElementById(activeStep);
+            const active = steps[screenId];
+            if (active) {
+                const el = document.getElementById(active.id);
                 if (el) el.className = 'text-blue-600 font-bold underline';
+                const mobBadge = document.getElementById('mobileStepText');
+                if (mobBadge) mobBadge.innerText = active.name;
+            } else {
+                const mobBadge = document.getElementById('mobileStepText');
+                if (mobBadge) mobBadge.innerText = '00.START';
             }
         },
 
@@ -758,20 +796,18 @@
             this.stopWebcam();
 
             try {
-                // High performance camera constraints
                 this.cameraStream = await navigator.mediaDevices.getUserMedia({
                     video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: this.facingMode },
                     audio: false
                 });
                 this.attachStreamToVideo(video, statusMsg);
             } catch (err1) {
-                console.warn("Retrying camera with standard parameters...", err1);
+                console.warn("Retrying webcam with standard parameters...", err1);
                 try {
-                    // Flexible standard constraints fallback
                     this.cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
                     this.attachStreamToVideo(video, statusMsg);
                 } catch (err2) {
-                    console.warn("Webcam blocked or restricted. Activating studio demo / upload mode.", err2);
+                    console.warn("Webcam unavailable. Activating mobile upload/demo mode.", err2);
                     this.enableFallbackCamera();
                 }
             }
@@ -781,11 +817,12 @@
             video.srcObject = this.cameraStream;
             video.classList.remove('hidden');
             document.getElementById('fallbackCanvas').classList.add('hidden');
-            statusMsg.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE WEBCAM ACTIVE';
+            statusMsg.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> LIVE CAMERA';
             this.useFallbackCamera = false;
         },
 
         switchCameraDevice() {
+            this.playSound('click');
             this.facingMode = (this.facingMode === 'user') ? 'environment' : 'user';
             this.startWebcam();
         },
@@ -798,7 +835,7 @@
 
             video.classList.add('hidden');
             canvas.classList.remove('hidden');
-            statusMsg.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> STUDIO DEMO / UPLOAD MODE ACTIVE';
+            statusMsg.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-500"></span> STUDIO DEMO / UPLOAD MODE';
 
             const ctx = canvas.getContext('2d');
             canvas.width = 640;
@@ -811,14 +848,14 @@
 
                 ctx.strokeStyle = '#2563eb';
                 ctx.lineWidth = 3;
-                ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+                ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
 
                 ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 20px "Space Grotesk", sans-serif';
+                ctx.font = 'bold 18px "Space Grotesk", sans-serif';
                 ctx.textAlign = 'center';
                 ctx.fillText('STUDIO DEMO POSE GUIDE', canvas.width / 2, canvas.height / 2 - 10);
-                ctx.font = '14px "Space Mono", monospace';
-                ctx.fillText('WEBCAM DISCONNECTED / UPLOAD MODE', canvas.width / 2, canvas.height / 2 + 20);
+                ctx.font = '12px "Space Mono", monospace';
+                ctx.fillText('WEBCAM RESTRICTED / UPLOAD MODE', canvas.width / 2, canvas.height / 2 + 18);
 
                 requestAnimationFrame(drawDemo);
             };
@@ -949,11 +986,11 @@
 
             this.capturedPhotos.forEach((imgSrc, idx) => {
                 const card = document.createElement('div');
-                card.className = 'studio-box p-3 flex flex-col items-center bg-white';
+                card.className = 'studio-box p-2.5 sm:p-3 flex flex-col items-center bg-white';
                 card.innerHTML = `
-                    <div class="w-full flex justify-between items-center mb-2 font-mono text-xs font-bold">
+                    <div class="w-full flex justify-between items-center mb-1.5 font-mono text-[10px] sm:text-xs font-bold">
                         <span>SHOT #${idx + 1}</span>
-                        <button onclick="app.retakeSinglePhoto(${idx})" class="text-rose-600 hover:underline uppercase text-[10px]">
+                        <button onclick="app.retakeSinglePhoto(${idx})" class="text-rose-600 hover:underline uppercase text-[9px] sm:text-[10px]">
                             <i class="fa-solid fa-arrows-rotate mr-0.5"></i> RETAKE
                         </button>
                     </div>
@@ -1017,7 +1054,7 @@
 
             layouts.forEach(l => {
                 const btn = document.createElement('button');
-                btn.className = `studio-btn p-3 text-left font-mono text-xs ${this.currentLayout === l.id ? 'bg-blue-600 text-white' : 'bg-white text-studio-ink'}`;
+                btn.className = `studio-btn p-2.5 text-left font-mono text-[11px] sm:text-xs ${this.currentLayout === l.id ? 'bg-blue-600 text-white' : 'bg-white text-studio-ink'}`;
                 btn.innerText = l.name;
                 btn.onclick = () => {
                     this.currentLayout = l.id;
@@ -1032,11 +1069,11 @@
             this.playSound('click');
             ['layouts', 'themes', 'filters', 'text'].forEach(t => {
                 document.getElementById(`tabContent-${t}`).classList.add('hidden');
-                document.getElementById(`tabBtn-${t}`).className = 'px-4 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink';
+                document.getElementById(`tabBtn-${t}`).className = 'px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink shrink-0';
             });
 
             document.getElementById(`tabContent-${tab}`).classList.remove('hidden');
-            document.getElementById(`tabBtn-${tab}`).className = 'px-4 py-2 bg-studio-ink text-white font-bold';
+            document.getElementById(`tabBtn-${tab}`).className = 'px-3.5 py-2 bg-studio-ink text-white font-bold shrink-0';
         },
 
         renderPhotoboothStrip() {
@@ -1046,11 +1083,9 @@
             strip.style.backgroundColor = this.frameColor;
 
             photoContainer.innerHTML = '';
-            photoContainer.className = 'w-full gap-2.5 ';
+            photoContainer.className = 'w-full gap-2 ';
 
-            if (this.currentLayout.includes('grid-2x2')) {
-                photoContainer.classList.add('grid', 'grid-cols-2');
-            } else if (this.currentLayout.includes('grid-3x2')) {
+            if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2')) {
                 photoContainer.classList.add('grid', 'grid-cols-2');
             } else if (this.currentLayout.includes('grid-2x3')) {
                 photoContainer.classList.add('grid', 'grid-cols-3');
@@ -1064,7 +1099,7 @@
                 img.className = `w-full object-cover border border-studio-ink ${this.getFilterClass()}`;
 
                 if (this.currentLayout.includes('polaroid')) {
-                    img.classList.add('p-2', 'bg-white', 'shadow-sm');
+                    img.classList.add('p-1.5', 'bg-white', 'shadow-sm');
                 }
 
                 photoContainer.appendChild(img);
@@ -1141,7 +1176,7 @@
         updateFontFamily(font) {
             this.fontClass = font;
             const target = document.getElementById('stripFooterArea');
-            target.className = `w-full text-center mt-4 pt-2 border-t border-slate-200 ${font}`;
+            target.className = `w-full text-center mt-3 pt-2 border-t border-slate-200 ${font}`;
         },
 
         addStickerToCanvas(emoji) {
@@ -1149,8 +1184,8 @@
             const sticker = {
                 id: Date.now(),
                 emoji: emoji,
-                x: Math.random() * 60 + 20,
-                y: Math.random() * 60 + 20
+                x: Math.random() * 50 + 25,
+                y: Math.random() * 50 + 25
             };
             this.placedStickers.push(sticker);
             this.renderPlacedStickers();
@@ -1167,7 +1202,7 @@
 
             this.placedStickers.forEach(s => {
                 const el = document.createElement('div');
-                el.className = 'placed-sticker text-2xl pointer-events-auto';
+                el.className = 'placed-sticker text-xl sm:text-2xl pointer-events-auto';
                 el.style.left = `${s.x}%`;
                 el.style.top = `${s.y}%`;
                 el.innerText = s.emoji;
@@ -1179,23 +1214,50 @@
             let activeItem = null;
             const container = document.getElementById('photoboothStrip');
 
-            container.addEventListener('pointerdown', (e) => {
-                if (e.target.classList.contains('placed-sticker')) {
-                    activeItem = e.target;
+            const handleStart = (e) => {
+                const target = e.target.closest('.placed-sticker');
+                if (target) {
+                    activeItem = target;
+                    if (e.pointerId !== undefined && target.setPointerCapture) {
+                        try { target.setPointerCapture(e.pointerId); } catch(err){}
+                    }
+                    e.preventDefault();
                 }
-            });
+            };
 
-            window.addEventListener('pointermove', (e) => {
+            const handleMove = (e) => {
                 if (activeItem) {
                     const rect = container.getBoundingClientRect();
-                    const x = ((e.clientX - rect.left) / rect.width) * 100;
-                    const y = ((e.clientY - rect.top) / rect.height) * 100;
-                    activeItem.style.left = `${Math.max(0, Math.min(90, x))}%`;
-                    activeItem.style.top = `${Math.max(0, Math.min(90, y))}%`;
-                }
-            });
+                    const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0].clientX);
+                    const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0].clientY);
 
-            window.addEventListener('pointerup', () => { activeItem = null; });
+                    if (clientX !== undefined && clientY !== undefined) {
+                        let x = ((clientX - rect.left) / rect.width) * 100;
+                        let y = ((clientY - rect.top) / rect.height) * 100;
+
+                        x = Math.max(0, Math.min(85, x));
+                        y = Math.max(0, Math.min(85, y));
+
+                        activeItem.style.left = `${x}%`;
+                        activeItem.style.top = `${y}%`;
+                    }
+                    e.preventDefault();
+                }
+            };
+
+            const handleEnd = (e) => {
+                if (activeItem) {
+                    if (e.pointerId !== undefined && activeItem.releasePointerCapture) {
+                        try { activeItem.releasePointerCapture(e.pointerId); } catch(err){}
+                    }
+                    activeItem = null;
+                }
+            };
+
+            container.addEventListener('pointerdown', handleStart);
+            window.addEventListener('pointermove', handleMove);
+            window.addEventListener('pointerup', handleEnd);
+            window.addEventListener('pointercancel', handleEnd);
         },
 
         renderExportCanvas() {
