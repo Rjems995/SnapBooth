@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNAPBOOTH — Independent K-Style Photo Studio</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        studio: {
+                            bg: '#F9F8F6',
+                            panel: '#FFFFFF',
+                            ink: '#111111',
+                            accent: '#2563EB',
+                            red: '#DC2626',
+                            border: '#111111',
+                            subtle: '#E5E4E0'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'Inter', 'sans-serif'],
+                        mono: ['Space Mono', 'Courier New', 'monospace'],
+                        serif: ['Cinzel', 'Playfair Display', 'serif'],
+                        hand: ['Caveat', 'cursive']
+                    },
+                    boxShadow: {
+                        'solid': '4px 4px 0px #111111',
+                        'solid-lg': '7px 7px 0px #111111',
+                        'solid-sm': '2px 2px 0px #111111',
+                        'solid-blue': '5px 5px 0px #2563EB',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;800&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #F9F8F6;
+            color: #111111;
+            background-image: radial-gradient(#111111 0.75px, transparent 0.75px);
+            background-size: 24px 24px;
+            background-position: 0 0;
+            min-height: 100vh;
+        }
+
+        /* Tactile Studio Box Styling (Sharp 0px geometry) */
+        .studio-box {
+            background-color: #FFFFFF;
+            border: 2px solid #111111;
+            box-shadow: 4px 4px 0px #111111;
+            border-radius: 0px;
+        }
+
+        .studio-box-lg {
+            background-color: #FFFFFF;
+            border: 3px solid #111111;
+            box-shadow: 8px 8px 0px #111111;
+            border-radius: 0px;
+        }
+
+        .studio-card-interactive {
+            background-color: #FFFFFF;
+            border: 2px solid #111111;
+            box-shadow: 4px 4px 0px #111111;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+            border-radius: 0px;
+            cursor: pointer;
+        }
+
+        .studio-card-interactive:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #111111;
+            background-color: #FAFAF8;
+        }
+
+        .studio-card-interactive.selected {
+            background-color: #EEF2FF;
+            border-color: #2563EB;
+            box-shadow: 5px 5px 0px #2563EB;
+        }
+
+        .studio-btn {
+            border: 2px solid #111111;
+            box-shadow: 3px 3px 0px #111111;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.1s ease;
+            border-radius: 0px;
+        }
+
+        .studio-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 0px #111111;
+        }
+
+        .studio-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px #111111;
+        }
+
+        /* Photo Filters */
+        .filter-bw { filter: grayscale(100%) contrast(110%); }
+        .filter-vintage { filter: sepia(30%) contrast(105%); }
+        .filter-sepia { filter: sepia(80%); }
+        .filter-warm { filter: sepia(20%) saturate(130%); }
+        .filter-cool { filter: hue-rotate(20deg) saturate(110%); }
+        .filter-contrast { filter: contrast(140%); }
+        .filter-bright { filter: brightness(115%); }
+
+        /* Camera Flash Overlay */
+        #flashOverlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.08s ease-out;
+        }
+        #flashOverlay.active {
+            opacity: 1;
+        }
+
+        /* Interactive Sticker Overlay */
+        .placed-sticker {
+            position: absolute;
+            cursor: move;
+            user-select: none;
+            touch-action: none;
+            transform-origin: center center;
+            z-index: 30;
+            border: 1px dashed transparent;
+        }
+        .placed-sticker:hover {
+            border-color: #2563EB;
+        }
+
+        /* Minimal Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F9F8F6;
+            border-left: 1px solid #111111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #111111;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-studio-ink antialiased">
+
+    <header class="w-full bg-white border-b-2 border-studio-ink py-4 px-6 sticky top-0 z-40 flex items-center justify-between">
+        <div class="flex items-center gap-4 cursor-pointer" onclick="app.navigateTo('home')">
+            <div class="w-9 h-9 bg-studio-ink text-white font-mono font-bold text-lg flex items-center justify-center border border-studio-ink shadow-solid-sm">
+                SB
+            </div>
+            <div>
+                <span class="text-xl font-extrabold tracking-tighter uppercase block leading-none">
+                    SNAPBOOTH
+                </span>
+                <span class="text-[10px] font-mono tracking-widest text-slate-600 block uppercase mt-0.5">
+                    EST. 2026 // K-STYLE PHOTO STUDIO
+                </span>
+            </div>
+        </div>
+
+        <!-- Workflow Tracker -->
+        <div id="stepIndicator" class="hidden md:flex items-center gap-1 font-mono text-xs font-bold border-2 border-studio-ink bg-studio-bg px-3 py-1.5 shadow-solid-sm">
+            <span id="step1" class="text-blue-600">01.SHOTS</span>
+            <span class="text-slate-400">/</span>
+            <span id="step2" class="text-slate-400">02.CAMERA</span>
+            <span class="text-slate-400">/</span>
+            <span id="step3" class="text-slate-400">03.REVIEW</span>
+            <span class="text-slate-400">/</span>
+            <span id="step4" class="text-slate-400">04.LAYOUT</span>
+            <span class="text-slate-400">/</span>
+            <span id="step5" class="text-slate-400">05.EXPORT</span>
+        </div>
+
+        <!-- Audio & Session Controls -->
+        <div class="flex items-center gap-2">
+            <button id="soundToggleBtn" onclick="app.toggleSound()" title="Sound Effects" class="w-9 h-9 bg-white border-2 border-studio-ink hover:bg-slate-100 flex items-center justify-center shadow-solid-sm transition-all">
+                <i class="fa-solid fa-volume-high text-xs"></i>
+            </button>
+            <button id="resetHeaderBtn" onclick="app.startOverPrompt()" class="hidden text-xs bg-rose-50 text-rose-700 border-2 border-rose-700 px-3 py-1.5 font-bold hover:bg-rose-100 transition-all shadow-solid-sm">
+                <i class="fa-solid fa-arrow-rotate-left mr-1"></i> RESET
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workflow View Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col justify-center items-center">
+
+        <section id="screen-home" class="w-full max-w-4xl text-center py-6 flex flex-col items-center justify-center my-auto">
+            <div class="inline-flex items-center gap-2 px-3 py-1 border-2 border-studio-ink bg-white font-mono text-xs font-bold mb-6 shadow-solid-sm">
+                <span class="w-2 h-2 bg-blue-600 inline-block"></span> RAW WEBCAM PRINT ENGINE v2.6
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-none mb-6">
+                ARCHITECTURAL <br/>
+                <span class="bg-studio-ink text-white px-3 py-1 inline-block transform -rotate-1 mt-2">PHOTO STRIP</span> STUDIO
+            </h1>
+
+            <p class="text-slate-700 font-medium text-base sm:text-lg max-w-2xl mb-10 leading-relaxed">
+                Clean, tactile photobooth experience inspired by Korean self-photo booths. Choose your shot count first, capture real-time poses, design custom layouts, and export 300 DPI high-res prints.
+            </p>
+
+            <button onclick="app.navigateTo('shot-select')" class="studio-btn px-10 py-5 bg-blue-600 text-white hover:bg-blue-700 text-lg flex items-center gap-3 shadow-solid-lg">
+                <i class="fa-solid fa-camera"></i>
+                <span>START PHOTOBOOTH</span>
+            </button>
+
+            <!-- Feature Specs -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 w-full text-left">
+                <div class="studio-box p-4">
+                    <span class="font-mono text-xs text-blue-600 font-bold block mb-1">01 / SHOT FORMATS</span>
+                    <h3 class="font-extrabold uppercase text-sm">2, 3, 4 & 6 Shots</h3>
+                    <p class="text-xs text-slate-600 mt-1">Select exact count prior to camera activation.</p>
+                </div>
+                <div class="studio-box p-4">
+                    <span class="font-mono text-xs text-blue-600 font-bold block mb-1">02 / GRAPHIC THEMES</span>
+                    <h3 class="font-extrabold uppercase text-sm">Korean Studio Vibe</h3>
+                    <p class="text-xs text-slate-600 mt-1">Minimal, Film, Monochrome, Y2K & Retro.</p>
+                </div>
+                <div class="studio-box p-4">
+                    <span class="font-mono text-xs text-blue-600 font-bold block mb-1">03 / CANVAS TOOLS</span>
+                    <h3 class="font-extrabold uppercase text-sm">Stickers & Text</h3>
+                    <p class="text-xs text-slate-600 mt-1">Draggable overlays, date stamps & typography.</p>
+                </div>
+                <div class="studio-box p-4">
+                    <span class="font-mono text-xs text-blue-600 font-bold block mb-1">04 / EXPORT ENGINE</span>
+                    <h3 class="font-extrabold uppercase text-sm">300 DPI Rendering</h3>
+                    <p class="text-xs text-slate-600 mt-1">Export clean JPG or PNG files directly.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="screen-shot-select" class="w-full max-w-4xl hidden flex-col items-center py-4">
+            <div class="text-center mb-8">
+                <span class="font-mono text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 01 / Selection</span>
+                <h2 class="text-3xl sm:text-4xl font-black uppercase tracking-tight mt-2">How many shots would you like?</h2>
+                <p class="text-slate-600 text-sm mt-1">Your selection dictates the camera loop, review grid, and layout options.</p>
+            </div>
+
+            <!-- 4 Option Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full mb-8">
+                <!-- 2 Shots -->
+                <div onclick="app.selectShotOption(2)" id="shot-opt-2" class="studio-card-interactive p-5 flex flex-col items-center justify-between group">
+                    <div class="text-center w-full mb-3">
+                        <span class="font-mono text-xs text-slate-500 block">OPTION A</span>
+                        <span class="text-2xl font-black uppercase">2 Shots 📸</span>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Duo Vertical / Mini Strip</p>
+                    </div>
+                    <div class="w-24 h-32 bg-slate-100 border-2 border-studio-ink p-2 flex flex-col gap-2 justify-center my-2">
+                        <div class="w-full h-11 bg-white border border-studio-ink flex items-center justify-center font-mono text-[9px] font-bold">#1</div>
+                        <div class="w-full h-11 bg-white border border-studio-ink flex items-center justify-center font-mono text-[9px] font-bold">#2</div>
+                    </div>
+                    <div class="w-full text-center py-2 bg-studio-ink text-white font-mono text-xs font-bold uppercase mt-2">
+                        Select 2 Shots
+                    </div>
+                </div>
+
+                <!-- 3 Shots -->
+                <div onclick="app.selectShotOption(3)" id="shot-opt-3" class="studio-card-interactive p-5 flex flex-col items-center justify-between group">
+                    <div class="text-center w-full mb-3">
+                        <span class="font-mono text-xs text-slate-500 block">OPTION B</span>
+                        <span class="text-2xl font-black uppercase">3 Shots 📸</span>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Trio Strip & Polaroid</p>
+                    </div>
+                    <div class="w-24 h-32 bg-slate-100 border-2 border-studio-ink p-2 flex flex-col gap-1.5 justify-center my-2">
+                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#1</div>
+                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#2</div>
+                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#3</div>
+                    </div>
+                    <div class="w-full text-center py-2 bg-studio-ink text-white font-mono text-xs font-bold uppercase mt-2">
+                        Select 3 Shots
+                    </div>
+                </div>
+
+                <!-- 4 Shots -->
+                <div onclick="app.selectShotOption(4)" id="shot-opt-4" class="studio-card-interactive selected p-5 flex flex-col items-center justify-between group">
+                    <div class="text-center w-full mb-3">
+                        <span class="font-mono text-xs text-slate-500 block">OPTION C</span>
+                        <span class="text-2xl font-black uppercase">4 Shots 📸</span>
+                        <p class="text-[11px] text-slate-500 mt-0.5">Classic K-Style 4-Cut Grid</p>
+                    </div>
+                    <div class="w-24 h-32 bg-slate-100 border-2 border-studio-ink p-2 grid grid-cols-2 gap-1.5 items-center my-2">
+                        <div class="w-full h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#1</div>
+                        <div class="w-full h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#2</div>
+                        <div class="w-full h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#3</div>
+                        <div class="w-full h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#4</div>
+                    </div>
+                    <div class="w-full text-center py-2 bg-studio-ink text-white font-mono text-xs font-bold uppercase mt-2">
+                        Select 4 Shots
+                    </div>
+                </div>
+
+                <!-- 6 Shots -->
+                <div onclick="app.selectShotOption(6)" id="shot-opt-6" class="studio-card-interactive p-5 flex flex-col items-center justify-between group">
+                    <div class="text-center w-full mb-3">
+                        <span class="font-mono text-xs text-slate-500 block">OPTION D</span>
+                        <span class="text-2xl font-black uppercase">6 Shots 📸</span>
+                        <p class="text-[11px] text-slate-500 mt-0.5">3x2 Grid & Deluxe Collage</p>
+                    </div>
+                    <div class="w-24 h-32 bg-slate-100 border-2 border-studio-ink p-1.5 grid grid-cols-2 gap-1 items-center my-2">
+                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#1</div>
+                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#2</div>
+                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#3</div>
+                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#4</div>
+                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#5</div>
+                        <div class="w-full h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#6</div>
+                    </div>
+                    <div class="w-full text-center py-2 bg-studio-ink text-white font-mono text-xs font-bold uppercase mt-2">
+                        Select 6 Shots
+                    </div>
+                </div>
+            </div>
+
+            <div id="shotSelectionSummary" class="w-full max-w-xl studio-box p-6 text-center">
+                <span class="font-mono text-xs uppercase text-slate-500 block">CONFIRMED SELECTION</span>
+                <h3 id="selectedShotText" class="text-2xl font-black uppercase text-blue-600 mt-0.5">4 Shots Selected</h3>
+                <p id="selectedShotDesc" class="text-sm text-slate-600 mt-1 mb-5">You will take exactly 4 photos in sequence for your studio strip.</p>
+
+                <button onclick="app.confirmShotsAndOpenCamera()" class="studio-btn w-full py-4 bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center justify-center gap-2 shadow-solid-sm">
+                    <span>CONTINUE TO CAMERA</span>
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                </button>
+            </div>
+        </section>
+
+        <section id="screen-camera" class="w-full max-w-4xl hidden flex-col items-center">
+            <div class="flex items-center justify-between w-full mb-4">
+                <div>
+                    <span class="font-mono text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 02 / Capture</span>
+                    <h2 class="text-2xl sm:text-3xl font-black uppercase mt-1">Camera Feed</h2>
+                </div>
+                <div class="border-2 border-studio-ink bg-white px-4 py-2 font-mono text-right shadow-solid-sm">
+                    <span class="text-[10px] text-slate-500 block uppercase font-bold">CURRENT SEQUENCE</span>
+                    <span id="cameraShotCounter" class="text-base font-black text-blue-600">SHOT 1 OF 4</span>
+                </div>
+            </div>
+
+            <!-- Video / Fallback Viewport -->
+            <div class="relative w-full aspect-video bg-black border-3 border-studio-ink shadow-solid-lg overflow-hidden flex items-center justify-center">
+                <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover transform -scale-x-100"></video>
+                <canvas id="fallbackCanvas" class="hidden w-full h-full object-cover"></canvas>
+                <div id="flashOverlay" class="absolute inset-0 bg-white z-20"></div>
+
+                <div id="countdownContainer" class="hidden absolute inset-0 z-30 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center border-4 border-studio-ink">
+                    <span id="countdownNumber" class="text-9xl font-black font-mono text-studio-ink">3</span>
+                    <span class="font-mono text-xs font-bold tracking-widest text-slate-800 uppercase mt-2 bg-studio-bg px-3 py-1 border border-studio-ink">POSING READY 📸</span>
+                </div>
+
+                <div id="cameraStatusToast" class="absolute bottom-3 left-3 right-3 bg-white border-2 border-studio-ink p-2.5 font-mono text-xs text-slate-800 flex items-center justify-between z-10 shadow-solid-sm">
+                    <span id="cameraStatusMsg" class="flex items-center gap-2 font-bold">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE WEBCAM ACTIVE
+                    </span>
+                    <div class="flex gap-2">
+                        <button onclick="app.switchCameraDevice()" class="underline font-bold text-blue-600 hover:text-blue-800 uppercase text-[11px]"><i class="fa-solid fa-camera-rotate mr-1"></i>SWITCH</button>
+                        <button onclick="app.enableFallbackCamera()" class="underline font-bold text-slate-600 hover:text-black uppercase text-[11px]">UPLOAD / DEMO MODE</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-4 items-center justify-center mt-6 w-full">
+                <button id="startCaptureBtn" onclick="app.startPhotoCaptureSequence()" class="studio-btn px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center gap-3 shadow-solid-sm">
+                    <i class="fa-solid fa-camera-retro text-lg"></i>
+                    <span>START CAPTURE SEQUENCE</span>
+                </button>
+
+                <button onclick="app.navigateTo('shot-select')" class="studio-btn px-6 py-4 bg-white hover:bg-slate-100 text-studio-ink text-xs shadow-solid-sm">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> CHANGE SHOT COUNT
+                </button>
+            </div>
+        </section>
+
+        <section id="screen-review" class="w-full max-w-5xl hidden flex-col items-center">
+            <div class="text-center mb-6">
+                <span class="font-mono text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 03 / Review</span>
+                <h2 class="text-3xl font-black uppercase mt-1">Review Captured Shots</h2>
+                <p class="text-slate-600 text-sm mt-1">Inspect your images. You may retake individual shots or clear all.</p>
+            </div>
+
+            <div id="photoReviewGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full mb-8"></div>
+
+            <div class="flex flex-wrap gap-4 justify-center items-center w-full">
+                <button onclick="app.retakeAllPhotos()" class="studio-btn px-6 py-3.5 bg-rose-50 text-rose-700 border-rose-700 hover:bg-rose-100 text-xs shadow-solid-sm flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-left"></i> RETAKE ALL PHOTOS
+                </button>
+
+                <button onclick="app.navigateTo('customize')" class="studio-btn px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm shadow-solid-sm flex items-center gap-2">
+                    <span>CONTINUE TO LAYOUT DESIGN</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <section id="screen-customize" class="w-full max-w-6xl hidden flex-col lg:flex-row gap-8 items-start">
+            
+            <div class="w-full lg:w-1/2 flex flex-col items-center sticky top-24">
+                <div class="w-full flex items-center justify-between mb-2">
+                    <span class="font-mono text-xs font-bold text-slate-600 uppercase"><i class="fa-solid fa-eye mr-1"></i> LIVE CANVAS PREVIEW</span>
+                    <span id="currentShotBadge" class="font-mono text-xs bg-blue-100 text-blue-700 border border-blue-300 px-2.5 py-0.5 font-bold">4 SHOTS</span>
+                </div>
+
+                <div id="photoboothPreviewContainer" class="relative w-full flex justify-center items-center p-6 studio-box min-h-[460px] bg-studio-bg">
+                    <div id="photoboothStrip" class="relative studio-box transition-all duration-200 flex flex-col items-center justify-between p-4" style="background-color: #FFFFFF; width: 100%; max-width: 320px;">
+                        <div id="stripHeaderTitle" class="w-full text-center mb-3 font-bold text-slate-800 text-sm uppercase tracking-wider hidden">
+                            SNAPBOOTH STUDIO
+                        </div>
+
+                        <div id="stripPhotosContainer" class="w-full flex flex-col gap-3"></div>
+
+                        <div id="stripFooterArea" class="w-full text-center mt-4 pt-2 border-t border-slate-200">
+                            <p id="stripTextMain" class="font-mono font-bold text-sm tracking-wider uppercase text-slate-900">SNAPBOOTH 2026</p>
+                            <p id="stripTextSub" class="font-mono text-[10px] text-slate-500 uppercase mt-0.5">KOREAN PHOTO STUDIO</p>
+                            <p id="stripDate" class="font-mono text-[9px] text-slate-400 mt-1">2026.09.18</p>
+                        </div>
+
+                        <div id="placedStickersLayer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design Control Sidebar -->
+            <div class="w-full lg:w-1/2 studio-box p-6 flex flex-col gap-6">
+                <div>
+                    <span class="font-mono text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 04 / Customization</span>
+                    <h2 class="text-2xl font-black uppercase mt-1">Customize Studio Strip</h2>
+                </div>
+
+                <div class="flex border-b-2 border-studio-ink font-mono text-xs font-bold">
+                    <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="px-4 py-2 bg-studio-ink text-white">1. LAYOUTS</button>
+                    <button onclick="app.setControlTab('themes')" id="tabBtn-themes" class="px-4 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink">2. THEMES & COLOR</button>
+                    <button onclick="app.setControlTab('filters')" id="tabBtn-filters" class="px-4 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink">3. FILTERS</button>
+                    <button onclick="app.setControlTab('text')" id="tabBtn-text" class="px-4 py-2 bg-white text-studio-ink hover:bg-slate-100">4. TEXT & STICKERS</button>
+                </div>
+
+                <div id="tabContent-layouts" class="flex flex-col gap-4">
+                    <span class="text-xs font-bold text-slate-600 font-mono uppercase">COMPATIBLE GEOMETRIES:</span>
+                    <div id="layoutOptionsGrid" class="grid grid-cols-2 gap-3"></div>
+                </div>
+
+                <div id="tabContent-themes" class="hidden flex-col gap-4">
+                    <div>
+                        <span class="text-xs font-bold text-slate-600 font-mono uppercase block mb-2">PRESET STUDIO THEMES:</span>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                            <button onclick="app.applyPresetTheme('classic')" class="studio-btn py-2.5 bg-white text-xs">CLASSIC</button>
+                            <button onclick="app.applyPresetTheme('minimal')" class="studio-btn py-2.5 bg-slate-100 text-xs">MINIMAL</button>
+                            <button onclick="app.applyPresetTheme('korean')" class="studio-btn py-2.5 bg-blue-50 text-blue-700 border-blue-700 text-xs">HARU BLUE</button>
+                            <button onclick="app.applyPresetTheme('film')" class="studio-btn py-2.5 bg-zinc-900 text-white text-xs">BLACK FILM</button>
+                            <button onclick="app.applyPresetTheme('cute')" class="studio-btn py-2.5 bg-pink-100 text-pink-700 text-xs">PASTEL PINK</button>
+                            <button onclick="app.applyPresetTheme('retro')" class="studio-btn py-2.5 bg-amber-100 text-amber-800 text-xs">VINTAGE</button>
+                            <button onclick="app.applyPresetTheme('party')" class="studio-btn py-2.5 bg-purple-100 text-purple-800 text-xs">PARTY Y2K</button>
+                            <button onclick="app.applyPresetTheme('wedding')" class="studio-btn py-2.5 bg-stone-100 text-stone-800 font-serif text-xs">EDITORIAL</button>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-200 pt-3">
+                        <span class="text-xs font-bold text-slate-600 font-mono uppercase block mb-2">FRAME COLOR CUSTOMIZER:</span>
+                        <div class="flex items-center gap-3">
+                            <input type="color" id="frameColorInput" value="#ffffff" onchange="app.updateFrameColor(this.value)" class="w-10 h-10 border-2 border-studio-ink cursor-pointer">
+                            <div class="flex gap-1.5 flex-wrap">
+                                <button onclick="app.updateFrameColor('#ffffff')" class="w-7 h-7 bg-white border border-studio-ink"></button>
+                                <button onclick="app.updateFrameColor('#111111')" class="w-7 h-7 bg-black border border-studio-ink"></button>
+                                <button onclick="app.updateFrameColor('#2563eb')" class="w-7 h-7 bg-blue-600 border border-studio-ink"></button>
+                                <button onclick="app.updateFrameColor('#fce7f3')" class="w-7 h-7 bg-pink-200 border border-studio-ink"></button>
+                                <button onclick="app.updateFrameColor('#fef3c7')" class="w-7 h-7 bg-amber-100 border border-studio-ink"></button>
+                                <button onclick="app.updateFrameColor('#d1fae5')" class="w-7 h-7 bg-emerald-100 border border-studio-ink"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tabContent-filters" class="hidden flex-col gap-4">
+                    <span class="text-xs font-bold text-slate-600 font-mono uppercase block">APPLY FILTER TO ALL SNAPSHOTS:</span>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                        <button onclick="app.setFilter('original')" class="studio-btn py-3 bg-white text-xs">ORIGINAL</button>
+                        <button onclick="app.setFilter('bw')" class="studio-btn py-3 bg-zinc-800 text-white text-xs">B&W MONO</button>
+                        <button onclick="app.setFilter('vintage')" class="studio-btn py-3 bg-amber-50 text-amber-900 text-xs">VINTAGE</button>
+                        <button onclick="app.setFilter('sepia')" class="studio-btn py-3 bg-orange-100 text-orange-950 text-xs">SEPIA</button>
+                        <button onclick="app.setFilter('warm')" class="studio-btn py-3 bg-rose-50 text-rose-900 text-xs">WARM TONE</button>
+                        <button onclick="app.setFilter('cool')" class="studio-btn py-3 bg-sky-50 text-sky-900 text-xs">COOL BLUE</button>
+                        <button onclick="app.setFilter('contrast')" class="studio-btn py-3 bg-black text-white text-xs">HIGH CONTRAST</button>
+                        <button onclick="app.setFilter('bright')" class="studio-btn py-3 bg-emerald-50 text-emerald-900 text-xs">BRIGHT LEICA</button>
+                    </div>
+                </div>
+
+                <div id="tabContent-text" class="hidden flex-col gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label class="text-xs font-mono font-bold text-slate-700">TITLE TEXT (LINE 1):</label>
+                        <input type="text" id="inputMainText" value="SNAPBOOTH 2026" oninput="app.updateTextContent()" class="p-2.5 border-2 border-studio-ink font-mono text-xs focus:outline-none focus:border-blue-600">
+
+                        <label class="text-xs font-mono font-bold text-slate-700 mt-1">SUBTITLE / EVENT (LINE 2):</label>
+                        <input type="text" id="inputSubText" value="KOREAN PHOTO STUDIO" oninput="app.updateTextContent()" class="p-2.5 border-2 border-studio-ink font-mono text-xs focus:outline-none focus:border-blue-600">
+
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <div>
+                                <label class="text-xs font-mono font-bold text-slate-700">FONT STYLE:</label>
+                                <select id="fontSelect" onchange="app.updateFontFamily(this.value)" class="w-full p-2 border-2 border-studio-ink font-mono text-xs mt-1">
+                                    <option value="font-mono">MONOSPACE</option>
+                                    <option value="font-sans">SPACE GROTESK</option>
+                                    <option value="font-serif">EDITORIAL SERIF</option>
+                                    <option value="font-hand">HANDWRITTEN</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs font-mono font-bold text-slate-700">DATE STAMP:</label>
+                                <input type="text" id="inputDateText" value="2026.09.18" oninput="app.updateTextContent()" class="w-full p-2 border-2 border-studio-ink font-mono text-xs mt-1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-200 pt-3">
+                        <span class="text-xs font-bold text-slate-600 font-mono uppercase block mb-2">ADD STICKERS (CLICK TO PLACE):</span>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="app.addStickerToCanvas('📸')" class="studio-btn p-2 bg-white text-base">📸</button>
+                            <button onclick="app.addStickerToCanvas('🤍')" class="studio-btn p-2 bg-white text-base">🤍</button>
+                            <button onclick="app.addStickerToCanvas('✨')" class="studio-btn p-2 bg-white text-base">✨</button>
+                            <button onclick="app.addStickerToCanvas('🎀')" class="studio-btn p-2 bg-white text-base">🎀</button>
+                            <button onclick="app.addStickerToCanvas('⭐')" class="studio-btn p-2 bg-white text-base">⭐</button>
+                            <button onclick="app.addStickerToCanvas('🍒')" class="studio-btn p-2 bg-white text-base">🍒</button>
+                            <button onclick="app.addStickerToCanvas('🧸')" class="studio-btn p-2 bg-white text-base">🧸</button>
+                            <button onclick="app.addStickerToCanvas('🎟️')" class="studio-btn p-2 bg-white text-base">🎟️</button>
+                            <button onclick="app.clearStickers()" class="studio-btn py-2 px-3 bg-rose-100 text-rose-800 text-xs font-mono">CLEAR STICKERS</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="app.navigateTo('export')" class="studio-btn w-full py-4 bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center justify-center gap-2 mt-2 shadow-solid-sm">
+                    <span>PROCEED TO FINAL EXPORT</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <section id="screen-export" class="w-full max-w-4xl hidden flex-col items-center">
+            <div class="text-center mb-6">
+                <span class="font-mono text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 05 / Export</span>
+                <h2 class="text-3xl font-black uppercase mt-1">Final Photobooth Image</h2>
+                <p class="text-slate-600 text-sm mt-1">High-resolution canvas print render. Standard photo frame format.</p>
+            </div>
+
+            <div class="studio-box p-6 flex items-center justify-center bg-studio-bg mb-8 w-full max-w-md">
+                <canvas id="exportCanvas" class="max-w-full h-auto border-2 border-studio-ink shadow-solid-md"></canvas>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 items-center justify-center w-full max-w-md">
+                <button onclick="app.navigateTo('customize')" class="studio-btn w-full sm:w-auto px-5 py-3.5 bg-white hover:bg-slate-100 text-xs">
+                    <i class="fa-solid fa-pen-to-square mr-1"></i> EDIT DESIGN
+                </button>
+
+                <button onclick="app.downloadExportImage('jpg')" class="studio-btn w-full sm:w-1/2 py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm flex items-center justify-center gap-2 shadow-solid-sm">
+                    <i class="fa-solid fa-download"></i>
+                    <span>DOWNLOAD JPG</span>
+                </button>
+
+                <button onclick="app.downloadExportImage('png')" class="studio-btn w-full sm:w-1/2 py-4 bg-studio-ink hover:bg-slate-800 text-white text-sm flex items-center justify-center gap-2 shadow-solid-sm">
+                    <i class="fa-solid fa-file-image"></i>
+                    <span>DOWNLOAD PNG</span>
+                </button>
+            </div>
+
+            <button onclick="app.startOverPrompt()" class="mt-6 text-xs font-mono font-bold text-slate-500 hover:text-rose-600 underline uppercase">
+                Start Entire Photobooth Over
+            </button>
+        </section>
+
+    </main>
+
+    <!-- Hidden File Input for Custom Upload Fallback -->
+    <input type="file" id="fallbackFileInput" accept="image/*" multiple class="hidden" onchange="app.handleFileUploadFallback(event)">
+
+    <!-- Footer -->
+    <footer class="w-full bg-white border-t-2 border-studio-ink py-4 px-6 text-center font-mono text-xs text-slate-600 flex flex-col sm:flex-row justify-between items-center gap-2 mt-auto">
+        <div>SNAPBOOTH STUDIO // K-STYLE SELF PHOTO BOOTH ENGINE</div>
+        <div>STRICT 0PX EDITORIAL GEOMETRY — NO AI GLASS GLOW</div>
+    </footer>
+
+    <script>
+    const app = {
+        // State Management
+        currentScreen: 'home',
+        selectedShotCount: 4,
+        capturedPhotos: [],
+        cameraStream: null,
+        useFallbackCamera: false,
+        soundEnabled: true,
+        activeFilter: 'original',
+        currentLayout: 'grid-2x2',
+        frameColor: '#ffffff',
+        mainText: 'SNAPBOOTH 2026',
+        subText: 'KOREAN PHOTO STUDIO',
+        dateText: '2026.09.18',
+        fontClass: 'font-mono',
+        placedStickers: [],
+        facingMode: 'user',
+
+        // Web Audio Synthesizer
+        audioCtx: null,
+
+        init() {
+            this.updateStepIndicator('home');
+            this.renderLayoutOptions();
+
+            // Set Current Date (YYYY.MM.DD)
+            const today = new Date();
+            const formattedDate = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
+            this.dateText = formattedDate;
+            document.getElementById('inputDateText').value = formattedDate;
+            document.getElementById('stripDate').innerText = formattedDate;
+
+            this.setupStickerDragSystem();
+        },
+
+        playSound(type) {
+            if (!this.soundEnabled) return;
+            try {
+                if (!this.audioCtx) this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const ctx = this.audioCtx;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if (type === 'click') {
+                    osc.frequency.setValueAtTime(600, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.05);
+                } else if (type === 'beep') {
+                    osc.frequency.setValueAtTime(880, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.15);
+                } else if (type === 'shutter') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(150, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.2);
+                }
+            } catch(e) {}
+        },
+
+        toggleSound() {
+            this.soundEnabled = !this.soundEnabled;
+            const btn = document.getElementById('soundToggleBtn');
+            btn.innerHTML = this.soundEnabled ? '<i class="fa-solid fa-volume-high text-xs"></i>' : '<i class="fa-solid fa-volume-xmark text-xs text-rose-600"></i>';
+        },
+
+        navigateTo(screenId) {
+            this.playSound('click');
+            const screens = ['home', 'shot-select', 'camera', 'review', 'customize', 'export'];
+            screens.forEach(s => {
+                const el = document.getElementById(`screen-${s}`);
+                if (el) {
+                    if (s === screenId) {
+                        el.classList.remove('hidden');
+                        el.classList.add('flex');
+                    } else {
+                        el.classList.add('hidden');
+                        el.classList.remove('flex');
+                    }
+                }
+            });
+
+            this.currentScreen = screenId;
+            this.updateStepIndicator(screenId);
+
+            const resetBtn = document.getElementById('resetHeaderBtn');
+            if (screenId === 'home') resetBtn.classList.add('hidden');
+            else resetBtn.classList.remove('hidden');
+
+            if (screenId !== 'camera') {
+                this.stopWebcam();
+            }
+
+            if (screenId === 'customize') {
+                this.renderPhotoboothStrip();
+            } else if (screenId === 'export') {
+                this.renderExportCanvas();
+            }
+        },
+
+        updateStepIndicator(screenId) {
+            const steps = {
+                'shot-select': 'step1',
+                'camera': 'step2',
+                'review': 'step3',
+                'customize': 'step4',
+                'export': 'step5'
+            };
+            
+            ['step1', 'step2', 'step3', 'step4', 'step5'].forEach(st => {
+                const el = document.getElementById(st);
+                if (el) el.className = 'text-slate-400';
+            });
+
+            const activeStep = steps[screenId];
+            if (activeStep) {
+                const el = document.getElementById(activeStep);
+                if (el) el.className = 'text-blue-600 font-bold underline';
+            }
+        },
+
+        selectShotOption(count) {
+            this.playSound('click');
+            this.selectedShotCount = count;
+
+            [2, 3, 4, 6].forEach(num => {
+                const card = document.getElementById(`shot-opt-${num}`);
+                if (card) {
+                    if (num === count) card.classList.add('selected');
+                    else card.classList.remove('selected');
+                }
+            });
+
+            document.getElementById('selectedShotText').innerText = `${count} Shots Selected`;
+            document.getElementById('selectedShotDesc').innerText = `You will take exactly ${count} photos in sequence for your studio strip.`;
+            document.getElementById('currentShotBadge').innerText = `${count} SHOTS`;
+
+            if (count === 2) this.currentLayout = 'strip-2';
+            else if (count === 3) this.currentLayout = 'strip-3';
+            else if (count === 4) this.currentLayout = 'grid-2x2';
+            else if (count === 6) this.currentLayout = 'grid-3x2';
+
+            this.renderLayoutOptions();
+        },
+
+        confirmShotsAndOpenCamera() {
+            this.navigateTo('camera');
+            this.startWebcam();
+        },
+
+        async startWebcam() {
+            const video = document.getElementById('webcamVideo');
+            const statusMsg = document.getElementById('cameraStatusMsg');
+            document.getElementById('cameraShotCounter').innerText = `SHOT 1 OF ${this.selectedShotCount}`;
+
+            this.stopWebcam();
+
+            try {
+                // High performance camera constraints
+                this.cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: this.facingMode },
+                    audio: false
+                });
+                this.attachStreamToVideo(video, statusMsg);
+            } catch (err1) {
+                console.warn("Retrying camera with standard parameters...", err1);
+                try {
+                    // Flexible standard constraints fallback
+                    this.cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                    this.attachStreamToVideo(video, statusMsg);
+                } catch (err2) {
+                    console.warn("Webcam blocked or restricted. Activating studio demo / upload mode.", err2);
+                    this.enableFallbackCamera();
+                }
+            }
+        },
+
+        attachStreamToVideo(video, statusMsg) {
+            video.srcObject = this.cameraStream;
+            video.classList.remove('hidden');
+            document.getElementById('fallbackCanvas').classList.add('hidden');
+            statusMsg.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE WEBCAM ACTIVE';
+            this.useFallbackCamera = false;
+        },
+
+        switchCameraDevice() {
+            this.facingMode = (this.facingMode === 'user') ? 'environment' : 'user';
+            this.startWebcam();
+        },
+
+        enableFallbackCamera() {
+            this.useFallbackCamera = true;
+            const video = document.getElementById('webcamVideo');
+            const canvas = document.getElementById('fallbackCanvas');
+            const statusMsg = document.getElementById('cameraStatusMsg');
+
+            video.classList.add('hidden');
+            canvas.classList.remove('hidden');
+            statusMsg.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> STUDIO DEMO / UPLOAD MODE ACTIVE';
+
+            const ctx = canvas.getContext('2d');
+            canvas.width = 640;
+            canvas.height = 480;
+
+            const drawDemo = () => {
+                if (!this.useFallbackCamera || this.currentScreen !== 'camera') return;
+                ctx.fillStyle = '#1e293b';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.strokeStyle = '#2563eb';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 20px "Space Grotesk", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('STUDIO DEMO POSE GUIDE', canvas.width / 2, canvas.height / 2 - 10);
+                ctx.font = '14px "Space Mono", monospace';
+                ctx.fillText('WEBCAM DISCONNECTED / UPLOAD MODE', canvas.width / 2, canvas.height / 2 + 20);
+
+                requestAnimationFrame(drawDemo);
+            };
+            drawDemo();
+        },
+
+        triggerFileUpload() {
+            document.getElementById('fallbackFileInput').click();
+        },
+
+        handleFileUploadFallback(e) {
+            const files = Array.from(e.target.files);
+            if (!files || files.length === 0) return;
+
+            this.capturedPhotos = [];
+            let loaded = 0;
+
+            files.slice(0, this.selectedShotCount).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    this.capturedPhotos.push(event.target.result);
+                    loaded++;
+                    if (loaded === Math.min(files.length, this.selectedShotCount)) {
+                        this.renderPhotoReviewGrid();
+                        this.navigateTo('review');
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        },
+
+        stopWebcam() {
+            if (this.cameraStream) {
+                this.cameraStream.getTracks().forEach(track => track.stop());
+                this.cameraStream = null;
+            }
+        },
+
+        async startPhotoCaptureSequence() {
+            this.capturedPhotos = [];
+            const btn = document.getElementById('startCaptureBtn');
+            btn.disabled = true;
+            btn.classList.add('opacity-50');
+
+            for (let i = 1; i <= this.selectedShotCount; i++) {
+                document.getElementById('cameraShotCounter').innerText = `SHOT ${i} OF ${this.selectedShotCount}`;
+                await this.runCountdown(3);
+                const photoData = this.captureSingleFrame();
+                this.capturedPhotos.push(photoData);
+                this.triggerFlash();
+                this.playSound('shutter');
+                await new Promise(r => setTimeout(r, 600));
+            }
+
+            btn.disabled = false;
+            btn.classList.remove('opacity-50');
+
+            this.renderPhotoReviewGrid();
+            this.navigateTo('review');
+        },
+
+        runCountdown(seconds) {
+            return new Promise(resolve => {
+                const container = document.getElementById('countdownContainer');
+                const numText = document.getElementById('countdownNumber');
+                container.classList.remove('hidden');
+
+                let current = seconds;
+                numText.innerText = current;
+                this.playSound('beep');
+
+                const timer = setInterval(() => {
+                    current--;
+                    if (current > 0) {
+                        numText.innerText = current;
+                        this.playSound('beep');
+                    } else {
+                        clearInterval(timer);
+                        container.classList.add('hidden');
+                        resolve();
+                    }
+                }, 900);
+            });
+        },
+
+        triggerFlash() {
+            const flash = document.getElementById('flashOverlay');
+            flash.classList.add('active');
+            setTimeout(() => flash.classList.remove('active'), 120);
+        },
+
+        captureSingleFrame() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 600;
+            const ctx = canvas.getContext('2d');
+
+            if (!this.useFallbackCamera && this.cameraStream) {
+                const video = document.getElementById('webcamVideo');
+                if (this.facingMode === 'user') {
+                    ctx.translate(canvas.width, 0);
+                    ctx.scale(-1, 1);
+                }
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.fillStyle = '#e2e8f0';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#111111';
+                ctx.fillRect(40, 40, canvas.width - 80, canvas.height - 80);
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 36px "Space Grotesk", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(`STUDIO SHOT #${this.capturedPhotos.length + 1}`, canvas.width / 2, canvas.height / 2 - 10);
+
+                ctx.fillStyle = '#2563eb';
+                ctx.font = '20px "Space Mono", monospace';
+                ctx.fillText('SNAPBOOTH K-STYLE CAPTURE', canvas.width / 2, canvas.height / 2 + 30);
+            }
+
+            return canvas.toDataURL('image/jpeg', 0.92);
+        },
+
+        renderPhotoReviewGrid() {
+            const grid = document.getElementById('photoReviewGrid');
+            grid.innerHTML = '';
+
+            this.capturedPhotos.forEach((imgSrc, idx) => {
+                const card = document.createElement('div');
+                card.className = 'studio-box p-3 flex flex-col items-center bg-white';
+                card.innerHTML = `
+                    <div class="w-full flex justify-between items-center mb-2 font-mono text-xs font-bold">
+                        <span>SHOT #${idx + 1}</span>
+                        <button onclick="app.retakeSinglePhoto(${idx})" class="text-rose-600 hover:underline uppercase text-[10px]">
+                            <i class="fa-solid fa-arrows-rotate mr-0.5"></i> RETAKE
+                        </button>
+                    </div>
+                    <img src="${imgSrc}" class="w-full aspect-video object-cover border border-studio-ink">
+                `;
+                grid.appendChild(card);
+            });
+        },
+
+        async retakeSinglePhoto(index) {
+            this.navigateTo('camera');
+            document.getElementById('cameraShotCounter').innerText = `RETAKING SHOT ${index + 1}`;
+            await this.runCountdown(3);
+            const newPhoto = this.captureSingleFrame();
+            this.capturedPhotos[index] = newPhoto;
+            this.triggerFlash();
+            this.playSound('shutter');
+
+            this.renderPhotoReviewGrid();
+            this.navigateTo('review');
+        },
+
+        retakeAllPhotos() {
+            this.navigateTo('camera');
+            this.startPhotoCaptureSequence();
+        },
+
+        renderLayoutOptions() {
+            const container = document.getElementById('layoutOptionsGrid');
+            container.innerHTML = '';
+
+            let layouts = [];
+            const count = this.selectedShotCount;
+
+            if (count === 2) {
+                layouts = [
+                    { id: 'strip-2', name: '2-SHOT VERTICAL STRIP' },
+                    { id: 'grid-2-horiz', name: '2-SHOT HORIZONTAL DUAL' },
+                    { id: 'polaroid-2', name: 'POLAROID DUO' }
+                ];
+            } else if (count === 3) {
+                layouts = [
+                    { id: 'strip-3', name: '3-SHOT CLASSIC STRIP' },
+                    { id: 'trio-polaroid', name: 'POLAROID TRIO' },
+                    { id: 'hero-3', name: '1 LARGE + 2 SMALL' }
+                ];
+            } else if (count === 4) {
+                layouts = [
+                    { id: 'grid-2x2', name: '4-CUT KOREAN GRID (2x2)' },
+                    { id: 'strip-4', name: '4-SHOT VERTICAL STRIP' },
+                    { id: 'film-4', name: 'BLACK FILM STRIP' },
+                    { id: 'polaroid-4', name: 'POLAROID QUAD' }
+                ];
+            } else if (count === 6) {
+                layouts = [
+                    { id: 'grid-3x2', name: '3x2 DELUXE GRID' },
+                    { id: 'grid-2x3', name: '2x3 TALL COLLAGE' },
+                    { id: 'strip-6', name: '6-SHOT MEGA STRIP' }
+                ];
+            }
+
+            layouts.forEach(l => {
+                const btn = document.createElement('button');
+                btn.className = `studio-btn p-3 text-left font-mono text-xs ${this.currentLayout === l.id ? 'bg-blue-600 text-white' : 'bg-white text-studio-ink'}`;
+                btn.innerText = l.name;
+                btn.onclick = () => {
+                    this.currentLayout = l.id;
+                    this.renderLayoutOptions();
+                    this.renderPhotoboothStrip();
+                };
+                container.appendChild(btn);
+            });
+        },
+
+        setControlTab(tab) {
+            this.playSound('click');
+            ['layouts', 'themes', 'filters', 'text'].forEach(t => {
+                document.getElementById(`tabContent-${t}`).classList.add('hidden');
+                document.getElementById(`tabBtn-${t}`).className = 'px-4 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink';
+            });
+
+            document.getElementById(`tabContent-${tab}`).classList.remove('hidden');
+            document.getElementById(`tabBtn-${tab}`).className = 'px-4 py-2 bg-studio-ink text-white font-bold';
+        },
+
+        renderPhotoboothStrip() {
+            const strip = document.getElementById('photoboothStrip');
+            const photoContainer = document.getElementById('stripPhotosContainer');
+
+            strip.style.backgroundColor = this.frameColor;
+
+            photoContainer.innerHTML = '';
+            photoContainer.className = 'w-full gap-2.5 ';
+
+            if (this.currentLayout.includes('grid-2x2')) {
+                photoContainer.classList.add('grid', 'grid-cols-2');
+            } else if (this.currentLayout.includes('grid-3x2')) {
+                photoContainer.classList.add('grid', 'grid-cols-2');
+            } else if (this.currentLayout.includes('grid-2x3')) {
+                photoContainer.classList.add('grid', 'grid-cols-3');
+            } else {
+                photoContainer.classList.add('flex', 'flex-col');
+            }
+
+            this.capturedPhotos.forEach((imgSrc) => {
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.className = `w-full object-cover border border-studio-ink ${this.getFilterClass()}`;
+
+                if (this.currentLayout.includes('polaroid')) {
+                    img.classList.add('p-2', 'bg-white', 'shadow-sm');
+                }
+
+                photoContainer.appendChild(img);
+            });
+        },
+
+        getFilterClass() {
+            switch(this.activeFilter) {
+                case 'bw': return 'filter-bw';
+                case 'vintage': return 'filter-vintage';
+                case 'sepia': return 'filter-sepia';
+                case 'warm': return 'filter-warm';
+                case 'cool': return 'filter-cool';
+                case 'contrast': return 'filter-contrast';
+                case 'bright': return 'filter-bright';
+                default: return 'filter-original';
+            }
+        },
+
+        setFilter(filterName) {
+            this.playSound('click');
+            this.activeFilter = filterName;
+            this.renderPhotoboothStrip();
+        },
+
+        updateFrameColor(color) {
+            this.frameColor = color;
+            document.getElementById('frameColorInput').value = color;
+            this.renderPhotoboothStrip();
+        },
+
+        applyPresetTheme(themeKey) {
+            this.playSound('click');
+            if (themeKey === 'classic') {
+                this.updateFrameColor('#ffffff');
+                this.setFilter('original');
+                this.fontClass = 'font-mono';
+            } else if (themeKey === 'minimal') {
+                this.updateFrameColor('#f8fafc');
+                this.setFilter('bw');
+                this.fontClass = 'font-sans';
+            } else if (themeKey === 'korean') {
+                this.updateFrameColor('#eff6ff');
+                this.setFilter('cool');
+                this.fontClass = 'font-mono';
+            } else if (themeKey === 'film') {
+                this.updateFrameColor('#111111');
+                this.setFilter('contrast');
+                this.fontClass = 'font-mono';
+            } else if (themeKey === 'cute') {
+                this.updateFrameColor('#fce7f3');
+                this.setFilter('warm');
+                this.fontClass = 'font-hand';
+            } else if (themeKey === 'retro') {
+                this.updateFrameColor('#fef3c7');
+                this.setFilter('sepia');
+                this.fontClass = 'font-serif';
+            }
+
+            document.getElementById('fontSelect').value = this.fontClass;
+            this.updateFontFamily(this.fontClass);
+        },
+
+        updateTextContent() {
+            this.mainText = document.getElementById('inputMainText').value;
+            this.subText = document.getElementById('inputSubText').value;
+            this.dateText = document.getElementById('inputDateText').value;
+
+            document.getElementById('stripTextMain').innerText = this.mainText || 'SNAPBOOTH';
+            document.getElementById('stripTextSub').innerText = this.subText || '';
+            document.getElementById('stripDate').innerText = this.dateText || '';
+        },
+
+        updateFontFamily(font) {
+            this.fontClass = font;
+            const target = document.getElementById('stripFooterArea');
+            target.className = `w-full text-center mt-4 pt-2 border-t border-slate-200 ${font}`;
+        },
+
+        addStickerToCanvas(emoji) {
+            this.playSound('click');
+            const sticker = {
+                id: Date.now(),
+                emoji: emoji,
+                x: Math.random() * 60 + 20,
+                y: Math.random() * 60 + 20
+            };
+            this.placedStickers.push(sticker);
+            this.renderPlacedStickers();
+        },
+
+        clearStickers() {
+            this.placedStickers = [];
+            this.renderPlacedStickers();
+        },
+
+        renderPlacedStickers() {
+            const layer = document.getElementById('placedStickersLayer');
+            layer.innerHTML = '';
+
+            this.placedStickers.forEach(s => {
+                const el = document.createElement('div');
+                el.className = 'placed-sticker text-2xl pointer-events-auto';
+                el.style.left = `${s.x}%`;
+                el.style.top = `${s.y}%`;
+                el.innerText = s.emoji;
+                layer.appendChild(el);
+            });
+        },
+
+        setupStickerDragSystem() {
+            let activeItem = null;
+            const container = document.getElementById('photoboothStrip');
+
+            container.addEventListener('pointerdown', (e) => {
+                if (e.target.classList.contains('placed-sticker')) {
+                    activeItem = e.target;
+                }
+            });
+
+            window.addEventListener('pointermove', (e) => {
+                if (activeItem) {
+                    const rect = container.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    activeItem.style.left = `${Math.max(0, Math.min(90, x))}%`;
+                    activeItem.style.top = `${Math.max(0, Math.min(90, y))}%`;
+                }
+            });
+
+            window.addEventListener('pointerup', () => { activeItem = null; });
+        },
+
+        renderExportCanvas() {
+            const canvas = document.getElementById('exportCanvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = 1200;
+            canvas.height = 1800;
+
+            ctx.fillStyle = this.frameColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = '#111111';
+            ctx.lineWidth = 12;
+            ctx.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
+
+            const photos = this.capturedPhotos;
+            const count = photos.length;
+
+            const loadedImages = [];
+            let loadedCount = 0;
+
+            if (count === 0) return;
+
+            photos.forEach((src, idx) => {
+                const img = new Image();
+                img.src = src;
+                img.onload = () => {
+                    loadedImages[idx] = img;
+                    loadedCount++;
+                    if (loadedCount === count) {
+                        this.drawImagesToExportCanvas(ctx, canvas, loadedImages);
+                    }
+                };
+            });
+        },
+
+        drawImagesToExportCanvas(ctx, canvas, images) {
+            const count = images.length;
+            const padding = 60;
+            const gap = 30;
+            const footerHeight = 240;
+
+            const availableWidth = canvas.width - (padding * 2);
+            const availableHeight = canvas.height - (padding * 2) - footerHeight;
+
+            if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2')) {
+                const cols = 2;
+                const rows = Math.ceil(count / cols);
+                const cellW = (availableWidth - gap) / cols;
+                const cellH = (availableHeight - (gap * (rows - 1))) / rows;
+
+                images.forEach((img, idx) => {
+                    const r = Math.floor(idx / cols);
+                    const c = idx % cols;
+                    const x = padding + c * (cellW + gap);
+                    const y = padding + r * (cellH + gap);
+
+                    this.drawImageWithFilter(ctx, img, x, y, cellW, cellH);
+                });
+            } else {
+                const cellH = (availableHeight - (gap * (count - 1))) / count;
+                images.forEach((img, idx) => {
+                    const x = padding;
+                    const y = padding + idx * (cellH + gap);
+                    this.drawImageWithFilter(ctx, img, x, y, availableWidth, cellH);
+                });
+            }
+
+            const footerY = canvas.height - footerHeight + 40;
+
+            ctx.fillStyle = (this.frameColor === '#111111') ? '#ffffff' : '#111111';
+            ctx.textAlign = 'center';
+
+            ctx.font = 'bold 42px "Space Grotesk", sans-serif';
+            ctx.fillText(this.mainText || 'SNAPBOOTH', canvas.width / 2, footerY);
+
+            ctx.font = '24px "Space Mono", monospace';
+            ctx.fillText(this.subText || '', canvas.width / 2, footerY + 50);
+
+            ctx.font = '20px "Space Mono", monospace';
+            ctx.fillStyle = (this.frameColor === '#111111') ? '#a1a1aa' : '#71717a';
+            ctx.fillText(this.dateText || '', canvas.width / 2, footerY + 90);
+
+            this.placedStickers.forEach(s => {
+                ctx.font = '64px sans-serif';
+                const posX = (s.x / 100) * canvas.width;
+                const posY = (s.y / 100) * canvas.height;
+                ctx.fillText(s.emoji, posX, posY);
+            });
+        },
+
+        drawImageWithFilter(ctx, img, x, y, w, h) {
+            ctx.save();
+            ctx.strokeStyle = '#111111';
+            ctx.lineWidth = 6;
+            ctx.strokeRect(x, y, w, h);
+
+            if (this.activeFilter === 'bw') ctx.filter = 'grayscale(100%) contrast(110%)';
+            else if (this.activeFilter === 'vintage') ctx.filter = 'sepia(30%) contrast(105%)';
+            else if (this.activeFilter === 'sepia') ctx.filter = 'sepia(80%)';
+            else if (this.activeFilter === 'warm') ctx.filter = 'sepia(20%) saturate(130%)';
+            else if (this.activeFilter === 'cool') ctx.filter = 'hue-rotate(20deg) saturate(110%)';
+            else if (this.activeFilter === 'contrast') ctx.filter = 'contrast(140%)';
+            else if (this.activeFilter === 'bright') ctx.filter = 'brightness(115%)';
+
+            ctx.drawImage(img, x, y, w, h);
+            ctx.restore();
+        },
+
+        downloadExportImage(format) {
+            this.playSound('click');
+            const canvas = document.getElementById('exportCanvas');
+            const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
+            const link = document.createElement('a');
+            link.download = `SNAPBOOTH_${Date.now()}.${format}`;
+            link.href = canvas.toDataURL(mimeType, 0.95);
+            link.click();
+        },
+
+        startOverPrompt() {
+            if (confirm("Start over with a new photobooth session?")) {
+                this.capturedPhotos = [];
+                this.placedStickers = [];
+                this.navigateTo('home');
+            }
+        }
+    };
+
+    window.onload = () => {
+        app.init();
+    };
+    </script>
+</body>
+</html>
