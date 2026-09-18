@@ -174,7 +174,7 @@
         </div>
     </div>
 
-    <!-- Responsive Workflow Stepper Tracker -->
+    <!-- Responsive Stepper Tracker -->
     <div id="stepIndicator" class="flex items-center gap-1 sm:gap-1.5 font-mono text-[10px] sm:text-xs font-bold border-2 border-studio-ink bg-studio-bg px-2 sm:px-3 py-1 sm:py-1.5 shadow-solid-sm overflow-x-auto no-scrollbar">
         <span id="step1" class="text-blue-600 font-extrabold underline">01<span class="hidden md:inline">.SHOTS</span></span>
         <span class="text-slate-300">/</span>
@@ -212,7 +212,7 @@
         </h1>
 
         <p class="text-slate-700 font-medium text-sm sm:text-lg max-w-2xl mb-8 sm:mb-10 leading-relaxed px-2">
-            Minimalist, tactile photobooth experience tailored for all mobile screens and laptops. Pick your shot count first, capture real-time poses, design custom layouts, and export 300 DPI high-res prints.
+            Minimalist photobooth experience tailored for all mobile screens and laptops. Pick your shot count, capture real-time poses in portrait or landscape orientations, and export high-res prints.
         </p>
 
         <button onclick="app.navigateTo('shot-select')" class="studio-btn w-full sm:w-auto px-8 sm:px-10 py-4 bg-blue-600 text-white hover:bg-blue-700 text-base sm:text-lg flex items-center justify-center gap-3 shadow-solid-lg">
@@ -228,9 +228,9 @@
                 <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Select exact count prior to camera activation.</p>
             </div>
             <div class="studio-box p-3 sm:p-4">
-                <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">02 / KOREAN THEMES</span>
-                <h3 class="font-extrabold uppercase text-xs sm:text-sm">Studio Aesthetic</h3>
-                <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Minimal, Film, Monochrome, Y2K & Retro.</p>
+                <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">02 / ORIENTATION</span>
+                <h3 class="font-extrabold uppercase text-xs sm:text-sm">Portrait & Landscape</h3>
+                <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Toggle vertical 3:4, horizontal 4:3, or square.</p>
             </div>
             <div class="studio-box p-3 sm:p-4">
                 <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">03 / CANVAS TOOLS</span>
@@ -367,6 +367,11 @@
             <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover transform -scale-x-1"></video>
             <canvas id="fallbackCanvas" class="hidden w-full h-full object-cover"></canvas>
 
+            <!-- Framing Guide Overlay (Portrait vs Landscape Guide) -->
+            <div id="cameraFramingGuide" class="absolute inset-4 sm:inset-8 border-2 border-dashed border-white/40 pointer-events-none flex items-center justify-center">
+                <span class="bg-black/60 text-white text-[9px] font-mono px-2 py-0.5 uppercase tracking-widest" id="cameraGuideLabel">3:4 PORTRAIT FRAME</span>
+            </div>
+
             <!-- Countdown Overlay -->
             <div id="countdownContainer" class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20 hidden">
                 <span id="countdownNumber" class="text-8xl sm:text-9xl font-black text-white font-mono animate-bounce">3</span>
@@ -433,7 +438,10 @@
         <div class="w-full lg:w-1/2 flex flex-col items-center lg:sticky lg:top-20">
             <div class="w-full flex items-center justify-between mb-2">
                 <span class="font-mono text-[10px] sm:text-xs font-bold text-slate-600 uppercase"><i class="fa-solid fa-eye mr-1"></i> LIVE STRIP PREVIEW</span>
-                <span id="currentShotBadge" class="font-mono text-[10px] sm:text-xs bg-blue-100 text-blue-700 border border-blue-300 px-2 py-0.5 font-bold">4 SHOTS</span>
+                <div class="flex gap-1.5 items-center">
+                    <span id="currentOrientationBadge" class="font-mono text-[9px] sm:text-[10px] bg-slate-100 text-slate-800 border border-slate-300 px-1.5 py-0.5 font-bold uppercase">PORTRAIT 3:4</span>
+                    <span id="currentShotBadge" class="font-mono text-[10px] sm:text-xs bg-blue-100 text-blue-700 border border-blue-300 px-2 py-0.5 font-bold">4 SHOTS</span>
+                </div>
             </div>
 
             <div id="photoboothPreviewContainer" class="relative w-full flex justify-center items-center p-3 sm:p-6 studio-box min-h-[380px] sm:min-h-[460px] bg-studio-bg overflow-hidden">
@@ -465,16 +473,37 @@
 
             <!-- Touch Tabs -->
             <div class="flex border-b-2 border-studio-ink font-mono text-[11px] sm:text-xs font-bold overflow-x-auto no-scrollbar whitespace-nowrap">
-                <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="px-3.5 py-2 bg-studio-ink text-white shrink-0">1. LAYOUTS</button>
+                <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="px-3.5 py-2 bg-studio-ink text-white shrink-0">1. LAYOUT & ORIENTATION</button>
                 <button onclick="app.setControlTab('themes')" id="tabBtn-themes" class="px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink shrink-0">2. THEMES & COLOR</button>
                 <button onclick="app.setControlTab('filters')" id="tabBtn-filters" class="px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink shrink-0">3. FILTERS</button>
                 <button onclick="app.setControlTab('text')" id="tabBtn-text" class="px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 shrink-0">4. TEXT & STICKERS</button>
             </div>
 
-            <!-- Tab 1: Layout Geometries -->
-            <div id="tabContent-layouts" class="flex flex-col gap-3">
-                <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase">COMPATIBLE GEOMETRIES:</span>
-                <div id="layoutOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+            <!-- Tab 1: Layout Geometries & Orientation -->
+            <div id="tabContent-layouts" class="flex flex-col gap-4">
+                <!-- Photo Orientation Selector -->
+                <div>
+                    <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1.5">PHOTO ORIENTATION / ASPECT RATIO:</span>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="app.setPhotoOrientation('portrait')" id="orientBtn-portrait" class="studio-btn py-2 text-xs bg-blue-600 text-white flex-col gap-0.5">
+                            <i class="fa-solid fa-mobile-screen text-xs"></i>
+                            <span>PORTRAIT (3:4)</span>
+                        </button>
+                        <button onclick="app.setPhotoOrientation('landscape')" id="orientBtn-landscape" class="studio-btn py-2 text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5">
+                            <i class="fa-solid fa-laptop text-xs"></i>
+                            <span>LANDSCAPE (4:3)</span>
+                        </button>
+                        <button onclick="app.setPhotoOrientation('square')" id="orientBtn-square" class="studio-btn py-2 text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5">
+                            <i class="fa-solid fa-square text-xs"></i>
+                            <span>SQUARE (1:1)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-200 pt-3">
+                    <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-2">COMPATIBLE GEOMETRIES:</span>
+                    <div id="layoutOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+                </div>
             </div>
 
             <!-- Tab 2: Themes & Color -->
@@ -623,6 +652,7 @@ const app = {
     currentScreen: 'home',
     selectedShotCount: 4,
     timerDuration: 3,
+    photoOrientation: 'portrait', // 'portrait' (3:4), 'landscape' (4:3), 'square' (1:1)
     capturedPhotos: [],
     cameraStream: null,
     useFallbackCamera: false,
@@ -905,6 +935,38 @@ const app = {
         });
     },
 
+    setPhotoOrientation(orientation) {
+        this.playSound('click');
+        this.photoOrientation = orientation;
+
+        ['portrait', 'landscape', 'square'].forEach(o => {
+            const btn = document.getElementById(`orientBtn-${o}`);
+            if (btn) {
+                if (o === orientation) {
+                    btn.className = 'studio-btn py-2 text-xs bg-blue-600 text-white flex-col gap-0.5';
+                } else {
+                    btn.className = 'studio-btn py-2 text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5';
+                }
+            }
+        });
+
+        const badge = document.getElementById('currentOrientationBadge');
+        const guideLabel = document.getElementById('cameraGuideLabel');
+
+        if (orientation === 'portrait') {
+            if (badge) badge.innerText = 'PORTRAIT 3:4';
+            if (guideLabel) guideLabel.innerText = '3:4 PORTRAIT FRAME';
+        } else if (orientation === 'landscape') {
+            if (badge) badge.innerText = 'LANDSCAPE 4:3';
+            if (guideLabel) guideLabel.innerText = '4:3 LANDSCAPE FRAME';
+        } else {
+            if (badge) badge.innerText = 'SQUARE 1:1';
+            if (guideLabel) guideLabel.innerText = '1:1 SQUARE FRAME';
+        }
+
+        this.renderPhotoboothStrip();
+    },
+
     async startPhotoCaptureSequence() {
         this.capturedPhotos = [];
         const btn = document.getElementById('startCaptureBtn');
@@ -1104,10 +1166,15 @@ const app = {
             photoContainer.classList.add('flex', 'flex-col');
         }
 
+        // Aspect ratio styling based on photoOrientation
+        let aspectClass = 'aspect-[3/4]';
+        if (this.photoOrientation === 'landscape') aspectClass = 'aspect-[4/3]';
+        else if (this.photoOrientation === 'square') aspectClass = 'aspect-square';
+
         this.capturedPhotos.forEach((imgSrc) => {
             const img = document.createElement('img');
             img.src = imgSrc;
-            img.className = `w-full object-cover border border-studio-ink ${this.getFilterClass()}`;
+            img.className = `w-full object-cover border border-studio-ink ${aspectClass} ${this.getFilterClass()}`;
 
             if (this.currentLayout.includes('polaroid')) {
                 img.classList.add('p-1.5', 'bg-white', 'shadow-sm');
@@ -1375,8 +1442,30 @@ const app = {
         else if (this.activeFilter === 'contrast') ctx.filter = 'contrast(140%)';
         else if (this.activeFilter === 'bright') ctx.filter = 'brightness(115%)';
 
-        ctx.drawImage(img, x, y, w, h);
+        // Center Cover Crop for Portrait / Landscape / Square
+        this.drawImageCover(ctx, img, x, y, w, h);
+
         ctx.restore();
+    },
+
+    drawImageCover(ctx, img, x, y, w, h) {
+        const imgRatio = img.width / img.height;
+        const targetRatio = w / h;
+        let sx, sy, sw, sh;
+
+        if (imgRatio > targetRatio) {
+            sh = img.height;
+            sw = img.height * targetRatio;
+            sx = (img.width - sw) / 2;
+            sy = 0;
+        } else {
+            sw = img.width;
+            sh = img.width / targetRatio;
+            sx = 0;
+            sy = (img.height - sh) / 2;
+        }
+
+        ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
     },
 
     downloadExportImage(format) {
