@@ -1,163 +1,171 @@
-<!-- Tailwind CSS CDN -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                colors: {
-                    studio: {
-                        bg: '#F9F8F6',
-                        panel: '#FFFFFF',
-                        ink: '#111111',
-                        accent: '#2563EB',
-                        red: '#DC2626',
-                        border: '#111111',
-                        subtle: '#E5E4E0'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SnapBooth — K-Style Photobooth Studio</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        studio: {
+                            bg: '#F9F8F6',
+                            panel: '#FFFFFF',
+                            ink: '#111111',
+                            accent: '#2563EB',
+                            red: '#DC2626',
+                            border: '#111111',
+                            subtle: '#E5E4E0'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'Inter', 'sans-serif'],
+                        mono: ['Space Mono', 'Courier New', 'monospace'],
+                        serif: ['Cinzel', 'Playfair Display', 'serif'],
+                        hand: ['Caveat', 'cursive']
+                    },
+                    boxShadow: {
+                        'solid': '3px 3px 0px #111111',
+                        'solid-lg': '6px 6px 0px #111111',
+                        'solid-sm': '2px 2px 0px #111111',
+                        'solid-blue': '4px 4px 0px #2563EB',
                     }
-                },
-                fontFamily: {
-                    sans: ['Space Grotesk', 'Inter', 'sans-serif'],
-                    mono: ['Space Mono', 'Courier New', 'monospace'],
-                    serif: ['Cinzel', 'Playfair Display', 'serif'],
-                    hand: ['Caveat', 'cursive']
-                },
-                boxShadow: {
-                    'solid': '3px 3px 0px #111111',
-                    'solid-lg': '6px 6px 0px #111111',
-                    'solid-sm': '2px 2px 0px #111111',
-                    'solid-blue': '4px 4px 0px #2563EB',
                 }
             }
         }
-    }
-</script>
+    </script>
 
-<!-- Google Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;800&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;800&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-<!-- Font Awesome Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<style>
-    * {
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-        font-family: 'Space Grotesk', sans-serif;
-        background-color: #F9F8F6;
-        color: #111111;
-        background-image: radial-gradient(#111111 0.75px, transparent 0.75px);
-        background-size: 20px 20px;
-        background-position: 0 0;
-        min-height: 100vh;
-        touch-action: manipulation;
-    }
-
-    /* Studio Box Geometry */
-    .studio-box {
-        background-color: #FFFFFF;
-        border: 2px solid #111111;
-        box-shadow: 3px 3px 0px #111111;
-        border-radius: 0px;
-    }
-
-    @media (min-width: 640px) {
-        .studio-box {
-            box-shadow: 4px 4px 0px #111111;
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
         }
-    }
 
-    .studio-card-interactive {
-        background-color: #FFFFFF;
-        border: 2px solid #111111;
-        box-shadow: 3px 3px 0px #111111;
-        transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
-        border-radius: 0px;
-        cursor: pointer;
-    }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #F9F8F6;
+            color: #111111;
+            background-image: radial-gradient(#111111 0.75px, transparent 0.75px);
+            background-size: 20px 20px;
+            background-position: 0 0;
+            min-height: 100vh;
+            touch-action: manipulation;
+        }
 
-    .studio-card-interactive:active,
-    .studio-card-interactive:hover {
-        transform: translate(-1px, -1px);
-        box-shadow: 5px 5px 0px #111111;
-        background-color: #FAFAF8;
-    }
+        /* Studio Box Geometry */
+        .studio-box {
+            background-color: #FFFFFF;
+            border: 2px solid #111111;
+            box-shadow: 3px 3px 0px #111111;
+            border-radius: 0px;
+        }
 
-    .studio-card-interactive.selected {
-        background-color: #EEF2FF;
-        border-color: #2563EB;
-        box-shadow: 4px 4px 0px #2563EB;
-    }
+        @media (min-width: 640px) {
+            .studio-box {
+                box-shadow: 4px 4px 0px #111111;
+            }
+        }
 
-    /* Buttons */
-    .studio-btn {
-        border: 2px solid #111111;
-        box-shadow: 3px 3px 0px #111111;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        transition: all 0.1s ease;
-        border-radius: 0px;
-        min-height: 44px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        user-select: none;
-    }
+        .studio-card-interactive {
+            background-color: #FFFFFF;
+            border: 2px solid #111111;
+            box-shadow: 3px 3px 0px #111111;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+            border-radius: 0px;
+            cursor: pointer;
+        }
 
-    .studio-btn:active {
-        transform: translate(2px, 2px) !important;
-        box-shadow: 1px 1px 0px #111111 !important;
-    }
+        .studio-card-interactive:active,
+        .studio-card-interactive:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 5px 5px 0px #111111;
+            background-color: #FAFAF8;
+        }
 
-    .no-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
-    .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
+        .studio-card-interactive.selected {
+            background-color: #EEF2FF;
+            border-color: #2563EB;
+            box-shadow: 4px 4px 0px #2563EB;
+        }
 
-    /* Photo Filters */
-    .filter-bw { filter: grayscale(100%) contrast(110%); }
-    .filter-vintage { filter: sepia(30%) contrast(105%); }
-    .filter-sepia { filter: sepia(80%); }
-    .filter-warm { filter: sepia(20%) saturate(130%); }
-    .filter-cool { filter: hue-rotate(20deg) saturate(110%); }
-    .filter-contrast { filter: contrast(140%); }
-    .filter-bright { filter: brightness(115%); }
+        /* Buttons */
+        .studio-btn {
+            border: 2px solid #111111;
+            box-shadow: 3px 3px 0px #111111;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            transition: all 0.1s ease;
+            border-radius: 0px;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
 
-    /* Camera Flash Overlay */
-    #flashOverlay {
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.08s ease-out;
-    }
-    #flashOverlay.active {
-        opacity: 1;
-    }
+        .studio-btn:active {
+            transform: translate(2px, 2px) !important;
+            box-shadow: 1px 1px 0px #111111 !important;
+        }
 
-    /* Interactive Sticker Drag Layer */
-    .placed-sticker {
-        position: absolute;
-        cursor: move;
-        user-select: none;
-        touch-action: none;
-        transform-origin: center center;
-        z-index: 30;
-        border: 1px dashed transparent;
-        padding: 2px;
-    }
-    .placed-sticker:active,
-    .placed-sticker:hover {
-        border-color: #2563EB;
-        background-color: rgba(37, 99, 235, 0.1);
-    }
-</style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
 
+        /* Photo Filters */
+        .filter-bw { filter: grayscale(100%) contrast(110%); }
+        .filter-vintage { filter: sepia(30%) contrast(105%); }
+        .filter-sepia { filter: sepia(80%); }
+        .filter-warm { filter: sepia(20%) saturate(130%); }
+        .filter-cool { filter: hue-rotate(20deg) saturate(110%); }
+        .filter-contrast { filter: contrast(140%); }
+        .filter-bright { filter: brightness(115%); }
+
+        /* Camera Flash Overlay */
+        #flashOverlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.08s ease-out;
+        }
+        #flashOverlay.active {
+            opacity: 1;
+        }
+
+        /* Interactive Sticker Drag Layer */
+        .placed-sticker {
+            position: absolute;
+            cursor: move;
+            user-select: none;
+            touch-action: none;
+            transform-origin: center center;
+            z-index: 30;
+            border: 1px dashed transparent;
+            padding: 2px;
+        }
+        .placed-sticker:active,
+        .placed-sticker:hover {
+            border-color: #2563EB;
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-between min-h-screen">
 
 <header class="w-full bg-white border-b-2 border-studio-ink py-2.5 sm:py-3 px-3 sm:px-6 sticky top-0 z-40 flex items-center justify-between gap-2">
     <div class="flex items-center gap-2 sm:gap-3 cursor-pointer shrink-0" onclick="app.navigateTo('home')">
@@ -212,7 +220,7 @@
         </h1>
 
         <p class="text-slate-700 font-medium text-sm sm:text-lg max-w-2xl mb-8 sm:mb-10 leading-relaxed px-2">
-            Minimalist photobooth experience tailored for all mobile screens and laptops. Pick your shot count, capture real-time poses in portrait or landscape orientations, and export high-res prints.
+            Minimalist photobooth experience tailored for all mobile screens and laptops. Pick your shot count, capture real-time poses in portrait, landscape, or mobile 9:16 orientations, and export high-res prints.
         </p>
 
         <button onclick="app.navigateTo('shot-select')" class="studio-btn w-full sm:w-auto px-8 sm:px-10 py-4 bg-blue-600 text-white hover:bg-blue-700 text-base sm:text-lg flex items-center justify-center gap-3 shadow-solid-lg">
@@ -229,8 +237,8 @@
             </div>
             <div class="studio-box p-3 sm:p-4">
                 <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">02 / ORIENTATION</span>
-                <h3 class="font-extrabold uppercase text-xs sm:text-sm">Portrait & Landscape</h3>
-                <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Toggle vertical 3:4, horizontal 4:3, or square.</p>
+                <h3 class="font-extrabold uppercase text-xs sm:text-sm">Portrait, Mobile & More</h3>
+                <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Toggle 3:4, 4:3, 1:1, or 9:16 mobile frame.</p>
             </div>
             <div class="studio-box p-3 sm:p-4">
                 <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">03 / CANVAS TOOLS</span>
@@ -367,7 +375,7 @@
             <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover transform -scale-x-1"></video>
             <canvas id="fallbackCanvas" class="hidden w-full h-full object-cover"></canvas>
 
-            <!-- Framing Guide Overlay (Portrait vs Landscape Guide) -->
+            <!-- Framing Guide Overlay -->
             <div id="cameraFramingGuide" class="absolute inset-4 sm:inset-8 border-2 border-dashed border-white/40 pointer-events-none flex items-center justify-center">
                 <span class="bg-black/60 text-white text-[9px] font-mono px-2 py-0.5 uppercase tracking-widest" id="cameraGuideLabel">3:4 PORTRAIT FRAME</span>
             </div>
@@ -484,7 +492,7 @@
                 <!-- Photo Orientation Selector -->
                 <div>
                     <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1.5">PHOTO ORIENTATION / ASPECT RATIO:</span>
-                    <div class="grid grid-cols-3 gap-2">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         <button onclick="app.setPhotoOrientation('portrait')" id="orientBtn-portrait" class="studio-btn py-2 text-xs bg-blue-600 text-white flex-col gap-0.5">
                             <i class="fa-solid fa-mobile-screen text-xs"></i>
                             <span>PORTRAIT (3:4)</span>
@@ -496,6 +504,10 @@
                         <button onclick="app.setPhotoOrientation('square')" id="orientBtn-square" class="studio-btn py-2 text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5">
                             <i class="fa-solid fa-square text-xs"></i>
                             <span>SQUARE (1:1)</span>
+                        </button>
+                        <button onclick="app.setPhotoOrientation('mobile')" id="orientBtn-mobile" class="studio-btn py-2 text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5">
+                            <i class="fa-solid fa-mobile text-xs"></i>
+                            <span>MOBILE (9:16)</span>
                         </button>
                     </div>
                 </div>
@@ -652,7 +664,7 @@ const app = {
     currentScreen: 'home',
     selectedShotCount: 4,
     timerDuration: 3,
-    photoOrientation: 'portrait', // 'portrait' (3:4), 'landscape' (4:3), 'square' (1:1)
+    photoOrientation: 'portrait', // 'portrait' (3:4), 'landscape' (4:3), 'square' (1:1), 'mobile' (9:16)
     capturedPhotos: [],
     cameraStream: null,
     useFallbackCamera: false,
@@ -939,7 +951,7 @@ const app = {
         this.playSound('click');
         this.photoOrientation = orientation;
 
-        ['portrait', 'landscape', 'square'].forEach(o => {
+        ['portrait', 'landscape', 'square', 'mobile'].forEach(o => {
             const btn = document.getElementById(`orientBtn-${o}`);
             if (btn) {
                 if (o === orientation) {
@@ -959,9 +971,12 @@ const app = {
         } else if (orientation === 'landscape') {
             if (badge) badge.innerText = 'LANDSCAPE 4:3';
             if (guideLabel) guideLabel.innerText = '4:3 LANDSCAPE FRAME';
-        } else {
+        } else if (orientation === 'square') {
             if (badge) badge.innerText = 'SQUARE 1:1';
             if (guideLabel) guideLabel.innerText = '1:1 SQUARE FRAME';
+        } else if (orientation === 'mobile') {
+            if (badge) badge.innerText = 'MOBILE 9:16';
+            if (guideLabel) guideLabel.innerText = '9:16 MOBILE FRAME';
         }
 
         this.renderPhotoboothStrip();
@@ -1170,6 +1185,7 @@ const app = {
         let aspectClass = 'aspect-[3/4]';
         if (this.photoOrientation === 'landscape') aspectClass = 'aspect-[4/3]';
         else if (this.photoOrientation === 'square') aspectClass = 'aspect-square';
+        else if (this.photoOrientation === 'mobile') aspectClass = 'aspect-[9/16]';
 
         this.capturedPhotos.forEach((imgSrc) => {
             const img = document.createElement('img');
@@ -1342,8 +1358,13 @@ const app = {
         const canvas = document.getElementById('exportCanvas');
         const ctx = canvas.getContext('2d');
 
-        canvas.width = 1200;
-        canvas.height = 1800;
+        if (this.photoOrientation === 'mobile') {
+            canvas.width = 1080;
+            canvas.height = 1920;
+        } else {
+            canvas.width = 1200;
+            canvas.height = 1800;
+        }
 
         ctx.fillStyle = this.frameColor;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -1442,7 +1463,7 @@ const app = {
         else if (this.activeFilter === 'contrast') ctx.filter = 'contrast(140%)';
         else if (this.activeFilter === 'bright') ctx.filter = 'brightness(115%)';
 
-        // Center Cover Crop for Portrait / Landscape / Square
+        // Center Cover Crop for Portrait / Landscape / Square / Mobile 9:16
         this.drawImageCover(ctx, img, x, y, w, h);
 
         ctx.restore();
@@ -1491,3 +1512,5 @@ window.onload = () => {
     app.init();
 };
 </script>
+</body>
+</html>
