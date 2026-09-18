@@ -1,5 +1,5 @@
 SNAPBOOTH — K-Style Photobooth Studio
-
+VISIT - https://snapboothbyjames.netlify.app/
 An architectural, tactile web-based photobooth app inspired by Korean self-photo booth culture (Life Four Cuts, Haru Film). Built with pure HTML5 Canvas, WebRTC, Tailwind CSS, and Web Audio API. Zero dependencies or backend required.
 
 Key Features
