@@ -113,6 +113,7 @@
             align-items: center;
             justify-content: center;
             user-select: none;
+            cursor: pointer;
         }
 
         .studio-btn:active {
@@ -211,16 +212,16 @@
     <!-- SCREEN 0: Home -->
     <section id="screen-home" class="w-full max-w-4xl text-center py-4 sm:py-8 flex flex-col items-center justify-center my-auto">
         <div class="inline-flex items-center gap-2 px-3 py-1 border-2 border-studio-ink bg-white font-mono text-[11px] sm:text-xs font-bold mb-4 sm:mb-6 shadow-solid-sm">
-            <span class="w-2 h-2 bg-blue-600 inline-block"></span> RAW WEBCAM PRINT ENGINE v2.8
+            <span class="w-2 h-2 bg-blue-600 inline-block"></span> RAW WEBCAM PRINT ENGINE v2.9
         </div>
 
         <h1 class="text-3xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-none mb-4 sm:mb-6">
-            ARCHITECTURAL <br/>
-            <span class="bg-studio-ink text-white px-2 sm:px-3 py-0.5 sm:py-1 inline-block transform -rotate-1 mt-1 sm:mt-2">PHOTO STRIP</span> STUDIO
+            SNAPBOOTH BY JAMES <br/>
+            <span class="bg-studio-ink text-white px-2 sm:px-3 py-0.5 sm:py-1 inline-block transform -rotate-1 mt-1 sm:mt-2">STUDIO</span>
         </h1>
 
         <p class="text-slate-700 font-medium text-sm sm:text-lg max-w-2xl mb-8 sm:mb-10 leading-relaxed px-2">
-            Minimalist photobooth experience tailored for all mobile screens and laptops. Pick your shot count, capture real-time poses in portrait, landscape, or mobile 9:16 orientations, and export high-res prints.
+            Minimalist photobooth experience tailored for all mobile screens and laptops. Pick your shot count, capture real-time poses in portrait or landscape orientations, and export high-res prints.
         </p>
 
         <button onclick="app.navigateTo('shot-select')" class="studio-btn w-full sm:w-auto px-8 sm:px-10 py-4 bg-blue-600 text-white hover:bg-blue-700 text-base sm:text-lg flex items-center justify-center gap-3 shadow-solid-lg">
@@ -237,8 +238,8 @@
             </div>
             <div class="studio-box p-3 sm:p-4">
                 <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">02 / ORIENTATION</span>
-                <h3 class="font-extrabold uppercase text-xs sm:text-sm">Portrait, Mobile & More</h3>
-                <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Toggle 3:4, 4:3, 1:1, or 9:16 mobile frame.</p>
+                <h3 class="font-extrabold uppercase text-xs sm:text-sm">Portrait & Landscape</h3>
+                <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Toggle vertical 3:4, horizontal 4:3, or square.</p>
             </div>
             <div class="studio-box p-3 sm:p-4">
                 <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">03 / CANVAS TOOLS</span>
@@ -375,11 +376,6 @@
             <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover transform -scale-x-1"></video>
             <canvas id="fallbackCanvas" class="hidden w-full h-full object-cover"></canvas>
 
-            <!-- Framing Guide Overlay -->
-            <div id="cameraFramingGuide" class="absolute inset-4 sm:inset-8 border-2 border-dashed border-white/40 pointer-events-none flex items-center justify-center">
-                <span class="bg-black/60 text-white text-[9px] font-mono px-2 py-0.5 uppercase tracking-widest" id="cameraGuideLabel">3:4 PORTRAIT FRAME</span>
-            </div>
-
             <!-- Countdown Overlay -->
             <div id="countdownContainer" class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20 hidden">
                 <span id="countdownNumber" class="text-8xl sm:text-9xl font-black text-white font-mono animate-bounce">3</span>
@@ -388,12 +384,24 @@
             <!-- Flash Effect Overlay -->
             <div id="flashOverlay" class="absolute inset-0 bg-white z-30"></div>
 
+            <!-- Live Camera Filter Selector -->
+            <div class="absolute top-3 left-3 z-30 flex items-center gap-1 bg-black/80 p-1.5 border-2 border-white shadow-solid-sm pointer-events-auto">
+                <span class="text-[10px] font-mono font-bold text-white px-1 uppercase"><i class="fa-solid fa-wand-magic-sparkles"></i> LIVE:</span>
+                <button onclick="app.setLiveCameraFilter('original')" class="studio-btn px-2 py-1 text-[10px] font-mono bg-white text-black font-bold">RAW</button>
+                <button onclick="app.setLiveCameraFilter('bw')" class="studio-btn px-2 py-1 text-[10px] font-mono bg-zinc-800 text-white">B&W</button>
+                <button onclick="app.setLiveCameraFilter('cool')" class="studio-btn px-2 py-1 text-[10px] font-mono bg-sky-800 text-white">COOL</button>
+                <button onclick="app.setLiveCameraFilter('warm')" class="studio-btn px-2 py-1 text-[10px] font-mono bg-amber-700 text-white">WARM</button>
+            </div>
+
             <!-- Camera Status Bar -->
-            <div class="absolute bottom-3 left-3 right-3 flex justify-between items-center z-10">
-                <div id="cameraStatusMsg" class="bg-studio-ink text-white font-mono text-[10px] sm:text-xs px-2.5 py-1 flex items-center gap-2 border border-white">
+            <div class="absolute bottom-3 left-3 right-3 flex justify-between items-center z-10 pointer-events-auto">
+                <div id="cameraStatusMsg" class="bg-studio-ink text-white font-mono text-[10px] sm:text-xs px-2.5 py-1 flex items-center gap-2 border border-white pointer-events-auto">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> LIVE CAMERA
                 </div>
-                <div class="flex items-center gap-1.5">
+                <div class="flex items-center gap-1.5 pointer-events-auto">
+                    <button onclick="app.toggleCameraMirror()" id="mirrorToggleBtn" title="Toggle Selfie Mirror" class="bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink px-2 py-1 font-mono text-[10px] font-bold shadow-solid-sm">
+                        <i class="fa-solid fa-arrows-left-right mr-1"></i> MIRROR: ON
+                    </button>
                     <button onclick="app.switchCameraDevice()" title="Flip Lens" class="bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink p-1.5 font-mono text-xs font-bold shadow-solid-sm">
                         <i class="fa-solid fa-camera-rotate"></i>
                     </button>
@@ -492,7 +500,7 @@
                 <!-- Photo Orientation Selector -->
                 <div>
                     <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1.5">PHOTO ORIENTATION / ASPECT RATIO:</span>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <div class="grid grid-cols-4 gap-2">
                         <button onclick="app.setPhotoOrientation('portrait')" id="orientBtn-portrait" class="studio-btn py-2 text-xs bg-blue-600 text-white flex-col gap-0.5">
                             <i class="fa-solid fa-mobile-screen text-xs"></i>
                             <span>PORTRAIT (3:4)</span>
@@ -535,8 +543,8 @@
                 </div>
 
                 <div class="border-t border-slate-200 pt-3">
-                    <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-2">FRAME COLOR CUSTOMIZER:</span>
-                    <div class="flex items-center gap-3">
+                    <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-2">FRAME COLOR & PHOTO CORNERS:</span>
+                    <div class="flex flex-wrap items-center gap-3">
                         <input type="color" id="frameColorInput" value="#ffffff" onchange="app.updateFrameColor(this.value)" class="w-10 h-10 border-2 border-studio-ink cursor-pointer p-0.5">
                         <div class="flex gap-2 flex-wrap">
                             <button onclick="app.updateFrameColor('#ffffff')" class="w-8 h-8 bg-white border border-studio-ink"></button>
@@ -545,6 +553,12 @@
                             <button onclick="app.updateFrameColor('#fce7f3')" class="w-8 h-8 bg-pink-200 border border-studio-ink"></button>
                             <button onclick="app.updateFrameColor('#fef3c7')" class="w-8 h-8 bg-amber-100 border border-studio-ink"></button>
                             <button onclick="app.updateFrameColor('#d1fae5')" class="w-8 h-8 bg-emerald-100 border border-studio-ink"></button>
+                        </div>
+
+                        <div class="ml-auto flex items-center gap-1 border border-studio-ink p-1 bg-white">
+                            <span class="text-[10px] font-mono font-bold px-1">CORNERS:</span>
+                            <button onclick="app.setPhotoCorners('sharp')" id="cornerBtn-sharp" class="px-2 py-0.5 text-[10px] font-mono font-bold bg-studio-ink text-white">SHARP</button>
+                            <button onclick="app.setPhotoCorners('rounded')" id="cornerBtn-rounded" class="px-2 py-0.5 text-[10px] font-mono font-bold bg-slate-100 text-black">ROUNDED</button>
                         </div>
                     </div>
                 </div>
@@ -640,6 +654,11 @@
                 <i class="fa-solid fa-file-image"></i>
                 <span>DOWNLOAD PNG</span>
             </button>
+
+            <button onclick="app.showQrModal()" class="studio-btn w-full sm:w-auto px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs flex items-center justify-center gap-1.5 shadow-solid-sm">
+                <i class="fa-solid fa-qrcode text-sm"></i>
+                <span>SAVE / QR</span>
+            </button>
         </div>
 
         <button onclick="app.startOverPrompt()" class="mt-6 text-xs font-mono font-bold text-slate-500 hover:text-rose-600 underline uppercase">
@@ -651,6 +670,57 @@
 
 <!-- Hidden File Input for Custom Upload Fallback -->
 <input type="file" id="fallbackFileInput" accept="image/*" multiple class="hidden" onchange="app.handleFileUploadFallback(event)">
+
+<!-- Custom Reset Session Confirmation Modal -->
+<div id="resetModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="studio-box p-5 sm:p-6 bg-white max-w-sm w-full text-center">
+        <h3 class="text-lg sm:text-xl font-black uppercase mb-2">START OVER?</h3>
+        <p class="text-slate-600 text-xs mb-6 leading-relaxed">Are you sure you want to reset your photobooth session? All captured photos and design customizations will be cleared.</p>
+        <div class="flex gap-2.5 justify-center">
+            <button onclick="app.closeResetModal()" class="studio-btn px-4 py-2.5 bg-white hover:bg-slate-100 text-xs">CANCEL</button>
+            <button onclick="app.confirmResetSession()" class="studio-btn px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs">YES, RESET</button>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Transfer & Save Modal -->
+<div id="qrModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="studio-box p-5 sm:p-6 bg-white max-w-sm w-full text-center flex flex-col items-center max-h-[90vh] overflow-y-auto">
+        <div class="w-full flex justify-between items-center mb-3 border-b-2 border-studio-ink pb-2">
+            <span class="font-mono text-xs font-bold text-blue-600 uppercase"><i class="fa-solid fa-floppy-disk mr-1"></i> SAVE YOUR PHOTO STRIP</span>
+            <button onclick="app.closeQrModal()" class="text-slate-500 hover:text-black font-bold text-lg leading-none">&times;</button>
+        </div>
+        
+        <div class="bg-blue-50 border border-blue-200 p-2 text-left mb-3 w-full">
+            <p class="text-[11px] text-blue-900 leading-snug">
+                <strong>iPhone / Android:</strong> Press & hold (long press) the image below and tap <span class="bg-blue-200 px-1 font-mono font-bold">Add to Photos</span> or <span class="bg-blue-200 px-1 font-mono font-bold">Save Image</span>.
+            </p>
+            <p class="text-[11px] text-blue-900 leading-snug mt-1">
+                <strong>PC / Desktop:</strong> Right-click the image below and select <span class="bg-blue-200 px-1 font-mono font-bold">Save Image As...</span>.
+            </p>
+        </div>
+
+        <!-- Rendered High-Res Image for Long-Press / Right-Click Saving -->
+        <div class="p-2 bg-slate-100 border-2 border-studio-ink shadow-solid-sm mb-3 w-full flex justify-center">
+            <img id="mobilePreviewImg" src="" alt="Photobooth Render" class="max-h-64 w-auto object-contain border border-studio-ink shadow-sm">
+        </div>
+
+        <div class="w-full flex gap-2 mb-4">
+            <button onclick="app.openImageInNewTab()" class="studio-btn flex-1 py-2 bg-blue-600 text-white text-[11px] font-bold">
+                <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> OPEN FULL IMAGE
+            </button>
+        </div>
+
+        <div class="w-full border-t border-slate-200 pt-3">
+            <span class="font-mono text-[10px] text-slate-500 font-bold block mb-2 uppercase">SCAN TO OPEN SNAPBOOTH ON MOBILE CAMERA:</span>
+            <div class="p-2 bg-white border border-studio-ink inline-block mb-2">
+                <img id="qrCodeImg" src="" alt="Photobooth QR Code" class="w-28 h-28 object-contain">
+            </div>
+        </div>
+
+        <button onclick="app.closeQrModal()" class="studio-btn w-full py-2.5 bg-studio-ink text-white text-xs font-bold mt-2">CLOSE</button>
+    </div>
+</div>
 
 <!-- Footer -->
 <footer class="w-full bg-white border-t-2 border-studio-ink py-3 sm:py-4 px-4 text-center font-mono text-[10px] sm:text-xs text-slate-600 flex flex-col sm:flex-row justify-between items-center gap-1.5 sm:gap-2 mt-auto">
@@ -670,8 +740,11 @@ const app = {
     useFallbackCamera: false,
     soundEnabled: true,
     activeFilter: 'original',
+    liveFilter: 'original',
     currentLayout: 'grid-2x2',
     frameColor: '#ffffff',
+    photoCorners: 'sharp', // 'sharp' or 'rounded'
+    isMirrored: true,
     mainText: 'SNAPBOOTH 2026',
     subText: 'SNAPBOOTHBYJAMES',
     dateText: '2026.09.18',
@@ -826,6 +899,47 @@ const app = {
         this.startWebcam();
     },
 
+    setTimerDuration(seconds) {
+        this.playSound('click');
+        this.timerDuration = seconds;
+        [3, 5, 10].forEach(s => {
+            const btn = document.getElementById(`timerBtn-${s}`);
+            if (btn) {
+                if (s === seconds) {
+                    btn.className = 'px-2 py-0.5 font-mono text-xs font-bold border border-studio-ink bg-blue-600 text-white';
+                } else {
+                    btn.className = 'px-2 py-0.5 font-mono text-xs font-bold border border-studio-ink bg-white text-studio-ink hover:bg-slate-100';
+                }
+            }
+        });
+    },
+
+    toggleCameraMirror() {
+        this.playSound('click');
+        this.isMirrored = !this.isMirrored;
+        const video = document.getElementById('webcamVideo');
+        const btn = document.getElementById('mirrorToggleBtn');
+        
+        if (this.isMirrored) {
+            video.classList.add('-scale-x-1');
+            btn.innerHTML = '<i class="fa-solid fa-arrows-left-right mr-1"></i> MIRROR: ON';
+        } else {
+            video.classList.remove('-scale-x-1');
+            btn.innerHTML = '<i class="fa-solid fa-arrows-left-right mr-1"></i> MIRROR: OFF';
+        }
+    },
+
+    setLiveCameraFilter(filter) {
+        this.playSound('click');
+        this.liveFilter = filter;
+        const video = document.getElementById('webcamVideo');
+
+        video.classList.remove('filter-bw', 'filter-cool', 'filter-warm');
+        if (filter === 'bw') video.classList.add('filter-bw');
+        else if (filter === 'cool') video.classList.add('filter-cool');
+        else if (filter === 'warm') video.classList.add('filter-warm');
+    },
+
     async startWebcam() {
         const video = document.getElementById('webcamVideo');
         const statusMsg = document.getElementById('cameraStatusMsg');
@@ -840,12 +954,12 @@ const app = {
             });
             this.attachStreamToVideo(video, statusMsg);
         } catch (err1) {
-            console.warn("Retrying webcam with standard parameters...", err1);
+            console.warn("Retrying webcam with standard constraints...", err1);
             try {
                 this.cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
                 this.attachStreamToVideo(video, statusMsg);
             } catch (err2) {
-                console.warn("Webcam unavailable. Activating upload mode.", err2);
+                console.warn("Webcam blocked or unavailable. Entering Upload / Demo Canvas Mode.", err2);
                 this.enableFallbackCamera();
             }
         }
@@ -932,56 +1046,6 @@ const app = {
         }
     },
 
-    setTimerDuration(seconds) {
-        this.playSound('click');
-        this.timerDuration = seconds;
-        [3, 5, 10].forEach(s => {
-            const btn = document.getElementById(`timerBtn-${s}`);
-            if (btn) {
-                if (s === seconds) {
-                    btn.className = 'px-2 py-0.5 font-mono text-xs font-bold border border-studio-ink bg-blue-600 text-white';
-                } else {
-                    btn.className = 'px-2 py-0.5 font-mono text-xs font-bold border border-studio-ink bg-white text-studio-ink hover:bg-slate-100';
-                }
-            }
-        });
-    },
-
-    setPhotoOrientation(orientation) {
-        this.playSound('click');
-        this.photoOrientation = orientation;
-
-        ['portrait', 'landscape', 'square', 'mobile'].forEach(o => {
-            const btn = document.getElementById(`orientBtn-${o}`);
-            if (btn) {
-                if (o === orientation) {
-                    btn.className = 'studio-btn py-2 text-xs bg-blue-600 text-white flex-col gap-0.5';
-                } else {
-                    btn.className = 'studio-btn py-2 text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5';
-                }
-            }
-        });
-
-        const badge = document.getElementById('currentOrientationBadge');
-        const guideLabel = document.getElementById('cameraGuideLabel');
-
-        if (orientation === 'portrait') {
-            if (badge) badge.innerText = 'PORTRAIT 3:4';
-            if (guideLabel) guideLabel.innerText = '3:4 PORTRAIT FRAME';
-        } else if (orientation === 'landscape') {
-            if (badge) badge.innerText = 'LANDSCAPE 4:3';
-            if (guideLabel) guideLabel.innerText = '4:3 LANDSCAPE FRAME';
-        } else if (orientation === 'square') {
-            if (badge) badge.innerText = 'SQUARE 1:1';
-            if (guideLabel) guideLabel.innerText = '1:1 SQUARE FRAME';
-        } else if (orientation === 'mobile') {
-            if (badge) badge.innerText = 'MOBILE 9:16';
-            if (guideLabel) guideLabel.innerText = '9:16 MOBILE FRAME';
-        }
-
-        this.renderPhotoboothStrip();
-    },
-
     async startPhotoCaptureSequence() {
         this.capturedPhotos = [];
         const btn = document.getElementById('startCaptureBtn');
@@ -1036,14 +1100,25 @@ const app = {
     },
 
     captureSingleFrame() {
+        const video = document.getElementById('webcamVideo');
         const canvas = document.createElement('canvas');
-        canvas.width = 800;
-        canvas.height = 600;
+
+        if (!this.useFallbackCamera && this.cameraStream && video.videoWidth) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+        } else {
+            canvas.width = 800;
+            canvas.height = 600;
+        }
+
         const ctx = canvas.getContext('2d');
 
+        if (this.liveFilter === 'bw') ctx.filter = 'grayscale(100%) contrast(110%)';
+        else if (this.liveFilter === 'cool') ctx.filter = 'hue-rotate(20deg) saturate(110%)';
+        else if (this.liveFilter === 'warm') ctx.filter = 'sepia(20%) saturate(130%)';
+
         if (!this.useFallbackCamera && this.cameraStream) {
-            const video = document.getElementById('webcamVideo');
-            if (this.facingMode === 'user') {
+            if (this.isMirrored) {
                 ctx.translate(canvas.width, 0);
                 ctx.scale(-1, 1);
             }
@@ -1059,10 +1134,6 @@ const app = {
             ctx.font = 'bold 36px "Space Grotesk", sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText(`STUDIO SHOT #${this.capturedPhotos.length + 1}`, canvas.width / 2, canvas.height / 2 - 10);
-
-            ctx.fillStyle = '#2563eb';
-            ctx.font = '20px "Space Mono", monospace';
-            ctx.fillText('SNAPBOOTH K-STYLE CAPTURE', canvas.width / 2, canvas.height / 2 + 30);
         }
 
         return canvas.toDataURL('image/jpeg', 0.92);
@@ -1078,14 +1149,26 @@ const app = {
             card.innerHTML = `
                 <div class="w-full flex justify-between items-center mb-1.5 font-mono text-[10px] sm:text-xs font-bold">
                     <span>SHOT #${idx + 1}</span>
-                    <button onclick="app.retakeSinglePhoto(${idx})" class="text-rose-600 hover:underline uppercase text-[9px] sm:text-[10px]">
-                        <i class="fa-solid fa-arrows-rotate mr-0.5"></i> RETAKE
-                    </button>
+                    <div class="flex items-center gap-1">
+                        ${idx > 0 ? `<button onclick="app.swapPhotos(${idx}, ${idx - 1})" title="Move Left" class="p-1 hover:bg-slate-100 border border-slate-300 text-[10px]"><i class="fa-solid fa-arrow-left"></i></button>` : ''}
+                        ${idx < this.capturedPhotos.length - 1 ? `<button onclick="app.swapPhotos(${idx}, ${idx + 1})" title="Move Right" class="p-1 hover:bg-slate-100 border border-slate-300 text-[10px]"><i class="fa-solid fa-arrow-right"></i></button>` : ''}
+                        <button onclick="app.retakeSinglePhoto(${idx})" class="text-rose-600 hover:underline uppercase text-[9px] sm:text-[10px] ml-1">
+                            <i class="fa-solid fa-arrows-rotate mr-0.5"></i> RETAKE
+                        </button>
+                    </div>
                 </div>
                 <img src="${imgSrc}" class="w-full aspect-video object-cover border border-studio-ink">
             `;
             grid.appendChild(card);
         });
+    },
+
+    swapPhotos(i, j) {
+        this.playSound('click');
+        const temp = this.capturedPhotos[i];
+        this.capturedPhotos[i] = this.capturedPhotos[j];
+        this.capturedPhotos[j] = temp;
+        this.renderPhotoReviewGrid();
     },
 
     async retakeSinglePhoto(index) {
@@ -1104,6 +1187,49 @@ const app = {
     retakeAllPhotos() {
         this.navigateTo('camera');
         this.startPhotoCaptureSequence();
+    },
+
+    setPhotoOrientation(orientation) {
+        this.playSound('click');
+        this.photoOrientation = orientation;
+
+        ['portrait', 'landscape', 'square', 'mobile'].forEach(o => {
+            const btn = document.getElementById(`orientBtn-${o}`);
+            if (btn) {
+                if (o === orientation) {
+                    btn.className = 'studio-btn py-2 text-xs bg-blue-600 text-white flex-col gap-0.5';
+                } else {
+                    btn.className = 'studio-btn py-2 text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5';
+                }
+            }
+        });
+
+        const badge = document.getElementById('currentOrientationBadge');
+        if (badge) {
+            if (orientation === 'portrait') badge.innerText = 'PORTRAIT 3:4';
+            else if (orientation === 'landscape') badge.innerText = 'LANDSCAPE 4:3';
+            else if (orientation === 'square') badge.innerText = 'SQUARE 1:1';
+            else if (orientation === 'mobile') badge.innerText = 'MOBILE 9:16';
+        }
+
+        this.renderPhotoboothStrip();
+    },
+
+    setPhotoCorners(style) {
+        this.playSound('click');
+        this.photoCorners = style;
+        const btnSharp = document.getElementById('cornerBtn-sharp');
+        const btnRounded = document.getElementById('cornerBtn-rounded');
+
+        if (style === 'sharp') {
+            btnSharp.className = 'px-2 py-0.5 text-[10px] font-mono font-bold bg-studio-ink text-white';
+            btnRounded.className = 'px-2 py-0.5 text-[10px] font-mono font-bold bg-slate-100 text-black';
+        } else {
+            btnRounded.className = 'px-2 py-0.5 text-[10px] font-mono font-bold bg-studio-ink text-white';
+            btnSharp.className = 'px-2 py-0.5 text-[10px] font-mono font-bold bg-slate-100 text-black';
+        }
+
+        this.renderPhotoboothStrip();
     },
 
     renderLayoutOptions() {
@@ -1181,16 +1307,17 @@ const app = {
             photoContainer.classList.add('flex', 'flex-col');
         }
 
-        // Aspect ratio styling based on photoOrientation
         let aspectClass = 'aspect-[3/4]';
         if (this.photoOrientation === 'landscape') aspectClass = 'aspect-[4/3]';
         else if (this.photoOrientation === 'square') aspectClass = 'aspect-square';
         else if (this.photoOrientation === 'mobile') aspectClass = 'aspect-[9/16]';
 
+        const cornerClass = (this.photoCorners === 'rounded') ? 'rounded-lg overflow-hidden' : '';
+
         this.capturedPhotos.forEach((imgSrc) => {
             const img = document.createElement('img');
             img.src = imgSrc;
-            img.className = `w-full object-cover border border-studio-ink ${aspectClass} ${this.getFilterClass()}`;
+            img.className = `w-full object-cover border border-studio-ink ${aspectClass} ${cornerClass} ${this.getFilterClass()}`;
 
             if (this.currentLayout.includes('polaroid')) {
                 img.classList.add('p-1.5', 'bg-white', 'shadow-sm');
@@ -1279,7 +1406,8 @@ const app = {
             id: Date.now(),
             emoji: emoji,
             x: Math.random() * 50 + 25,
-            y: Math.random() * 50 + 25
+            y: Math.random() * 50 + 25,
+            scale: 1.0
         };
         this.placedStickers.push(sticker);
         this.renderPlacedStickers();
@@ -1290,53 +1418,113 @@ const app = {
         this.renderPlacedStickers();
     },
 
+    removeSticker(id) {
+        this.playSound('click');
+        this.placedStickers = this.placedStickers.filter(s => s.id !== id);
+        this.renderPlacedStickers();
+    },
+
     renderPlacedStickers() {
         const layer = document.getElementById('placedStickersLayer');
         layer.innerHTML = '';
 
         this.placedStickers.forEach(s => {
+            const scale = s.scale || 1.0;
+            const fontSize = Math.round(28 * scale);
             const el = document.createElement('div');
-            el.className = 'placed-sticker text-xl sm:text-2xl pointer-events-auto';
+            el.className = 'placed-sticker pointer-events-auto absolute flex items-center justify-center group border-2 border-transparent hover:border-dashed hover:border-blue-600 rounded p-1 select-none';
             el.style.left = `${s.x}%`;
             el.style.top = `${s.y}%`;
-            el.innerText = s.emoji;
+            el.dataset.id = s.id;
+            el.innerHTML = `
+                <span class="sticker-emoji pointer-events-none select-none leading-none" style="font-size: ${fontSize}px;">${s.emoji}</span>
+                <button onclick="event.stopPropagation(); app.removeSticker(${s.id})" title="Delete Sticker" class="absolute -top-2.5 -right-2.5 w-5 h-5 bg-rose-600 text-white rounded-full text-xs flex items-center justify-center font-bold shadow-md opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity z-20">&times;</button>
+                <div data-resize-id="${s.id}" title="Drag to stretch/resize" class="resize-handle absolute -bottom-2.5 -right-2.5 w-5 h-5 bg-blue-600 border-2 border-white rounded-full cursor-se-resize shadow-md flex items-center justify-center opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                    <i class="fa-solid fa-up-right-and-down-left-from-center text-[8px] text-white pointer-events-none"></i>
+                </div>
+            `;
             layer.appendChild(el);
         });
     },
 
     setupStickerDragSystem() {
+        let activeAction = null; // null, 'move', or 'resize'
         let activeItem = null;
+        let activeSticker = null;
+        let startX = 0, startY = 0;
+        let startScale = 1.0;
         const container = document.getElementById('photoboothStrip');
 
         const handleStart = (e) => {
+            const resizeBtn = e.target.closest('[data-resize-id]');
+            if (resizeBtn) {
+                const id = parseInt(resizeBtn.dataset.resizeId, 10);
+                activeSticker = this.placedStickers.find(s => s.id === id);
+                if (activeSticker) {
+                    activeAction = 'resize';
+                    activeItem = resizeBtn.closest('.placed-sticker');
+                    startX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0].clientX);
+                    startY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0].clientY);
+                    startScale = activeSticker.scale || 1.0;
+                    if (e.pointerId !== undefined && resizeBtn.setPointerCapture) {
+                        try { resizeBtn.setPointerCapture(e.pointerId); } catch(err){}
+                    }
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                }
+            }
+
             const target = e.target.closest('.placed-sticker');
             if (target) {
-                activeItem = target;
-                if (e.pointerId !== undefined && target.setPointerCapture) {
-                    try { target.setPointerCapture(e.pointerId); } catch(err){}
+                const id = parseInt(target.dataset.id, 10);
+                activeSticker = this.placedStickers.find(s => s.id === id);
+                if (activeSticker) {
+                    activeAction = 'move';
+                    activeItem = target;
+                    if (e.pointerId !== undefined && target.setPointerCapture) {
+                        try { target.setPointerCapture(e.pointerId); } catch(err){}
+                    }
+                    e.preventDefault();
                 }
-                e.preventDefault();
             }
         };
 
         const handleMove = (e) => {
-            if (activeItem) {
+            if (!activeAction || !activeItem || !activeSticker) return;
+
+            const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0].clientY);
+
+            if (clientX === undefined || clientY === undefined) return;
+
+            if (activeAction === 'move') {
                 const rect = container.getBoundingClientRect();
-                const clientX = e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0].clientX);
-                const clientY = e.clientY !== undefined ? e.clientY : (e.touches && e.touches[0].clientY);
+                let x = ((clientX - rect.left) / rect.width) * 100;
+                let y = ((clientY - rect.top) / rect.height) * 100;
 
-                if (clientX !== undefined && clientY !== undefined) {
-                    let x = ((clientX - rect.left) / rect.width) * 100;
-                    let y = ((clientY - rect.top) / rect.height) * 100;
+                x = Math.max(0, Math.min(85, x));
+                y = Math.max(0, Math.min(85, y));
 
-                    x = Math.max(0, Math.min(85, x));
-                    y = Math.max(0, Math.min(85, y));
+                activeSticker.x = x;
+                activeSticker.y = y;
+                activeItem.style.left = `${x}%`;
+                activeItem.style.top = `${y}%`;
+            } else if (activeAction === 'resize') {
+                const deltaX = clientX - startX;
+                const deltaY = clientY - startY;
+                const delta = (deltaX + deltaY) / 2;
+                
+                let newScale = startScale + (delta / 80);
+                newScale = Math.max(0.4, Math.min(4.0, newScale));
 
-                    activeItem.style.left = `${x}%`;
-                    activeItem.style.top = `${y}%`;
+                activeSticker.scale = newScale;
+                const emojiSpan = activeItem.querySelector('.sticker-emoji');
+                if (emojiSpan) {
+                    emojiSpan.style.fontSize = `${Math.round(28 * newScale)}px`;
                 }
-                e.preventDefault();
             }
+            e.preventDefault();
         };
 
         const handleEnd = (e) => {
@@ -1344,8 +1532,10 @@ const app = {
                 if (e.pointerId !== undefined && activeItem.releasePointerCapture) {
                     try { activeItem.releasePointerCapture(e.pointerId); } catch(err){}
                 }
-                activeItem = null;
             }
+            activeAction = null;
+            activeItem = null;
+            activeSticker = null;
         };
 
         container.addEventListener('pointerdown', handleStart);
@@ -1442,11 +1632,19 @@ const app = {
         ctx.fillText(this.dateText || '', canvas.width / 2, footerY + 90);
 
         this.placedStickers.forEach(s => {
-            ctx.font = '64px sans-serif';
+            const scale = s.scale || 1.0;
+            const fontSize = Math.round(64 * scale);
+            ctx.font = `${fontSize}px sans-serif`;
             const posX = (s.x / 100) * canvas.width;
             const posY = (s.y / 100) * canvas.height;
             ctx.fillText(s.emoji, posX, posY);
         });
+
+        // Sync preview image for hold-to-save
+        const mobilePreviewImg = document.getElementById('mobilePreviewImg');
+        if (mobilePreviewImg) {
+            mobilePreviewImg.src = canvas.toDataURL('image/jpeg', 0.95);
+        }
     },
 
     drawImageWithFilter(ctx, img, x, y, w, h) {
@@ -1463,9 +1661,7 @@ const app = {
         else if (this.activeFilter === 'contrast') ctx.filter = 'contrast(140%)';
         else if (this.activeFilter === 'bright') ctx.filter = 'brightness(115%)';
 
-        // Center Cover Crop for Portrait / Landscape / Square / Mobile 9:16
         this.drawImageCover(ctx, img, x, y, w, h);
-
         ctx.restore();
     },
 
@@ -1492,19 +1688,108 @@ const app = {
     downloadExportImage(format) {
         this.playSound('click');
         const canvas = document.getElementById('exportCanvas');
+        if (!canvas) return;
+
         const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
-        const link = document.createElement('a');
-        link.download = `SNAPBOOTH_${Date.now()}.${format}`;
-        link.href = canvas.toDataURL(mimeType, 0.95);
-        link.click();
+        const fileName = `SNAPBOOTH_${Date.now()}.${format}`;
+
+        try {
+            canvas.toBlob((blob) => {
+                if (!blob) {
+                    this.showQrModal();
+                    return;
+                }
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = fileName;
+                link.href = url;
+                document.body.appendChild(link);
+                link.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                }, 1000);
+            }, mimeType, 0.95);
+        } catch (err) {
+            console.warn("Direct blob download failed, opening save modal fallback...", err);
+            this.showQrModal();
+        }
+    },
+
+    showQrModal() {
+        this.playSound('click');
+        const qrImg = document.getElementById('qrCodeImg');
+        const mobilePreviewImg = document.getElementById('mobilePreviewImg');
+        const modal = document.getElementById('qrModal');
+        const canvas = document.getElementById('exportCanvas');
+        
+        if (canvas) {
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+            if (mobilePreviewImg) {
+                mobilePreviewImg.src = dataUrl;
+            }
+        }
+
+        const pageUrl = window.location.href;
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(pageUrl)}`;
+        
+        modal.classList.remove('hidden');
+    },
+
+    openImageInNewTab() {
+        this.playSound('click');
+        const canvas = document.getElementById('exportCanvas');
+        if (!canvas) return;
+
+        canvas.toBlob((blob) => {
+            if (blob) {
+                const blobUrl = URL.createObjectURL(blob);
+                const win = window.open(blobUrl, '_blank');
+                if (!win) {
+                    window.location.href = blobUrl;
+                }
+            } else {
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+                const win = window.open();
+                if (win) {
+                    win.document.write(`<title>SNAPBOOTH PHOTO STRIP</title><body style="margin:0;background:#111;display:flex;justify-content:center;align-items:center;min-height:100vh;"><img src="${dataUrl}" style="max-width:100%;max-height:100vh;object-fit:contain;border:4px solid white;box-shadow:0 10px 30px rgba(0,0,0,0.5);"/></body>`);
+                } else {
+                    window.location.href = dataUrl;
+                }
+            }
+        }, 'image/jpeg', 0.95);
+    },
+
+    closeQrModal() {
+        this.playSound('click');
+        const modal = document.getElementById('qrModal');
+        if (modal) modal.classList.add('hidden');
     },
 
     startOverPrompt() {
-        if (confirm("Start over with a new photobooth session?")) {
-            this.capturedPhotos = [];
-            this.placedStickers = [];
-            this.navigateTo('home');
+        this.playSound('click');
+        const modal = document.getElementById('resetModal');
+        if (modal) {
+            modal.classList.remove('hidden');
+        } else {
+            this.confirmResetSession();
         }
+    },
+
+    closeResetModal() {
+        this.playSound('click');
+        const modal = document.getElementById('resetModal');
+        if (modal) modal.classList.add('hidden');
+    },
+
+    confirmResetSession() {
+        this.playSound('click');
+        this.closeResetModal();
+        this.capturedPhotos = [];
+        this.placedStickers = [];
+        this.stopWebcam();
+        this.navigateTo('home');
     }
 };
 
