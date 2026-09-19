@@ -1,46 +1,64 @@
 SNAPBOOTH — K-Style Photobooth Studio
 
-VISIT - https://snapboothbyjames.netlify.app/
-
 An architectural, tactile web-based photobooth app inspired by Korean self-photo booth culture (Life Four Cuts, Haru Film). Built with pure HTML5 Canvas, WebRTC, Tailwind CSS, and Web Audio API. Zero dependencies or backend required.
+
+Live Studio App: https://snapboothbyjames.netlify.app/
 
 Key Features
 
-Mandatory Shot Selection First: Pick 2, 3, 4, or 6 shots prior to camera activation. The selection dynamically locks in photo counts, review grids, and tailored geometries.
+Shot Selection First: Choose 2, 3, 4, or 6 shots prior to camera activation. The selection dynamically configures photo sequence counts, review grids, and layout geometries.
 
-WebRTC Camera Engine: Real-time webcam feed with live countdowns (3-2-1), photo flash animation, synthesizer audio cues, and camera device toggling.
+WebRTC Camera Engine: Real-time webcam feed with configurable timer countdowns (3S, 5S, 10S), photo flash effect, sound cues, selfie mirror toggle (MIRROR: ON / OFF), and front/rear camera lens switching.
 
-Fail-Safe Fallback: Automatic upload and studio demo mode if webcam permissions are denied or unavailable in sandboxed environments.
+Live Camera Filters: Preview and snap photos with real-time filters (RAW, B&W, COOL, WARM).
 
-Individual Shot Retake: Inspect captured photos in a review grid with options to retake specific photos or reset the sequence.
+Fail-Safe Fallback Mode: Automatic studio demo mode and image upload fallback if webcam permissions are denied or unavailable.
 
-Dynamic Compatible Layouts: Architectural layouts tailored strictly to selected shot count (Vertical Strips, 2x2 4-Cuts, 3x2 Grids, Polaroid Duos/Trios).
+Shot Review & Position Swap: Inspect captured shots in a review grid, swap photo frame positions (< / >), or retake individual shots without resetting the sequence.
 
-Studio Design Customizer:
+4 Photo Aspect Ratios:
 
-Themes: Classic White, Minimal, Haru Blue, Black Film, Pastel Pink, Vintage Retro, Y2K Party, Editorial.
+PORTRAIT (3:4) — Classic studio portrait frame.
 
-Frame Palette: Full RGB picker + rapid preset buttons.
+LANDSCAPE (4:3) — Horizontal widescreen layout.
 
-Canvas Photo Filters: B&W, Vintage, Sepia, Warm Tone, Cool Blue, High Contrast, Leica Bright.
+SQUARE (1:1) — Grid style formatting.
 
-Typography & Date Stamps: Title, subtitle, automatic date stamp (YYYY.MM.DD), and font styles.
+MOBILE (9:16) — Tailored 1080x1920 story & wallpaper format for mobile phones.
 
-Draggable Stamps: Click-to-place stamps with drag-and-drop repositioning.
+Studio Design Studio:
 
-300 DPI High-Res Export: Pure HTML Canvas export generating clean JPG or PNG files without browser UI artifacts.
+Preset Themes: Classic, Minimal, Haru Blue, Black Film, Pastel Pink, Vintage, Party Y2K, Editorial.
+
+Frame Palette: RGB color picker + rapid preset swatches.
+
+Photo Filters: B&W, Vintage, Sepia, Warm Tone, Cool Blue, Contrast, Leica Bright.
+
+Typography Controls: Main Title, Subtitle (Default: SNAPBOOTHBYJAMES), Font Styles, and Date Stamp (YYYY.MM.DD).
+
+Touch-Stretch Stickers: Drag stickers onto the strip and stretch/resize them in real-time using the blue corner handle.
+
+Photo Corner Styles: Toggle between Sharp cut edges and Rounded smooth photo corners.
+
+300 DPI High-Res Export & Mobile Transfer:
+
+Pure HTML Canvas rendering for high-res JPG and PNG file downloads.
+
+Blob object URLs for reliable saving across mobile Safari, Chrome, and desktop browsers.
+
+Save / QR Modal: Tap-and-hold (long-press) mobile photo saving and scannable QR code generator for desktop-to-mobile session transfers.
 
 Tech Stack
 
 HTML5 & WebRTC (navigator.mediaDevices.getUserMedia)
 
-Tailwind CSS (via CDN for sharp brutalist studio geometry)
+Tailwind CSS (via CDN for sharp brutalist studio UI)
 
 Vanilla JavaScript (ES6+)
 
-HTML5 Canvas API (for high-resolution image rendering and export)
+HTML5 Canvas API (for 300 DPI image rendering and center-crop exports)
 
-Web Audio API (synthesized click, beep, and shutter sound effects)
+Web Audio API (synthesized sound effects)
 
 How to Deploy on GitHub Pages
 
@@ -61,13 +79,13 @@ Click Save.
 Access Live App: In 1–2 minutes, GitHub will generate a secure HTTPS link:
 https://<your-username>.github.io/snapbooth/
 
-Note on Camera Permissions: Webcams require an HTTPS connection to function. GitHub Pages automatically provides HTTPS SSL certificates for all deployed sites.
+Note on Camera Permissions: Webcams require a secure https:// connection to function. Netlify Drop and GitHub Pages automatically provide free HTTPS SSL certificates.
 
 Repository Structure
 
 snapbooth/
 ├── index.html     # Complete single-file photobooth application
-└── README.md      # Repository documentation
+└── README.md      # Documentation
 
 
 License
