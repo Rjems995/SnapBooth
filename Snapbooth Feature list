@@ -1,0 +1,91 @@
+SNAPBOOTH BY JAMES STUDIO — Complete Feature Summary
+
+Below is the complete list of features and enhancements built into the SnapBooth web application.
+
+📸 1. Camera & Capture Engine
+
+Configurable Timer Duration: Toggle between 3S, 5S, or 10S countdown timers prior to starting photo capture sequences or retaking single shots.
+
+
+
+Selfie Mirror Toggle: Switch between MIRROR: ON (natural selfie view) and MIRROR: OFF (true camera orientation).
+
+Lens Switching: Toggle between front (user) and rear (environment) camera lenses on mobile devices.
+
+True Aspect Ratio Capture: Captures photos directly from your camera's native video stream dimensions (videoWidth & videoHeight), completely eliminating stretched or squished faces.
+
+Upload / Demo Fallback Mode: Automatic fallback allowing users to upload photo files directly if webcam permissions are denied or unavailable.
+
+📐 2. Aspect Ratios & Layout Geometries
+
+4 Photo Aspect Ratios:
+
+PORTRAIT (3:4) — Classic studio portrait frame.
+
+LANDSCAPE (4:3) — Horizontal widescreen layout.
+
+SQUARE (1:1) — Grid style formatting.
+
+MOBILE (9:16) — Tailored 1080x1920 wallpaper & story format for mobile screens.
+
+Shot Selection First: Choose 2, 3, 4, or 6 shots before entering the camera feed.
+
+Compatible Layout Options:
+
+2 Shots: Vertical Strip, Dual Horizontal, Polaroid Duo.
+
+3 Shots: Classic Strip, Trio Polaroid, Hero Frame (1 Large + 2 Small).
+
+4 Shots: K-Style 4-Cut Grid (2x2), Vertical Strip, Black Film Strip, Polaroid Quad.
+
+6 Shots: 3x2 Deluxe Grid, 2x3 Tall Collage, 6-Shot Mega Strip.
+
+Photo Corner Styles: Toggle between SHARP cut edges and ROUNDED smooth photo corners.
+
+🎨 3. Design Studio & Touch Stickers
+
+Mouse & Touch Stretch Stickers: Click/touch and drag the blue bottom-right corner handle on any sticker to stretch or scale it smoothly in real time.
+
+Individual Sticker Management: Each placed sticker has a top-right × delete badge for quick removal.
+
+Preset Studio Themes: One-click styling presets (Classic, Minimal, Haru Blue, Black Film, Pastel Pink, Vintage, Party Y2K, Editorial).
+
+Color Customizer: Full RGB color picker alongside quick-select preset swatches for strip background colors.
+
+Typography & Text Controls:
+
+Main Title (Default: SNAPBOOTH 2026)
+
+Subtitle / Event Name (Default: SNAPBOOTHBYJAMES)
+
+Automatic Date Stamp (e.g., 2026.09.19)
+
+Font Styles: Monospace, Space Grotesk, Editorial Serif, and Handwritten.
+
+🔄 4. Photo Review & Reordering
+
+Photo Position Swap: Reorder captured photos in Step 03 using < and > position shift arrows.
+
+Single Frame Retake: Re-shoot any individual photo frame without resetting the rest of your captured shots.
+
+Custom In-App Reset Modal: Custom studio modal popup (#resetModal) for starting over, bypassing native browser confirm() restrictions.
+
+📲 5. High-Res Export & Mobile Share Engine
+
+300 DPI Canvas Rendering: Generates clean, high-resolution JPG and PNG print files without browser UI artifacts.
+
+Blob-Based Downloads: Native blob object URLs ensure reliable file downloads across mobile Safari, Android Chrome, and sandboxed iframe environments.
+
+Mobile Touch & Hold Saving (SAVE / QR):
+
+Opens a modal preview allowing mobile users to Press & Hold (Long-Press) the rendered photo strip to tap "Add to Photos" or "Save Image".
+
+"OPEN FULL IMAGE" button launches a dedicated full-screen tab for tap-and-hold saving.
+
+Scannable QR code generator linking to the studio URL for desktop-to-mobile session transfers.
+
+📱 6. Mobile & Touch Optimizations
+
+Touch Event Isolation: Built with PointerEvent tracking (setPointerCapture), enabling smooth drag-and-stretch sticker adjustments on touchscreens without scrolling the browser page.
+
+Responsive Layout: Fluid widths, touch target padding (min 44px), and horizontal scrollable control tabs for small mobile screens.
