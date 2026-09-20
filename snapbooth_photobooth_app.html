@@ -1759,6 +1759,16 @@ const app = {
         setTimeout(() => this.renderDoodleCanvas(), 50);
     },
 
+    getAspectRatioValue() {
+        switch (this.photoOrientation) {
+            case 'landscape': return 4 / 3;
+            case 'square': return 1 / 1;
+            case 'mobile': return 9 / 16;
+            case 'portrait':
+            default: return 3 / 4;
+        }
+    },
+
     renderExportCanvas() {
         const canvas = document.getElementById('exportCanvas');
         if (!canvas) return;
@@ -1807,6 +1817,7 @@ const app = {
 
         const availableWidth = canvas.width - (padding * 2);
         const availableHeight = canvas.height - (padding * 2) - footerHeight;
+        const aspectRatio = this.getAspectRatioValue();
 
         if (this.currentLayout === 'hero-3' && count === 3) {
             const heroH = availableHeight * 0.55;
@@ -1820,14 +1831,20 @@ const app = {
         } else if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2') || this.currentLayout.includes('grid-2-horiz')) {
             const cols = 2;
             const rows = Math.ceil(count / cols);
-            const cellW = (availableWidth - gap) / cols;
-            const cellH = (availableHeight - (gap * (rows - 1))) / rows;
+            let cellW = (availableWidth - gap) / cols;
+            let cellH = cellW / aspectRatio;
+
+            const totalHeight = (rows * cellH) + ((rows - 1) * gap);
+            let startY = padding;
+            if (totalHeight < availableHeight) {
+                startY = padding + (availableHeight - totalHeight) / 2;
+            }
 
             images.forEach((img, idx) => {
                 const r = Math.floor(idx / cols);
                 const c = idx % cols;
                 const x = padding + c * (cellW + gap);
-                const y = padding + r * (cellH + gap);
+                const y = startY + r * (cellH + gap);
 
                 this.drawImageWithFilter(ctx, img, x, y, cellW, cellH);
             });
@@ -1835,25 +1852,47 @@ const app = {
         } else if (this.currentLayout.includes('grid-2x3')) {
             const cols = 3;
             const rows = Math.ceil(count / cols);
-            const cellW = (availableWidth - (gap * (cols - 1))) / cols;
-            const cellH = (availableHeight - (gap * (rows - 1))) / rows;
+            let cellW = (availableWidth - (gap * (cols - 1))) / cols;
+            let cellH = cellW / aspectRatio;
+
+            const totalHeight = (rows * cellH) + ((rows - 1) * gap);
+            let startY = padding;
+            if (totalHeight < availableHeight) {
+                startY = padding + (availableHeight - totalHeight) / 2;
+            }
 
             images.forEach((img, idx) => {
                 const r = Math.floor(idx / cols);
                 const c = idx % cols;
                 const x = padding + c * (cellW + gap);
-                const y = padding + r * (cellH + gap);
+                const y = startY + r * (cellH + gap);
 
                 this.drawImageWithFilter(ctx, img, x, y, cellW, cellH);
             });
 
         } else {
-            const cellH = (availableHeight - (gap * (count - 1))) / count;
-            images.forEach((img, idx) => {
-                const x = padding;
-                const y = padding + idx * (cellH + gap);
-                this.drawImageWithFilter(ctx, img, x, y, availableWidth, cellH);
-            });
+            let cellW = availableWidth;
+            let cellH = cellW / aspectRatio;
+
+            const totalHeight = (count * cellH) + ((count - 1) * gap);
+            let startY = padding;
+
+            if (totalHeight > availableHeight) {
+                cellH = (availableHeight - (gap * (count - 1))) / count;
+                cellW = cellH * aspectRatio;
+                const startX = padding + (availableWidth - cellW) / 2;
+
+                images.forEach((img, idx) => {
+                    const y = padding + idx * (cellH + gap);
+                    this.drawImageWithFilter(ctx, img, startX, y, cellW, cellH);
+                });
+            } else {
+                startY = padding + (availableHeight - totalHeight) / 2;
+                images.forEach((img, idx) => {
+                    const y = startY + idx * (cellH + gap);
+                    this.drawImageWithFilter(ctx, img, padding, y, cellW, cellH);
+                });
+            }
         }
 
         const footerY = canvas.height - footerHeight + 40;
