@@ -144,6 +144,10 @@
         .filter-contrast { filter: contrast(140%); }
         .filter-bright { filter: brightness(115%); }
 
+        .mirrored-feed {
+            transform: scaleX(-1) !important;
+        }
+
         #flashOverlay {
             opacity: 0;
             pointer-events: none;
@@ -368,7 +372,7 @@
         </div>
 
         <div class="relative w-full aspect-video max-h-[500px] studio-box overflow-hidden bg-slate-900 flex items-center justify-center">
-            <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover transform -scale-x-1"></video>
+            <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover mirrored-feed"></video>
             <canvas id="fallbackCanvas" class="hidden w-full h-full object-cover"></canvas>
 
             <div id="countdownContainer" class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20 hidden">
@@ -1015,18 +1019,22 @@ const app = {
         }
     },
 
-    toggleCameraMirror() {
-        this.playSound('click');
-        this.isMirrored = !this.isMirrored;
+    applyMirrorState() {
         const video = document.getElementById('webcamVideo');
         const btn = document.getElementById('mirrorToggleBtn');
         if (this.isMirrored) {
-            if (video) video.classList.add('-scale-x-1');
+            if (video) video.classList.add('mirrored-feed');
             if (btn) btn.innerHTML = '<i class="fa-solid fa-arrows-left-right mr-0.5 sm:mr-1"></i> MIRROR: ON';
         } else {
-            if (video) video.classList.remove('-scale-x-1');
+            if (video) video.classList.remove('mirrored-feed');
             if (btn) btn.innerHTML = '<i class="fa-solid fa-arrows-left-right mr-0.5 sm:mr-1"></i> MIRROR: OFF';
         }
+    },
+
+    toggleCameraMirror() {
+        this.playSound('click');
+        this.isMirrored = !this.isMirrored;
+        this.applyMirrorState();
     },
 
     switchCameraDevice() {
@@ -1086,11 +1094,7 @@ const app = {
         video.srcObject = this.cameraStream;
         video.classList.remove('hidden');
 
-        if (this.isMirrored) {
-            video.classList.add('-scale-x-1');
-        } else {
-            video.classList.remove('-scale-x-1');
-        }
+        this.applyMirrorState();
 
         document.getElementById('fallbackCanvas').classList.add('hidden');
         statusMsg.innerHTML = '<span class="w-1.5 h-1.5 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE WEBCAM ACTIVE';
@@ -1207,11 +1211,13 @@ const app = {
         const ctx = canvas.getContext('2d');
 
         if (!this.useFallbackCamera && this.cameraStream) {
+            ctx.save();
             if (this.isMirrored) {
                 ctx.translate(canvas.width, 0);
                 ctx.scale(-1, 1);
             }
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            ctx.restore();
         } else {
             ctx.fillStyle = '#e2e8f0';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -1774,21 +1780,11 @@ const app = {
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
 
-        canvas.width = 1200;
-        canvas.height = 1800;
-
-        ctx.fillStyle = this.frameColor;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.strokeStyle = '#111111';
-        ctx.lineWidth = 12;
-        ctx.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
-
         const photos = this.capturedPhotos;
+        if (photos.length === 0) return;
+
         const loadedImages = [];
         let loadedCount = 0;
-
-        if (photos.length === 0) return;
 
         photos.forEach((src, idx) => {
             const img = new Image();
@@ -1805,24 +1801,66 @@ const app = {
 
     drawImagesToExportCanvas(ctx, canvas, images) {
         const count = images.length;
-        let padding = 60;
+        const aspectRatio = this.getAspectRatioValue();
         let gap = 30;
+        let padding = 60;
         let footerHeight = 240;
 
         if (this.currentLayout.includes('polaroid')) {
             padding = 80;
             gap = 50;
-            footerHeight = 320;
+            footerHeight = 300;
         }
 
+        let targetCanvasWidth = 800;
+        let targetCanvasHeight = 1200;
+
+        // Dynamically compute canvas aspect ratio to perfectly fit vertical strips vs wide grids
+        if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2') || this.currentLayout.includes('grid-2-horiz')) {
+            const cols = 2;
+            const rows = Math.ceil(count / cols);
+            targetCanvasWidth = 1000;
+            const cellW = (targetCanvasWidth - (padding * 2) - gap) / cols;
+            const cellH = cellW / aspectRatio;
+            targetCanvasHeight = (padding * 2) + (rows * cellH) + ((rows - 1) * gap) + footerHeight;
+        } else if (this.currentLayout.includes('grid-2x3')) {
+            const cols = 3;
+            const rows = Math.ceil(count / cols);
+            targetCanvasWidth = 1200;
+            const cellW = (targetCanvasWidth - (padding * 2) - (gap * (cols - 1))) / cols;
+            const cellH = cellW / aspectRatio;
+            targetCanvasHeight = (padding * 2) + (rows * cellH) + ((rows - 1) * gap) + footerHeight;
+        } else if (this.currentLayout === 'hero-3' && count === 3) {
+            targetCanvasWidth = 900;
+            const availableW = targetCanvasWidth - (padding * 2);
+            const heroH = availableW * 0.55;
+            const subW = (availableW - gap) / 2;
+            const subH = subW / aspectRatio;
+            targetCanvasHeight = (padding * 2) + heroH + gap + subH + footerHeight;
+        } else {
+            // Standard vertical strip layouts (strip-2, strip-3, strip-4, strip-6, polaroid)
+            targetCanvasWidth = 700;
+            const cellW = targetCanvasWidth - (padding * 2);
+            const cellH = cellW / aspectRatio;
+            targetCanvasHeight = (padding * 2) + (count * cellH) + ((count - 1) * gap) + footerHeight;
+        }
+
+        canvas.width = targetCanvasWidth;
+        canvas.height = targetCanvasHeight;
+
+        ctx.fillStyle = this.frameColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.strokeStyle = '#111111';
+        ctx.lineWidth = 12;
+        ctx.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
+
         const availableWidth = canvas.width - (padding * 2);
-        const availableHeight = canvas.height - (padding * 2) - footerHeight;
-        const aspectRatio = this.getAspectRatioValue();
 
         if (this.currentLayout === 'hero-3' && count === 3) {
-            const heroH = availableHeight * 0.55;
+            const heroH = availableWidth * 0.55;
             const subW = (availableWidth - gap) / 2;
-            const subH = availableHeight - heroH - gap;
+            const subH = subW / aspectRatio;
 
             this.drawImageWithFilter(ctx, images[0], padding, padding, availableWidth, heroH);
             this.drawImageWithFilter(ctx, images[1], padding, padding + heroH + gap, subW, subH);
@@ -1830,69 +1868,40 @@ const app = {
 
         } else if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2') || this.currentLayout.includes('grid-2-horiz')) {
             const cols = 2;
-            const rows = Math.ceil(count / cols);
-            let cellW = (availableWidth - gap) / cols;
-            let cellH = cellW / aspectRatio;
-
-            const totalHeight = (rows * cellH) + ((rows - 1) * gap);
-            let startY = padding;
-            if (totalHeight < availableHeight) {
-                startY = padding + (availableHeight - totalHeight) / 2;
-            }
+            const cellW = (availableWidth - gap) / cols;
+            const cellH = cellW / aspectRatio;
 
             images.forEach((img, idx) => {
                 const r = Math.floor(idx / cols);
                 const c = idx % cols;
                 const x = padding + c * (cellW + gap);
-                const y = startY + r * (cellH + gap);
+                const y = padding + r * (cellH + gap);
 
                 this.drawImageWithFilter(ctx, img, x, y, cellW, cellH);
             });
 
         } else if (this.currentLayout.includes('grid-2x3')) {
             const cols = 3;
-            const rows = Math.ceil(count / cols);
-            let cellW = (availableWidth - (gap * (cols - 1))) / cols;
-            let cellH = cellW / aspectRatio;
-
-            const totalHeight = (rows * cellH) + ((rows - 1) * gap);
-            let startY = padding;
-            if (totalHeight < availableHeight) {
-                startY = padding + (availableHeight - totalHeight) / 2;
-            }
+            const cellW = (availableWidth - (gap * (cols - 1))) / cols;
+            const cellH = cellW / aspectRatio;
 
             images.forEach((img, idx) => {
                 const r = Math.floor(idx / cols);
                 const c = idx % cols;
                 const x = padding + c * (cellW + gap);
-                const y = startY + r * (cellH + gap);
+                const y = padding + r * (cellH + gap);
 
                 this.drawImageWithFilter(ctx, img, x, y, cellW, cellH);
             });
 
         } else {
-            let cellW = availableWidth;
-            let cellH = cellW / aspectRatio;
+            const cellW = availableWidth;
+            const cellH = cellW / aspectRatio;
 
-            const totalHeight = (count * cellH) + ((count - 1) * gap);
-            let startY = padding;
-
-            if (totalHeight > availableHeight) {
-                cellH = (availableHeight - (gap * (count - 1))) / count;
-                cellW = cellH * aspectRatio;
-                const startX = padding + (availableWidth - cellW) / 2;
-
-                images.forEach((img, idx) => {
-                    const y = padding + idx * (cellH + gap);
-                    this.drawImageWithFilter(ctx, img, startX, y, cellW, cellH);
-                });
-            } else {
-                startY = padding + (availableHeight - totalHeight) / 2;
-                images.forEach((img, idx) => {
-                    const y = startY + idx * (cellH + gap);
-                    this.drawImageWithFilter(ctx, img, padding, y, cellW, cellH);
-                });
-            }
+            images.forEach((img, idx) => {
+                const y = padding + idx * (cellH + gap);
+                this.drawImageWithFilter(ctx, img, padding, y, cellW, cellH);
+            });
         }
 
         const footerY = canvas.height - footerHeight + 40;
@@ -1908,19 +1917,19 @@ const app = {
         ctx.fillStyle = (this.frameColor === '#111111') ? '#ffffff' : '#111111';
         ctx.textAlign = 'center';
 
-        ctx.font = `bold 42px ${activeFont}`;
+        ctx.font = `bold 38px ${activeFont}`;
         ctx.fillText(this.mainText || 'SNAPBOOTH', canvas.width / 2, footerY);
 
-        ctx.font = `24px "Space Mono", monospace`;
-        ctx.fillText('SNAPBOOTHBYJAMES', canvas.width / 2, footerY + 50);
+        ctx.font = `22px "Space Mono", monospace`;
+        ctx.fillText('SNAPBOOTHBYJAMES', canvas.width / 2, footerY + 45);
 
-        ctx.font = `20px "Space Mono", monospace`;
+        ctx.font = `18px "Space Mono", monospace`;
         ctx.fillStyle = (this.frameColor === '#111111') ? '#a1a1aa' : '#71717a';
-        ctx.fillText(this.dateText || '', canvas.width / 2, footerY + 90);
+        ctx.fillText(this.dateText || '', canvas.width / 2, footerY + 80);
 
         this.placedStickers.forEach(s => {
             const scale = s.scale || 1.0;
-            const fontSize = Math.round(64 * scale);
+            const fontSize = Math.round(54 * scale);
             ctx.font = `${fontSize}px sans-serif`;
             const posX = (s.x / 100) * canvas.width;
             const posY = (s.y / 100) * canvas.height;
@@ -1975,7 +1984,7 @@ const app = {
         ctx.save();
 
         const isRounded = (this.photoCorners === 'rounded');
-        const radius = isRounded ? 24 : 0;
+        const radius = isRounded ? 20 : 0;
 
         if (this.currentLayout.includes('polaroid')) {
             ctx.fillStyle = '#FFFFFF';
@@ -2003,7 +2012,7 @@ const app = {
 
         ctx.save();
         ctx.strokeStyle = '#111111';
-        ctx.lineWidth = 6;
+        ctx.lineWidth = 5;
         if (isRounded) {
             this.drawRoundedRectPath(ctx, x, y, w, h, radius);
             ctx.stroke();
