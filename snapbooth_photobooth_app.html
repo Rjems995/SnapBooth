@@ -109,12 +109,18 @@
             letter-spacing: 0.04em;
             transition: all 0.1s ease;
             border-radius: 0px;
-            min-height: 44px;
+            min-height: 36px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             user-select: none;
             cursor: pointer;
+        }
+
+        @media (min-width: 640px) {
+            .studio-btn {
+                min-height: 44px;
+            }
         }
 
         .studio-btn:active {
@@ -166,13 +172,13 @@
 </head>
 <body class="flex flex-col justify-between min-h-screen">
 
-<header class="w-full bg-white border-b-2 border-studio-ink py-2.5 sm:py-3 px-3 sm:px-6 sticky top-0 z-40 flex items-center justify-between gap-2">
+<header class="w-full bg-white border-b-2 border-studio-ink py-2 sm:py-3 px-3 sm:px-6 sticky top-0 z-40 flex items-center justify-between gap-2">
     <div class="flex items-center gap-2 sm:gap-3 cursor-pointer shrink-0" onclick="app.navigateTo('home')">
-        <div class="w-8 h-8 sm:w-9 sm:h-9 bg-studio-ink text-white font-mono font-bold text-sm sm:text-lg flex items-center justify-center border border-studio-ink shadow-solid-sm">
+        <div class="w-7 h-7 sm:w-9 sm:h-9 bg-studio-ink text-white font-mono font-bold text-xs sm:text-lg flex items-center justify-center border border-studio-ink shadow-solid-sm">
             SB
         </div>
         <div>
-            <span class="text-sm sm:text-xl font-extrabold tracking-tighter uppercase block leading-none">
+            <span class="text-xs sm:text-xl font-extrabold tracking-tighter uppercase block leading-none">
                 SNAPBOOTH
             </span>
             <span class="text-[8px] sm:text-[10px] font-mono tracking-widest text-slate-600 hidden xs:block uppercase mt-0.5">
@@ -181,7 +187,7 @@
         </div>
     </div>
 
-    <div id="stepIndicator" class="flex items-center gap-1 sm:gap-1.5 font-mono text-[10px] sm:text-xs font-bold border-2 border-studio-ink bg-studio-bg px-2 sm:px-3 py-1 sm:py-1.5 shadow-solid-sm overflow-x-auto no-scrollbar">
+    <div id="stepIndicator" class="flex items-center gap-1 sm:gap-1.5 font-mono text-[9px] sm:text-xs font-bold border-2 border-studio-ink bg-studio-bg px-1.5 sm:px-3 py-0.5 sm:py-1.5 shadow-solid-sm overflow-x-auto no-scrollbar">
         <span id="step1" class="text-blue-600 font-extrabold underline">01<span class="hidden md:inline">.SHOTS</span></span>
         <span class="text-slate-300">/</span>
         <span id="step2" class="text-slate-400">02<span class="hidden md:inline">.CAMERA</span></span>
@@ -193,170 +199,170 @@
         <span id="step5" class="text-slate-400">05<span class="hidden md:inline">.EXPORT</span></span>
     </div>
 
-    <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-        <button id="soundToggleBtn" onclick="app.toggleSound()" title="Sound Effects" class="w-8 h-8 sm:w-9 sm:h-9 bg-white border-2 border-studio-ink hover:bg-slate-100 flex items-center justify-center shadow-solid-sm transition-all">
-            <i class="fa-solid fa-volume-high text-xs"></i>
+    <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+        <button id="soundToggleBtn" onclick="app.toggleSound()" title="Sound Effects" class="w-7 h-7 sm:w-9 sm:h-9 bg-white border-2 border-studio-ink hover:bg-slate-100 flex items-center justify-center shadow-solid-sm transition-all text-xs">
+            <i class="fa-solid fa-volume-high"></i>
         </button>
-        <button id="resetHeaderBtn" onclick="app.startOverPrompt()" class="hidden text-[10px] sm:text-xs bg-rose-50 text-rose-700 border-2 border-rose-700 px-2 sm:px-3 py-1 font-bold hover:bg-rose-100 transition-all shadow-solid-sm">
+        <button id="resetHeaderBtn" onclick="app.startOverPrompt()" class="hidden text-[9px] sm:text-xs bg-rose-50 text-rose-700 border-2 border-rose-700 px-1.5 sm:px-3 py-0.5 sm:py-1 font-bold hover:bg-rose-100 transition-all shadow-solid-sm">
             <i class="fa-solid fa-arrow-rotate-left mr-0.5"></i> RESET
         </button>
     </div>
 </header>
 
-<main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 flex flex-col justify-center items-center">
+<main class="flex-1 max-w-7xl w-full mx-auto p-2 sm:p-6 lg:p-8 flex flex-col justify-center items-center">
 
     <!-- SCREEN 0: Home -->
-    <section id="screen-home" class="w-full max-w-4xl text-center py-4 sm:py-8 flex flex-col items-center justify-center my-auto">
-        <div class="inline-flex items-center gap-2 px-3 py-1 border-2 border-studio-ink bg-white font-mono text-[11px] sm:text-xs font-bold mb-4 sm:mb-6 shadow-solid-sm">
+    <section id="screen-home" class="w-full max-w-4xl text-center py-3 sm:py-8 flex flex-col items-center justify-center my-auto">
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:py-1 border-2 border-studio-ink bg-white font-mono text-[10px] sm:text-xs font-bold mb-3 sm:mb-6 shadow-solid-sm">
             <span class="w-2 h-2 bg-blue-600 inline-block"></span> RAW WEBCAM PRINT ENGINE v3.0
         </div>
 
-        <h1 class="text-3xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-none mb-4 sm:mb-6">
+        <h1 class="text-2xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-none mb-3 sm:mb-6">
             SNAPBOOTH BY JAMES <br/>
-            <span class="bg-studio-ink text-white px-2 sm:px-3 py-0.5 sm:py-1 inline-block transform -rotate-1 mt-1 sm:mt-2">STUDIO</span>
+            <span class="bg-studio-ink text-white px-1.5 sm:px-3 py-0.5 sm:py-1 inline-block transform -rotate-1 mt-1 sm:mt-2">STUDIO</span>
         </h1>
 
-        <p class="text-slate-700 font-medium text-sm sm:text-lg max-w-2xl mb-8 sm:mb-10 leading-relaxed px-2">
+        <p class="text-slate-700 font-medium text-xs sm:text-lg max-w-2xl mb-6 sm:mb-10 leading-relaxed px-2">
             Minimalist photobooth experience tailored for all mobile screens and laptops. Pick your shot count, capture real-time poses in portrait or landscape orientations, and export high-res prints.
         </p>
 
-        <button onclick="app.navigateTo('shot-select')" class="studio-btn w-full sm:w-auto px-8 sm:px-10 py-4 bg-blue-600 text-white hover:bg-blue-700 text-base sm:text-lg flex items-center justify-center gap-3 shadow-solid-lg">
-            <i class="fa-solid fa-camera text-base"></i>
+        <button onclick="app.navigateTo('shot-select')" class="studio-btn w-full sm:w-auto px-6 sm:px-10 py-2.5 sm:py-4 bg-blue-600 text-white hover:bg-blue-700 text-xs sm:text-lg flex items-center justify-center gap-2 sm:gap-3 shadow-solid-lg">
+            <i class="fa-solid fa-camera text-xs sm:text-base"></i>
             <span>START PHOTOBOOTH</span>
         </button>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 mt-10 sm:mt-16 w-full text-left">
-            <div class="studio-box p-3 sm:p-4">
-                <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">01 / SHOT FORMATS</span>
-                <h3 class="font-extrabold uppercase text-xs sm:text-sm">2, 3, 4 & 6 Shots</h3>
-                <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Select exact count prior to camera activation.</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mt-8 sm:mt-16 w-full text-left">
+            <div class="studio-box p-2.5 sm:p-4">
+                <span class="font-mono text-[9px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">01 / SHOT FORMATS</span>
+                <h3 class="font-extrabold uppercase text-[11px] sm:text-sm">2, 3, 4 & 6 Shots</h3>
+                <p class="text-[9px] sm:text-xs text-slate-600 mt-0.5">Select exact count prior to camera activation.</p>
             </div>
-            <div class="studio-box p-3 sm:p-4">
-                <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">02 / ORIENTATION</span>
-                <h3 class="font-extrabold uppercase text-xs sm:text-sm">Portrait & Landscape</h3>
-                <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Toggle vertical 3:4, horizontal 4:3, square or mobile.</p>
+            <div class="studio-box p-2.5 sm:p-4">
+                <span class="font-mono text-[9px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">02 / ORIENTATION</span>
+                <h3 class="font-extrabold uppercase text-[11px] sm:text-sm">Portrait & Landscape</h3>
+                <p class="text-[9px] sm:text-xs text-slate-600 mt-0.5">Toggle vertical 3:4, horizontal 4:3, square or mobile.</p>
             </div>
-            <div class="studio-box p-3 sm:p-4">
-                <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">03 / CANVAS TOOLS</span>
-                <h3 class="font-extrabold uppercase text-xs sm:text-sm">Stickers & Text</h3>
-                <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Touch draggable overlays & typography.</p>
+            <div class="studio-box p-2.5 sm:p-4">
+                <span class="font-mono text-[9px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">03 / CANVAS TOOLS</span>
+                <h3 class="font-extrabold uppercase text-[11px] sm:text-sm">Stickers & Text</h3>
+                <p class="text-[9px] sm:text-xs text-slate-600 mt-0.5">Touch draggable overlays & typography.</p>
             </div>
-            <div class="studio-box p-3 sm:p-4">
-                <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">04 / EXPORT ENGINE</span>
-                <h3 class="font-extrabold uppercase text-xs sm:text-sm">300 DPI Rendering</h3>
-                <p class="text-[10px] sm:text-xs text-slate-600 mt-0.5">Export clean JPG or PNG files directly.</p>
+            <div class="studio-box p-2.5 sm:p-4">
+                <span class="font-mono text-[9px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">04 / EXPORT ENGINE</span>
+                <h3 class="font-extrabold uppercase text-[11px] sm:text-sm">300 DPI Rendering</h3>
+                <p class="text-[9px] sm:text-xs text-slate-600 mt-0.5">Export clean JPG or PNG files directly.</p>
             </div>
         </div>
     </section>
 
     <!-- SCREEN 1: Shot Selection -->
     <section id="screen-shot-select" class="w-full max-w-4xl hidden flex-col items-center py-2 sm:py-4">
-        <div class="text-center mb-6 sm:mb-8">
-            <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 01 / Selection</span>
-            <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-tight mt-1.5 sm:mt-2">How many shots would you like?</h2>
-            <p class="text-slate-600 text-xs sm:text-sm mt-1 px-2">Your choice determines the capture sequence, review grid, and layout geometries.</p>
+        <div class="text-center mb-4 sm:mb-8">
+            <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-1.5 sm:px-2 py-0.5 bg-blue-50 uppercase">Step 01 / Selection</span>
+            <h2 class="text-xl sm:text-4xl font-black uppercase tracking-tight mt-1 sm:mt-2">How many shots would you like?</h2>
+            <p class="text-slate-600 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">Your choice determines the capture sequence, review grid, and layout geometries.</p>
         </div>
 
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 w-full mb-6 sm:mb-8">
-            <div onclick="app.selectShotOption(2)" id="shot-opt-2" class="studio-card-interactive p-3 sm:p-5 flex flex-col items-center justify-between group">
-                <div class="text-center w-full mb-2 sm:mb-3">
-                    <span class="font-mono text-[10px] sm:text-xs text-slate-500 block">OPTION A</span>
-                    <span class="text-lg sm:text-2xl font-black uppercase">2 Shots 📸</span>
-                    <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Vertical Duo / Mini Strip</p>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-5 w-full mb-4 sm:mb-8">
+            <div onclick="app.selectShotOption(2)" id="shot-opt-2" class="studio-card-interactive p-2 sm:p-5 flex flex-col items-center justify-between group">
+                <div class="text-center w-full mb-1 sm:mb-3">
+                    <span class="font-mono text-[9px] sm:text-xs text-slate-500 block">OPTION A</span>
+                    <span class="text-base sm:text-2xl font-black uppercase">2 Shots 📸</span>
+                    <p class="text-[9px] sm:text-[11px] text-slate-500 mt-0.5">Vertical Duo / Mini Strip</p>
                 </div>
-                <div class="w-20 sm:w-24 h-28 sm:h-32 bg-slate-100 border-2 border-studio-ink p-1.5 sm:p-2 flex flex-col gap-1.5 sm:gap-2 justify-center my-1 sm:my-2">
-                    <div class="w-full h-10 sm:h-11 bg-white border border-studio-ink flex items-center justify-center font-mono text-[9px] font-bold">#1</div>
-                    <div class="w-full h-10 sm:h-11 bg-white border border-studio-ink flex items-center justify-center font-mono text-[9px] font-bold">#2</div>
+                <div class="w-16 sm:w-24 h-22 sm:h-32 bg-slate-100 border-2 border-studio-ink p-1 sm:p-2 flex flex-col gap-1 sm:gap-2 justify-center my-1 sm:my-2">
+                    <div class="w-full h-8 sm:h-11 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] sm:text-[9px] font-bold">#1</div>
+                    <div class="w-full h-8 sm:h-11 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] sm:text-[9px] font-bold">#2</div>
                 </div>
-                <div class="w-full text-center py-1.5 sm:py-2 bg-studio-ink text-white font-mono text-[10px] sm:text-xs font-bold uppercase mt-2">
+                <div class="w-full text-center py-1 sm:py-2 bg-studio-ink text-white font-mono text-[9px] sm:text-xs font-bold uppercase mt-1 sm:mt-2">
                     Select 2 Shots
                 </div>
             </div>
 
-            <div onclick="app.selectShotOption(3)" id="shot-opt-3" class="studio-card-interactive p-3 sm:p-5 flex flex-col items-center justify-between group">
-                <div class="text-center w-full mb-2 sm:mb-3">
-                    <span class="font-mono text-[10px] sm:text-xs text-slate-500 block">OPTION B</span>
-                    <span class="text-lg sm:text-2xl font-black uppercase">3 Shots 📸</span>
-                    <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Trio Strip & Polaroid</p>
+            <div onclick="app.selectShotOption(3)" id="shot-opt-3" class="studio-card-interactive p-2 sm:p-5 flex flex-col items-center justify-between group">
+                <div class="text-center w-full mb-1 sm:mb-3">
+                    <span class="font-mono text-[9px] sm:text-xs text-slate-500 block">OPTION B</span>
+                    <span class="text-base sm:text-2xl font-black uppercase">3 Shots 📸</span>
+                    <p class="text-[9px] sm:text-[11px] text-slate-500 mt-0.5">Trio Strip & Polaroid</p>
                 </div>
-                <div class="w-20 sm:w-24 h-28 sm:h-32 bg-slate-100 border-2 border-studio-ink p-1.5 sm:p-2 flex flex-col gap-1 justify-center my-1 sm:my-2">
-                    <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#1</div>
-                    <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#2</div>
-                    <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#3</div>
+                <div class="w-16 sm:w-24 h-22 sm:h-32 bg-slate-100 border-2 border-studio-ink p-1 sm:p-2 flex flex-col gap-0.5 sm:gap-1 justify-center my-1 sm:my-2">
+                    <div class="w-full h-5 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#1</div>
+                    <div class="w-full h-5 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#2</div>
+                    <div class="w-full h-5 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#3</div>
                 </div>
-                <div class="w-full text-center py-1.5 sm:py-2 bg-studio-ink text-white font-mono text-[10px] sm:text-xs font-bold uppercase mt-2">
+                <div class="w-full text-center py-1 sm:py-2 bg-studio-ink text-white font-mono text-[9px] sm:text-xs font-bold uppercase mt-1 sm:mt-2">
                     Select 3 Shots
                 </div>
             </div>
 
-            <div onclick="app.selectShotOption(4)" id="shot-opt-4" class="studio-card-interactive selected p-3 sm:p-5 flex flex-col items-center justify-between group">
-                <div class="text-center w-full mb-2 sm:mb-3">
-                    <span class="font-mono text-[10px] sm:text-xs text-slate-500 block">OPTION C</span>
-                    <span class="text-lg sm:text-2xl font-black uppercase">4 Shots 📸</span>
-                    <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">Classic K-Style 4-Cut</p>
+            <div onclick="app.selectShotOption(4)" id="shot-opt-4" class="studio-card-interactive selected p-2 sm:p-5 flex flex-col items-center justify-between group">
+                <div class="text-center w-full mb-1 sm:mb-3">
+                    <span class="font-mono text-[9px] sm:text-xs text-slate-500 block">OPTION C</span>
+                    <span class="text-base sm:text-2xl font-black uppercase">4 Shots 📸</span>
+                    <p class="text-[9px] sm:text-[11px] text-slate-500 mt-0.5">Classic K-Style 4-Cut</p>
                 </div>
-                <div class="w-20 sm:w-24 h-28 sm:h-32 bg-slate-100 border-2 border-studio-ink p-1.5 sm:p-2 grid grid-cols-2 gap-1 sm:gap-1.5 items-center my-1 sm:my-2">
-                    <div class="w-full h-9 sm:h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#1</div>
-                    <div class="w-full h-9 sm:h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#2</div>
-                    <div class="w-full h-9 sm:h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#3</div>
-                    <div class="w-full h-9 sm:h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[8px] font-bold">#4</div>
+                <div class="w-16 sm:w-24 h-22 sm:h-32 bg-slate-100 border-2 border-studio-ink p-1 sm:p-2 grid grid-cols-2 gap-0.5 sm:gap-1.5 items-center my-1 sm:my-2">
+                    <div class="w-full h-7 sm:h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#1</div>
+                    <div class="w-full h-7 sm:h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#2</div>
+                    <div class="w-full h-7 sm:h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#3</div>
+                    <div class="w-full h-7 sm:h-10 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#4</div>
                 </div>
-                <div class="w-full text-center py-1.5 sm:py-2 bg-studio-ink text-white font-mono text-[10px] sm:text-xs font-bold uppercase mt-2">
+                <div class="w-full text-center py-1 sm:py-2 bg-studio-ink text-white font-mono text-[9px] sm:text-xs font-bold uppercase mt-1 sm:mt-2">
                     Select 4 Shots
                 </div>
             </div>
 
-            <div onclick="app.selectShotOption(6)" id="shot-opt-6" class="studio-card-interactive p-3 sm:p-5 flex flex-col items-center justify-between group">
-                <div class="text-center w-full mb-2 sm:mb-3">
-                    <span class="font-mono text-[10px] sm:text-xs text-slate-500 block">OPTION D</span>
-                    <span class="text-lg sm:text-2xl font-black uppercase">6 Shots 📸</span>
-                    <p class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5">3x2 Grid & Deluxe Collage</p>
+            <div onclick="app.selectShotOption(6)" id="shot-opt-6" class="studio-card-interactive p-2 sm:p-5 flex flex-col items-center justify-between group">
+                <div class="text-center w-full mb-1 sm:mb-3">
+                    <span class="font-mono text-[9px] sm:text-xs text-slate-500 block">OPTION D</span>
+                    <span class="text-base sm:text-2xl font-black uppercase">6 Shots 📸</span>
+                    <p class="text-[9px] sm:text-[11px] text-slate-500 mt-0.5">3x2 Grid & Deluxe Collage</p>
                 </div>
-                <div class="w-20 sm:w-24 h-28 sm:h-32 bg-slate-100 border-2 border-studio-ink p-1 sm:p-1.5 grid grid-cols-2 gap-1 items-center my-1 sm:my-2">
-                    <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#1</div>
-                    <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#2</div>
-                    <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#3</div>
-                    <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#4</div>
-                    <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#5</div>
-                    <div class="w-full h-6 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[7px] font-bold">#6</div>
+                <div class="w-16 sm:w-24 h-22 sm:h-32 bg-slate-100 border-2 border-studio-ink p-1 sm:p-1.5 grid grid-cols-2 gap-0.5 sm:gap-1 items-center my-1 sm:my-2">
+                    <div class="w-full h-5 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#1</div>
+                    <div class="w-full h-5 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#2</div>
+                    <div class="w-full h-5 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#3</div>
+                    <div class="w-full h-5 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#4</div>
+                    <div class="w-full h-5 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#5</div>
+                    <div class="w-full h-5 sm:h-7 bg-white border border-studio-ink flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#6</div>
                 </div>
-                <div class="w-full text-center py-1.5 sm:py-2 bg-studio-ink text-white font-mono text-[10px] sm:text-xs font-bold uppercase mt-2">
+                <div class="w-full text-center py-1 sm:py-2 bg-studio-ink text-white font-mono text-[9px] sm:text-xs font-bold uppercase mt-1 sm:mt-2">
                     Select 6 Shots
                 </div>
             </div>
         </div>
 
-        <div id="shotSelectionSummary" class="w-full max-w-xl studio-box p-4 sm:p-6 text-center">
-            <span class="font-mono text-[10px] sm:text-xs uppercase text-slate-500 block">CONFIRMED SELECTION</span>
-            <h3 id="selectedShotText" class="text-xl sm:text-2xl font-black uppercase text-blue-600 mt-0.5">4 Shots Selected</h3>
-            <p id="selectedShotDesc" class="text-xs sm:text-sm text-slate-600 mt-1 mb-4 sm:mb-5">You will take exactly 4 photos in sequence for your studio strip.</p>
+        <div id="shotSelectionSummary" class="w-full max-w-xl studio-box p-3 sm:p-6 text-center">
+            <span class="font-mono text-[9px] sm:text-xs uppercase text-slate-500 block">CONFIRMED SELECTION</span>
+            <h3 id="selectedShotText" class="text-lg sm:text-2xl font-black uppercase text-blue-600 mt-0.5">4 Shots Selected</h3>
+            <p id="selectedShotDesc" class="text-[11px] sm:text-sm text-slate-600 mt-0.5 sm:mt-1 mb-3 sm:mb-5">You will take exactly 4 photos in sequence for your studio strip.</p>
 
-            <button onclick="app.confirmShotsAndOpenCamera()" class="studio-btn w-full py-3.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base flex items-center justify-center gap-2 shadow-solid-sm">
+            <button onclick="app.confirmShotsAndOpenCamera()" class="studio-btn w-full py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-base flex items-center justify-center gap-1.5 sm:gap-2 shadow-solid-sm">
                 <span>CONTINUE TO CAMERA</span>
-                <i class="fa-solid fa-arrow-right text-xs sm:text-sm"></i>
+                <i class="fa-solid fa-arrow-right text-[10px] sm:text-sm"></i>
             </button>
         </div>
     </section>
 
     <!-- SCREEN 2: Camera Viewport -->
     <section id="screen-camera" class="w-full max-w-4xl hidden flex-col items-center">
-        <div class="flex flex-wrap items-center justify-between w-full gap-2 mb-3 sm:mb-4">
+        <div class="flex flex-wrap items-center justify-between w-full gap-1.5 sm:gap-2 mb-2 sm:mb-4">
             <div>
-                <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 02 / Capture</span>
-                <h2 class="text-xl sm:text-3xl font-black uppercase mt-0.5">Camera Feed</h2>
+                <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-1.5 sm:px-2 py-0.5 bg-blue-50 uppercase">Step 02 / Capture</span>
+                <h2 class="text-lg sm:text-3xl font-black uppercase mt-0.5">Camera Feed</h2>
             </div>
 
-            <div class="flex items-center gap-2">
-                <div class="border-2 border-studio-ink bg-white p-1 flex items-center gap-1 shadow-solid-sm">
-                    <span class="font-mono text-[9px] sm:text-[10px] font-bold px-1 uppercase text-slate-500"><i class="fa-solid fa-stopwatch"></i> TIMER:</span>
-                    <button onclick="app.setTimerDuration(3)" id="timerBtn-3" class="px-2 py-0.5 font-mono text-xs font-bold border border-studio-ink bg-blue-600 text-white">3S</button>
-                    <button onclick="app.setTimerDuration(5)" id="timerBtn-5" class="px-2 py-0.5 font-mono text-xs font-bold border border-studio-ink bg-white text-studio-ink hover:bg-slate-100">5S</button>
-                    <button onclick="app.setTimerDuration(10)" id="timerBtn-10" class="px-2 py-0.5 font-mono text-xs font-bold border border-studio-ink bg-white text-studio-ink hover:bg-slate-100">10S</button>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <div class="border-2 border-studio-ink bg-white p-0.5 sm:p-1 flex items-center gap-0.5 sm:gap-1 shadow-solid-sm">
+                    <span class="font-mono text-[8px] sm:text-[10px] font-bold px-0.5 sm:px-1 uppercase text-slate-500"><i class="fa-solid fa-stopwatch"></i> TIMER:</span>
+                    <button onclick="app.setTimerDuration(3)" id="timerBtn-3" class="px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-ink bg-blue-600 text-white">3S</button>
+                    <button onclick="app.setTimerDuration(5)" id="timerBtn-5" class="px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-ink bg-white text-studio-ink hover:bg-slate-100">5S</button>
+                    <button onclick="app.setTimerDuration(10)" id="timerBtn-10" class="px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-ink bg-white text-studio-ink hover:bg-slate-100">10S</button>
                 </div>
 
-                <div class="border-2 border-studio-ink bg-white px-3 sm:px-4 py-1.5 sm:py-2 font-mono text-right shadow-solid-sm">
-                    <span class="text-[9px] sm:text-[10px] text-slate-500 block uppercase font-bold">SEQUENCE</span>
-                    <span id="cameraShotCounter" class="text-sm sm:text-base font-black text-blue-600">SHOT 1 OF 4</span>
+                <div class="border-2 border-studio-ink bg-white px-2 sm:px-4 py-1 sm:py-2 font-mono text-right shadow-solid-sm">
+                    <span class="text-[8px] sm:text-[10px] text-slate-500 block uppercase font-bold">SEQUENCE</span>
+                    <span id="cameraShotCounter" class="text-xs sm:text-base font-black text-blue-600">SHOT 1 OF 4</span>
                 </div>
             </div>
         </div>
@@ -366,49 +372,49 @@
             <canvas id="fallbackCanvas" class="hidden w-full h-full object-cover"></canvas>
 
             <div id="countdownContainer" class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20 hidden">
-                <span id="countdownNumber" class="text-8xl sm:text-9xl font-black text-white font-mono animate-bounce">3</span>
+                <span id="countdownNumber" class="text-6xl sm:text-9xl font-black text-white font-mono animate-bounce">3</span>
             </div>
 
             <div id="flashOverlay" class="absolute inset-0 bg-white z-30"></div>
 
-            <button id="liveFilterToggleBtn" onclick="app.toggleLiveFiltersUI()" title="Show Live Filters" class="hidden absolute top-3 left-3 z-30 bg-black/80 text-white border-2 border-white px-2 py-1 font-mono text-[10px] font-bold shadow-solid-sm flex items-center gap-1.5 pointer-events-auto hover:bg-black">
+            <button id="liveFilterToggleBtn" onclick="app.toggleLiveFiltersUI()" title="Show Live Filters" class="hidden absolute top-2 left-2 sm:top-3 sm:left-3 z-30 bg-black/80 text-white border-2 border-white px-1.5 py-0.5 sm:px-2 sm:py-1 font-mono text-[9px] sm:text-[10px] font-bold shadow-solid-sm flex items-center gap-1 pointer-events-auto hover:bg-black">
                 <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> FILTERS
             </button>
 
-            <div id="liveFilterBar" class="absolute top-3 left-3 z-30 flex items-center gap-1 bg-black/80 p-1.5 border-2 border-white shadow-solid-sm pointer-events-auto">
-                <span class="text-[10px] font-mono font-bold text-white px-1 uppercase"><i class="fa-solid fa-wand-magic-sparkles"></i> LIVE:</span>
-                <button onclick="app.setLiveCameraFilter('original')" class="studio-btn px-2 py-1 text-[10px] font-mono bg-white text-black font-bold">RAW</button>
-                <button onclick="app.setLiveCameraFilter('bw')" class="studio-btn px-2 py-1 text-[10px] font-mono bg-zinc-800 text-white">B&W</button>
-                <button onclick="app.setLiveCameraFilter('cool')" class="studio-btn px-2 py-1 text-[10px] font-mono bg-sky-800 text-white">COOL</button>
-                <button onclick="app.setLiveCameraFilter('warm')" class="studio-btn px-2 py-1 text-[10px] font-mono bg-amber-700 text-white">WARM</button>
-                <button onclick="app.toggleLiveFiltersUI()" title="Hide Filter Bar" class="ml-1 text-slate-300 hover:text-white px-1.5 py-0.5 text-xs font-bold leading-none">&times;</button>
+            <div id="liveFilterBar" class="absolute top-2 left-2 sm:top-3 sm:left-3 z-30 flex items-center gap-0.5 sm:gap-1 bg-black/80 p-1 sm:p-1.5 border-2 border-white shadow-solid-sm pointer-events-auto">
+                <span class="text-[8px] sm:text-[10px] font-mono font-bold text-white px-0.5 uppercase"><i class="fa-solid fa-wand-magic-sparkles"></i> LIVE:</span>
+                <button onclick="app.setLiveCameraFilter('original')" class="studio-btn px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono bg-white text-black font-bold min-h-0">RAW</button>
+                <button onclick="app.setLiveCameraFilter('bw')" class="studio-btn px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono bg-zinc-800 text-white min-h-0">B&W</button>
+                <button onclick="app.setLiveCameraFilter('cool')" class="studio-btn px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono bg-sky-800 text-white min-h-0">COOL</button>
+                <button onclick="app.setLiveCameraFilter('warm')" class="studio-btn px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono bg-amber-700 text-white min-h-0">WARM</button>
+                <button onclick="app.toggleLiveFiltersUI()" title="Hide Filter Bar" class="ml-0.5 text-slate-300 hover:text-white px-1 py-0.5 text-[10px] font-bold leading-none">&times;</button>
             </div>
 
-            <div class="absolute bottom-3 left-3 right-3 flex justify-between items-center z-10 pointer-events-auto">
-                <div id="cameraStatusMsg" class="bg-studio-ink text-white font-mono text-[10px] sm:text-xs px-2.5 py-1 flex items-center gap-2 border border-white pointer-events-auto">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> LIVE CAMERA
+            <div class="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex justify-between items-center z-10 pointer-events-auto">
+                <div id="cameraStatusMsg" class="bg-studio-ink text-white font-mono text-[8px] sm:text-xs px-1.5 sm:px-2.5 py-0.5 sm:py-1 flex items-center gap-1.5 border border-white pointer-events-auto">
+                    <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 animate-pulse"></span> LIVE CAMERA
                 </div>
-                <div class="flex items-center gap-1.5 pointer-events-auto">
-                    <button onclick="app.toggleCameraMirror()" id="mirrorToggleBtn" title="Toggle Selfie Mirror" class="bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink px-2 py-1 font-mono text-[10px] font-bold shadow-solid-sm">
-                        <i class="fa-solid fa-arrows-left-right mr-1"></i> MIRROR: ON
+                <div class="flex items-center gap-1 sm:gap-1.5 pointer-events-auto">
+                    <button onclick="app.toggleCameraMirror()" id="mirrorToggleBtn" title="Toggle Selfie Mirror" class="bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink px-1.5 py-0.5 sm:px-2 sm:py-1 font-mono text-[9px] sm:text-[10px] font-bold shadow-solid-sm">
+                        <i class="fa-solid fa-arrows-left-right mr-0.5 sm:mr-1"></i> MIRROR: ON
                     </button>
-                    <button onclick="app.switchCameraDevice()" title="Flip Lens" class="bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink p-1.5 font-mono text-xs font-bold shadow-solid-sm">
+                    <button onclick="app.switchCameraDevice()" title="Flip Lens" class="bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink p-1 sm:p-1.5 font-mono text-[10px] sm:text-xs font-bold shadow-solid-sm">
                         <i class="fa-solid fa-camera-rotate"></i>
                     </button>
-                    <button onclick="app.triggerFileUpload()" title="Upload Image Fallback" class="bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink px-2 py-1 font-mono text-[10px] font-bold shadow-solid-sm">
+                    <button onclick="app.triggerFileUpload()" title="Upload Image Fallback" class="bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink px-1.5 py-0.5 sm:px-2 sm:py-1 font-mono text-[9px] sm:text-[10px] font-bold shadow-solid-sm">
                         <i class="fa-solid fa-upload"></i> UPLOAD
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-3 items-center justify-center mt-4 sm:mt-6 w-full">
-            <button id="startCaptureBtn" onclick="app.startPhotoCaptureSequence()" class="studio-btn w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center justify-center gap-3 shadow-solid-sm">
-                <i class="fa-solid fa-camera-retro text-lg"></i>
+        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-center justify-center mt-3 sm:mt-6 w-full">
+            <button id="startCaptureBtn" onclick="app.startPhotoCaptureSequence()" class="studio-btn w-full sm:w-auto px-5 sm:px-8 py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-base flex items-center justify-center gap-2 sm:gap-3 shadow-solid-sm">
+                <i class="fa-solid fa-camera-retro text-sm sm:text-lg"></i>
                 <span>START CAPTURE SEQUENCE</span>
             </button>
 
-            <button onclick="app.navigateTo('shot-select')" class="studio-btn w-full sm:w-auto px-5 py-3 bg-white hover:bg-slate-100 text-studio-ink text-xs shadow-solid-sm">
+            <button onclick="app.navigateTo('shot-select')" class="studio-btn w-full sm:w-auto px-4 sm:px-5 py-2 sm:py-3 bg-white hover:bg-slate-100 text-studio-ink text-[11px] sm:text-xs shadow-solid-sm">
                 <i class="fa-solid fa-arrow-left mr-1"></i> CHANGE SHOT COUNT
             </button>
         </div>
@@ -416,20 +422,20 @@
 
     <!-- SCREEN 3: Review Photos -->
     <section id="screen-review" class="w-full max-w-5xl hidden flex-col items-center">
-        <div class="text-center mb-4 sm:mb-6">
-            <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 03 / Review</span>
-            <h2 class="text-2xl sm:text-3xl font-black uppercase mt-1">Review Captured Shots</h2>
-            <p class="text-slate-600 text-xs sm:text-sm mt-1 px-2">Inspect your photos. Tap retake on any single frame to replace it.</p>
+        <div class="text-center mb-3 sm:mb-6">
+            <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-1.5 sm:px-2 py-0.5 bg-blue-50 uppercase">Step 03 / Review</span>
+            <h2 class="text-xl sm:text-3xl font-black uppercase mt-0.5 sm:mt-1">Review Captured Shots</h2>
+            <p class="text-slate-600 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">Inspect your photos. Tap retake on any single frame to replace it.</p>
         </div>
 
-        <div id="photoReviewGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 w-full mb-6 sm:mb-8"></div>
+        <div id="photoReviewGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 w-full mb-4 sm:mb-8"></div>
 
-        <div class="flex flex-col sm:flex-row gap-3 justify-center items-center w-full">
-            <button onclick="app.retakeAllPhotos()" class="studio-btn w-full sm:w-auto px-6 py-3.5 bg-rose-50 text-rose-700 border-rose-700 hover:bg-rose-100 text-xs shadow-solid-sm flex items-center justify-center gap-2">
+        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center items-center w-full">
+            <button onclick="app.retakeAllPhotos()" class="studio-btn w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3.5 bg-rose-50 text-rose-700 border-rose-700 hover:bg-rose-100 text-[11px] sm:text-xs shadow-solid-sm flex items-center justify-center gap-1.5 sm:gap-2">
                 <i class="fa-solid fa-rotate-left"></i> RETAKE ALL PHOTOS
             </button>
 
-            <button onclick="app.navigateTo('customize')" class="studio-btn w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm shadow-solid-sm flex items-center justify-center gap-2">
+            <button onclick="app.navigateTo('customize')" class="studio-btn w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm shadow-solid-sm flex items-center justify-center gap-1.5 sm:gap-2">
                 <span>CONTINUE TO LAYOUT DESIGN</span>
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
@@ -437,29 +443,29 @@
     </section>
 
     <!-- SCREEN 4: Customization Studio -->
-    <section id="screen-customize" class="w-full max-w-6xl hidden flex-col lg:flex-row gap-6 lg:gap-8 items-start">
+    <section id="screen-customize" class="w-full max-w-6xl hidden flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8 items-start">
         
         <div class="w-full lg:w-1/2 flex flex-col items-center lg:sticky lg:top-20">
-            <div class="w-full flex items-center justify-between mb-2">
-                <span class="font-mono text-[10px] sm:text-xs font-bold text-slate-600 uppercase"><i class="fa-solid fa-eye mr-1"></i> LIVE STRIP PREVIEW</span>
-                <div class="flex gap-1.5 items-center">
-                    <span id="currentOrientationBadge" class="font-mono text-[9px] sm:text-[10px] bg-slate-100 text-slate-800 border border-slate-300 px-1.5 py-0.5 font-bold uppercase">PORTRAIT 3:4</span>
-                    <span id="currentShotBadge" class="font-mono text-[10px] sm:text-xs bg-blue-100 text-blue-700 border border-blue-300 px-2 py-0.5 font-bold">4 SHOTS</span>
+            <div class="w-full flex items-center justify-between mb-1.5 sm:mb-2">
+                <span class="font-mono text-[9px] sm:text-xs font-bold text-slate-600 uppercase"><i class="fa-solid fa-eye mr-1"></i> LIVE STRIP PREVIEW</span>
+                <div class="flex gap-1 sm:gap-1.5 items-center">
+                    <span id="currentOrientationBadge" class="font-mono text-[8px] sm:text-[10px] bg-slate-100 text-slate-800 border border-slate-300 px-1 sm:px-1.5 py-0.5 font-bold uppercase">PORTRAIT 3:4</span>
+                    <span id="currentShotBadge" class="font-mono text-[9px] sm:text-xs bg-blue-100 text-blue-700 border border-blue-300 px-1.5 sm:px-2 py-0.5 font-bold">4 SHOTS</span>
                 </div>
             </div>
 
-            <div id="photoboothPreviewContainer" class="relative w-full flex justify-center items-center p-3 sm:p-6 studio-box min-h-[380px] sm:min-h-[460px] bg-studio-bg overflow-hidden">
-                <div id="photoboothStrip" class="relative studio-box transition-all duration-200 flex flex-col items-center justify-between p-3 sm:p-4" style="background-color: #FFFFFF; width: 100%; max-width: 290px;">
+            <div id="photoboothPreviewContainer" class="relative w-full flex justify-center items-center p-2 sm:p-6 studio-box min-h-[320px] sm:min-h-[460px] bg-studio-bg overflow-hidden">
+                <div id="photoboothStrip" class="relative studio-box transition-all duration-200 flex flex-col items-center justify-between p-2.5 sm:p-4" style="background-color: #FFFFFF; width: 100%; max-width: 290px;">
                     <div id="stripHeaderTitle" class="w-full text-center mb-2 font-bold text-slate-800 text-xs uppercase tracking-wider hidden">
                         SNAPBOOTH STUDIO
                     </div>
 
                     <div id="stripPhotosContainer" class="w-full"></div>
 
-                    <div id="stripFooterArea" class="w-full text-center mt-3 pt-2 border-t border-slate-200">
-                        <p id="stripTextMain" class="font-mono font-bold text-xs sm:text-sm tracking-wider uppercase text-slate-900">SNAPBOOTH 2026</p>
-                        <p id="stripTextSub" class="font-mono text-[9px] sm:text-[10px] text-slate-500 uppercase mt-0.5">SNAPBOOTHBYJAMES</p>
-                        <p id="stripDate" class="font-mono text-[8px] sm:text-[9px] text-slate-400 mt-0.5 sm:mt-1">2026.09.18</p>
+                    <div id="stripFooterArea" class="w-full text-center mt-2.5 sm:mt-3 pt-1.5 sm:pt-2 border-t border-slate-200">
+                        <p id="stripTextMain" class="font-mono font-bold text-[11px] sm:text-sm tracking-wider uppercase text-slate-900">SNAPBOOTH 2026</p>
+                        <p id="stripTextSub" class="font-mono text-[8px] sm:text-[10px] text-slate-500 uppercase mt-0.5">SNAPBOOTHBYJAMES</p>
+                        <p id="stripDate" class="font-mono text-[7px] sm:text-[9px] text-slate-400 mt-0.5 sm:mt-1">2026.09.18</p>
                     </div>
 
                     <div id="placedStickersLayer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
@@ -468,131 +474,131 @@
             </div>
         </div>
 
-        <div class="w-full lg:w-1/2 studio-box p-4 sm:p-6 flex flex-col gap-4 sm:gap-6 min-w-0">
+        <div class="w-full lg:w-1/2 studio-box p-3 sm:p-6 flex flex-col gap-3 sm:gap-6 min-w-0">
             <div>
-                <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 04 / Customization</span>
-                <h2 class="text-xl sm:text-2xl font-black uppercase mt-1">Customize Studio Strip</h2>
+                <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-1.5 sm:px-2 py-0.5 bg-blue-50 uppercase">Step 04 / Customization</span>
+                <h2 class="text-lg sm:text-2xl font-black uppercase mt-0.5 sm:mt-1">Customize Studio Strip</h2>
             </div>
 
             <div class="flex items-center w-full border-b-2 border-studio-ink">
-                <button onclick="app.scrollTabs('left')" title="Scroll Left" class="px-2 py-2 bg-slate-100 hover:bg-slate-200 text-studio-ink border-r border-studio-ink font-bold text-xs shrink-0 flex items-center justify-center">
-                    <i class="fa-solid fa-chevron-left text-[11px]"></i>
+                <button onclick="app.scrollTabs('left')" title="Scroll Left" class="px-1.5 sm:px-2 py-1.5 sm:py-2 bg-slate-100 hover:bg-slate-200 text-studio-ink border-r border-studio-ink font-bold text-[10px] sm:text-xs shrink-0 flex items-center justify-center">
+                    <i class="fa-solid fa-chevron-left text-[9px] sm:text-[11px]"></i>
                 </button>
 
                 <div id="tabBarScrollContainer" class="flex-1 overflow-x-auto no-scrollbar scroll-smooth">
-                    <div class="flex font-mono text-[11px] sm:text-xs font-bold w-max">
-                        <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="shrink-0 px-2.5 py-2 bg-studio-ink text-white border-r border-studio-ink whitespace-nowrap">
+                    <div class="flex font-mono text-[10px] sm:text-xs font-bold w-max">
+                        <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="shrink-0 px-2 sm:px-2.5 py-1.5 sm:py-2 bg-studio-ink text-white border-r border-studio-ink whitespace-nowrap">
                             1. LAYOUT
                         </button>
-                        <button onclick="app.setControlTab('themes')" id="tabBtn-themes" class="shrink-0 px-2.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
+                        <button onclick="app.setControlTab('themes')" id="tabBtn-themes" class="shrink-0 px-2 sm:px-2.5 py-1.5 sm:py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
                             2. THEMES
                         </button>
-                        <button onclick="app.setControlTab('filters')" id="tabBtn-filters" class="shrink-0 px-2.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
+                        <button onclick="app.setControlTab('filters')" id="tabBtn-filters" class="shrink-0 px-2 sm:px-2.5 py-1.5 sm:py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
                             3. FILTERS
                         </button>
-                        <button onclick="app.setControlTab('text')" id="tabBtn-text" class="shrink-0 px-2.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
+                        <button onclick="app.setControlTab('text')" id="tabBtn-text" class="shrink-0 px-2 sm:px-2.5 py-1.5 sm:py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
                             4. TEXT & STICKERS
                         </button>
-                        <button onclick="app.setControlTab('draw')" id="tabBtn-draw" class="shrink-0 px-2.5 py-2 bg-white text-studio-ink hover:bg-slate-100 whitespace-nowrap">
+                        <button onclick="app.setControlTab('draw')" id="tabBtn-draw" class="shrink-0 px-2 sm:px-2.5 py-1.5 sm:py-2 bg-white text-studio-ink hover:bg-slate-100 whitespace-nowrap">
                             <i class="fa-solid fa-pen-nib mr-1"></i>5. DOODLE
                         </button>
                     </div>
                 </div>
 
-                <button onclick="app.scrollTabs('right')" title="Scroll Right" class="px-2 py-2 bg-slate-100 hover:bg-slate-200 text-studio-ink border-l border-studio-ink font-bold text-xs shrink-0 flex items-center justify-center">
-                    <i class="fa-solid fa-chevron-right text-[11px]"></i>
+                <button onclick="app.scrollTabs('right')" title="Scroll Right" class="px-1.5 sm:px-2 py-1.5 sm:py-2 bg-slate-100 hover:bg-slate-200 text-studio-ink border-l border-studio-ink font-bold text-[10px] sm:text-xs shrink-0 flex items-center justify-center">
+                    <i class="fa-solid fa-chevron-right text-[9px] sm:text-[11px]"></i>
                 </button>
             </div>
 
-            <div id="tabContent-layouts" class="flex flex-col gap-4">
+            <div id="tabContent-layouts" class="flex flex-col gap-3 sm:gap-4">
                 <div>
-                    <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1.5">PHOTO ORIENTATION / ASPECT RATIO:</span>
-                    <div class="grid grid-cols-4 gap-2">
-                        <button onclick="app.setPhotoOrientation('portrait')" id="orientBtn-portrait" class="studio-btn py-2 text-xs bg-blue-600 text-white flex-col gap-0.5">
-                            <i class="fa-solid fa-mobile-screen text-xs"></i>
+                    <span class="text-[10px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1">PHOTO ORIENTATION / ASPECT RATIO:</span>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
+                        <button onclick="app.setPhotoOrientation('portrait')" id="orientBtn-portrait" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-blue-600 text-white flex-col gap-0.5">
+                            <i class="fa-solid fa-mobile-screen text-[10px] sm:text-xs"></i>
                             <span>PORTRAIT (3:4)</span>
                         </button>
-                        <button onclick="app.setPhotoOrientation('landscape')" id="orientBtn-landscape" class="studio-btn py-2 text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5">
-                            <i class="fa-solid fa-laptop text-xs"></i>
+                        <button onclick="app.setPhotoOrientation('landscape')" id="orientBtn-landscape" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5">
+                            <i class="fa-solid fa-laptop text-[10px] sm:text-xs"></i>
                             <span>LANDSCAPE (4:3)</span>
                         </button>
-                        <button onclick="app.setPhotoOrientation('square')" id="orientBtn-square" class="studio-btn py-2 text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5">
-                            <i class="fa-solid fa-square text-xs"></i>
+                        <button onclick="app.setPhotoOrientation('square')" id="orientBtn-square" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5">
+                            <i class="fa-solid fa-square text-[10px] sm:text-xs"></i>
                             <span>SQUARE (1:1)</span>
                         </button>
-                        <button onclick="app.setPhotoOrientation('mobile')" id="orientBtn-mobile" class="studio-btn py-2 text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5">
-                            <i class="fa-solid fa-mobile text-xs"></i>
+                        <button onclick="app.setPhotoOrientation('mobile')" id="orientBtn-mobile" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5">
+                            <i class="fa-solid fa-mobile text-[10px] sm:text-xs"></i>
                             <span>MOBILE (9:16)</span>
                         </button>
                     </div>
                 </div>
 
-                <div class="border-t border-slate-200 pt-3">
-                    <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-2">COMPATIBLE GEOMETRIES:</span>
-                    <div id="layoutOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+                <div class="border-t border-slate-200 pt-2 sm:pt-3">
+                    <span class="text-[10px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1.5 sm:mb-2">COMPATIBLE GEOMETRIES:</span>
+                    <div id="layoutOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 sm:gap-2.5"></div>
                 </div>
             </div>
 
-            <div id="tabContent-themes" class="hidden flex-col gap-4">
+            <div id="tabContent-themes" class="hidden flex-col gap-3 sm:gap-4">
                 <div>
-                    <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-2">PRESET STUDIO THEMES:</span>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                        <button onclick="app.applyPresetTheme('classic')" class="studio-btn py-2 text-xs min-h-[38px] bg-white">CLASSIC</button>
-                        <button onclick="app.applyPresetTheme('minimal')" class="studio-btn py-2 text-xs min-h-[38px] bg-slate-100">MINIMAL</button>
-                        <button onclick="app.applyPresetTheme('korean')" class="studio-btn py-2 text-xs min-h-[38px] bg-blue-50 text-blue-700 border-blue-700">HARU BLUE</button>
-                        <button onclick="app.applyPresetTheme('film')" class="studio-btn py-2 text-xs min-h-[38px] bg-zinc-900 text-white">BLACK FILM</button>
-                        <button onclick="app.applyPresetTheme('cute')" class="studio-btn py-2 text-xs min-h-[38px] bg-pink-100 text-pink-700">PASTEL PINK</button>
-                        <button onclick="app.applyPresetTheme('retro')" class="studio-btn py-2 text-xs min-h-[38px] bg-amber-100 text-amber-800">VINTAGE</button>
-                        <button onclick="app.applyPresetTheme('party')" class="studio-btn py-2 text-xs min-h-[38px] bg-purple-100 text-purple-800">PARTY Y2K</button>
-                        <button onclick="app.applyPresetTheme('wedding')" class="studio-btn py-2 text-xs min-h-[38px] bg-stone-100 text-stone-800 font-serif">EDITORIAL</button>
+                    <span class="text-[10px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1.5 sm:mb-2">PRESET STUDIO THEMES:</span>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
+                        <button onclick="app.applyPresetTheme('classic')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-white">CLASSIC</button>
+                        <button onclick="app.applyPresetTheme('minimal')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-slate-100">MINIMAL</button>
+                        <button onclick="app.applyPresetTheme('korean')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-blue-50 text-blue-700 border-blue-700">HARU BLUE</button>
+                        <button onclick="app.applyPresetTheme('film')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-zinc-900 text-white">BLACK FILM</button>
+                        <button onclick="app.applyPresetTheme('cute')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-pink-100 text-pink-700">PASTEL PINK</button>
+                        <button onclick="app.applyPresetTheme('retro')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-amber-100 text-amber-800">VINTAGE</button>
+                        <button onclick="app.applyPresetTheme('party')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-purple-100 text-purple-800">PARTY Y2K</button>
+                        <button onclick="app.applyPresetTheme('wedding')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-stone-100 text-stone-800 font-serif">EDITORIAL</button>
                     </div>
                 </div>
 
-                <div class="border-t border-slate-200 pt-3">
-                    <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-2">FRAME COLOR & PHOTO CORNERS:</span>
-                    <div class="flex flex-wrap items-center gap-3">
-                        <input type="color" id="frameColorInput" value="#ffffff" onchange="app.updateFrameColor(this.value)" class="w-10 h-10 border-2 border-studio-ink cursor-pointer p-0.5">
-                        <div class="flex gap-2 flex-wrap">
-                            <button onclick="app.updateFrameColor('#ffffff')" class="w-8 h-8 bg-white border border-studio-ink"></button>
-                            <button onclick="app.updateFrameColor('#111111')" class="w-8 h-8 bg-black border border-studio-ink"></button>
-                            <button onclick="app.updateFrameColor('#2563eb')" class="w-8 h-8 bg-blue-600 border border-studio-ink"></button>
-                            <button onclick="app.updateFrameColor('#fce7f3')" class="w-8 h-8 bg-pink-200 border border-studio-ink"></button>
-                            <button onclick="app.updateFrameColor('#fef3c7')" class="w-8 h-8 bg-amber-100 border border-studio-ink"></button>
-                            <button onclick="app.updateFrameColor('#d1fae5')" class="w-8 h-8 bg-emerald-100 border border-studio-ink"></button>
+                <div class="border-t border-slate-200 pt-2 sm:pt-3">
+                    <span class="text-[10px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1.5 sm:mb-2">FRAME COLOR & PHOTO CORNERS:</span>
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                        <input type="color" id="frameColorInput" value="#ffffff" onchange="app.updateFrameColor(this.value)" class="w-8 h-8 sm:w-10 sm:h-10 border-2 border-studio-ink cursor-pointer p-0.5">
+                        <div class="flex gap-1.5 sm:gap-2 flex-wrap">
+                            <button onclick="app.updateFrameColor('#ffffff')" class="w-6 h-6 sm:w-8 sm:h-8 bg-white border border-studio-ink"></button>
+                            <button onclick="app.updateFrameColor('#111111')" class="w-6 h-6 sm:w-8 sm:h-8 bg-black border border-studio-ink"></button>
+                            <button onclick="app.updateFrameColor('#2563eb')" class="w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 border border-studio-ink"></button>
+                            <button onclick="app.updateFrameColor('#fce7f3')" class="w-6 h-6 sm:w-8 sm:h-8 bg-pink-200 border border-studio-ink"></button>
+                            <button onclick="app.updateFrameColor('#fef3c7')" class="w-6 h-6 sm:w-8 sm:h-8 bg-amber-100 border border-studio-ink"></button>
+                            <button onclick="app.updateFrameColor('#d1fae5')" class="w-6 h-6 sm:w-8 sm:h-8 bg-emerald-100 border border-studio-ink"></button>
                         </div>
 
-                        <div class="ml-auto flex items-center gap-1 border border-studio-ink p-1 bg-white">
-                            <span class="text-[10px] font-mono font-bold px-1">CORNERS:</span>
-                            <button onclick="app.setPhotoCorners('sharp')" id="cornerBtn-sharp" class="px-2 py-0.5 text-[10px] font-mono font-bold bg-studio-ink text-white">SHARP</button>
-                            <button onclick="app.setPhotoCorners('rounded')" id="cornerBtn-rounded" class="px-2 py-0.5 text-[10px] font-mono font-bold bg-slate-100 text-black">ROUNDED</button>
+                        <div class="ml-auto flex items-center gap-1 border border-studio-ink p-0.5 sm:p-1 bg-white">
+                            <span class="text-[9px] sm:text-[10px] font-mono font-bold px-0.5 sm:px-1">CORNERS:</span>
+                            <button onclick="app.setPhotoCorners('sharp')" id="cornerBtn-sharp" class="px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-bold bg-studio-ink text-white">SHARP</button>
+                            <button onclick="app.setPhotoCorners('rounded')" id="cornerBtn-rounded" class="px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-bold bg-slate-100 text-black">ROUNDED</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="tabContent-filters" class="hidden flex-col gap-3">
-                <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block">APPLY FILTER TO ALL SNAPSHOTS:</span>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    <button onclick="app.setFilter('original')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-white">ORIGINAL</button>
-                    <button onclick="app.setFilter('bw')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-zinc-800 text-white">B&W MONO</button>
-                    <button onclick="app.setFilter('vintage')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-amber-50 text-amber-900">VINTAGE</button>
-                    <button onclick="app.setFilter('sepia')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-orange-100 text-orange-950">SEPIA</button>
-                    <button onclick="app.setFilter('warm')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-rose-50 text-rose-900">WARM TONE</button>
-                    <button onclick="app.setFilter('cool')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-sky-50 text-sky-900">COOL BLUE</button>
-                    <button onclick="app.setFilter('contrast')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-black text-white">CONTRAST</button>
-                    <button onclick="app.setFilter('bright')" class="studio-btn py-2.5 text-xs min-h-[40px] bg-emerald-50 text-emerald-900">LEICA BRIGHT</button>
+            <div id="tabContent-filters" class="hidden flex-col gap-2.5 sm:gap-3">
+                <span class="text-[10px] sm:text-xs font-bold text-slate-600 font-mono uppercase block">APPLY FILTER TO ALL SNAPSHOTS:</span>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
+                    <button onclick="app.setFilter('original')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-white">ORIGINAL</button>
+                    <button onclick="app.setFilter('bw')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-zinc-800 text-white">B&W MONO</button>
+                    <button onclick="app.setFilter('vintage')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-amber-50 text-amber-900">VINTAGE</button>
+                    <button onclick="app.setFilter('sepia')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-orange-100 text-orange-950">SEPIA</button>
+                    <button onclick="app.setFilter('warm')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-rose-50 text-rose-900">WARM TONE</button>
+                    <button onclick="app.setFilter('cool')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-sky-50 text-sky-900">COOL BLUE</button>
+                    <button onclick="app.setFilter('contrast')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-black text-white">CONTRAST</button>
+                    <button onclick="app.setFilter('bright')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-emerald-50 text-emerald-900">LEICA BRIGHT</button>
                 </div>
             </div>
 
-            <div id="tabContent-text" class="hidden flex-col gap-4">
-                <div class="flex flex-col gap-2">
-                    <label class="text-[11px] font-mono font-bold text-slate-700">TITLE TEXT (LINE 1):</label>
-                    <input type="text" id="inputMainText" value="SNAPBOOTH 2026" oninput="app.updateTextContent()" class="p-2 sm:p-2.5 border-2 border-studio-ink font-mono text-xs focus:outline-none focus:border-blue-600">
+            <div id="tabContent-text" class="hidden flex-col gap-3 sm:gap-4">
+                <div class="flex flex-col gap-1.5 sm:gap-2">
+                    <label class="text-[10px] sm:text-[11px] font-mono font-bold text-slate-700">TITLE TEXT (LINE 1):</label>
+                    <input type="text" id="inputMainText" value="SNAPBOOTH 2026" oninput="app.updateTextContent()" class="p-1.5 sm:p-2.5 border-2 border-studio-ink font-mono text-xs focus:outline-none focus:border-blue-600">
 
-                    <div class="grid grid-cols-2 gap-2 mt-1">
+                    <div class="grid grid-cols-2 gap-1.5 sm:gap-2 mt-0.5 sm:mt-1">
                         <div>
-                            <label class="text-[11px] font-mono font-bold text-slate-700">TITLE FONT STYLE:</label>
-                            <select id="fontSelect" onchange="app.updateFontFamily(this.value)" class="w-full p-2 border-2 border-studio-ink font-mono text-xs mt-0.5">
+                            <label class="text-[10px] sm:text-[11px] font-mono font-bold text-slate-700">TITLE FONT STYLE:</label>
+                            <select id="fontSelect" onchange="app.updateFontFamily(this.value)" class="w-full p-1.5 sm:p-2 border-2 border-studio-ink font-mono text-xs mt-0.5">
                                 <option value="font-mono">MONOSPACE</option>
                                 <option value="font-sans">SPACE GROTESK</option>
                                 <option value="font-serif">EDITORIAL SERIF</option>
@@ -600,91 +606,91 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-[11px] font-mono font-bold text-slate-700">DATE STAMP:</label>
-                            <input type="text" id="inputDateText" value="2026.09.18" oninput="app.updateTextContent()" class="w-full p-2 border-2 border-studio-ink font-mono text-xs mt-0.5">
+                            <label class="text-[10px] sm:text-[11px] font-mono font-bold text-slate-700">DATE STAMP:</label>
+                            <input type="text" id="inputDateText" value="2026.09.18" oninput="app.updateTextContent()" class="w-full p-1.5 sm:p-2 border-2 border-studio-ink font-mono text-xs mt-0.5">
                         </div>
                     </div>
                 </div>
 
-                <div class="border-t border-slate-200 pt-3">
-                    <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1.5">TAP TO PLACE STICKERS (DRAG ON STRIP):</span>
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="app.addStickerToCanvas('📸')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">📸</button>
-                        <button onclick="app.addStickerToCanvas('🤍')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">🤍</button>
-                        <button onclick="app.addStickerToCanvas('✨')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">✨</button>
-                        <button onclick="app.addStickerToCanvas('🎀')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">🎀</button>
-                        <button onclick="app.addStickerToCanvas('⭐')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">⭐</button>
-                        <button onclick="app.addStickerToCanvas('🍒')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">🍒</button>
-                        <button onclick="app.addStickerToCanvas('🧸')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">🧸</button>
-                        <button onclick="app.addStickerToCanvas('🎟️')" class="studio-btn p-2 min-h-[38px] min-w-[38px] bg-white text-base">🎟️</button>
-                        <button onclick="app.clearStickers()" class="studio-btn py-2 px-3 min-h-[38px] bg-rose-100 text-rose-800 text-xs font-mono">CLEAR ALL</button>
+                <div class="border-t border-slate-200 pt-2 sm:pt-3">
+                    <span class="text-[10px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1.5">TAP TO PLACE STICKERS (DRAG ON STRIP):</span>
+                    <div class="flex flex-wrap gap-1.5 sm:gap-2">
+                        <button onclick="app.addStickerToCanvas('📸')" class="studio-btn p-1.5 sm:p-2 min-h-[32px] sm:min-h-[38px] min-w-[32px] sm:min-w-[38px] bg-white text-sm sm:text-base">📸</button>
+                        <button onclick="app.addStickerToCanvas('🤍')" class="studio-btn p-1.5 sm:p-2 min-h-[32px] sm:min-h-[38px] min-w-[32px] sm:min-w-[38px] bg-white text-sm sm:text-base">🤍</button>
+                        <button onclick="app.addStickerToCanvas('✨')" class="studio-btn p-1.5 sm:p-2 min-h-[32px] sm:min-h-[38px] min-w-[32px] sm:min-w-[38px] bg-white text-sm sm:text-base">✨</button>
+                        <button onclick="app.addStickerToCanvas('🎀')" class="studio-btn p-1.5 sm:p-2 min-h-[32px] sm:min-h-[38px] min-w-[32px] sm:min-w-[38px] bg-white text-sm sm:text-base">🎀</button>
+                        <button onclick="app.addStickerToCanvas('⭐')" class="studio-btn p-1.5 sm:p-2 min-h-[32px] sm:min-h-[38px] min-w-[32px] sm:min-w-[38px] bg-white text-sm sm:text-base">⭐</button>
+                        <button onclick="app.addStickerToCanvas('🍒')" class="studio-btn p-1.5 sm:p-2 min-h-[32px] sm:min-h-[38px] min-w-[32px] sm:min-w-[38px] bg-white text-sm sm:text-base">🍒</button>
+                        <button onclick="app.addStickerToCanvas('🧸')" class="studio-btn p-1.5 sm:p-2 min-h-[32px] sm:min-h-[38px] min-w-[32px] sm:min-w-[38px] bg-white text-sm sm:text-base">🧸</button>
+                        <button onclick="app.addStickerToCanvas('🎟️')" class="studio-btn p-1.5 sm:p-2 min-h-[32px] sm:min-h-[38px] min-w-[32px] sm:min-w-[38px] bg-white text-sm sm:text-base">🎟️</button>
+                        <button onclick="app.clearStickers()" class="studio-btn py-1.5 px-2 sm:px-3 min-h-[32px] sm:min-h-[38px] bg-rose-100 text-rose-800 text-[10px] sm:text-xs font-mono">CLEAR ALL</button>
                     </div>
                 </div>
             </div>
 
-            <div id="tabContent-draw" class="hidden flex-col gap-4">
-                <div class="flex items-center justify-between bg-blue-50 border-2 border-blue-600 p-2.5">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-paintbrush text-blue-600"></i>
-                        <span class="font-mono text-xs font-bold text-blue-900">DRAWING MODE:</span>
+            <div id="tabContent-draw" class="hidden flex-col gap-3 sm:gap-4">
+                <div class="flex items-center justify-between bg-blue-50 border-2 border-blue-600 p-2 sm:p-2.5">
+                    <div class="flex items-center gap-1.5 sm:gap-2">
+                        <i class="fa-solid fa-paintbrush text-blue-600 text-xs sm:text-sm"></i>
+                        <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-900">DRAWING MODE:</span>
                     </div>
-                    <button onclick="app.toggleDrawingMode()" id="drawingToggleBtn" class="studio-btn px-3 py-1 bg-blue-600 text-white text-xs font-mono">
+                    <button onclick="app.toggleDrawingMode()" id="drawingToggleBtn" class="studio-btn px-2.5 sm:px-3 py-1 bg-blue-600 text-white text-[10px] sm:text-xs font-mono min-h-0">
                         PEN: ACTIVE
                     </button>
                 </div>
 
                 <div>
-                    <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1.5">TOOL & BRUSH COLOR:</span>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <button onclick="app.setToolMode('pen')" id="toolBtn-pen" class="studio-btn px-3 py-1.5 text-xs bg-blue-600 text-white">
+                    <span class="text-[10px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1">TOOL & BRUSH COLOR:</span>
+                    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                        <button onclick="app.setToolMode('pen')" id="toolBtn-pen" class="studio-btn px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs bg-blue-600 text-white min-h-0">
                             <i class="fa-solid fa-pen mr-1"></i> PEN
                         </button>
-                        <button onclick="app.setToolMode('eraser')" id="toolBtn-eraser" class="studio-btn px-3 py-1.5 text-xs bg-white text-slate-800">
+                        <button onclick="app.setToolMode('eraser')" id="toolBtn-eraser" class="studio-btn px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs bg-white text-slate-800 min-h-0">
                             <i class="fa-solid fa-eraser mr-1"></i> ERASER
                         </button>
 
-                        <div class="h-6 w-px bg-slate-300 mx-1"></div>
+                        <div class="h-5 sm:h-6 w-px bg-slate-300 mx-0.5 sm:mx-1"></div>
 
-                        <input type="color" id="brushColorInput" value="#2563eb" onchange="app.setBrushColor(this.value)" class="w-8 h-8 border-2 border-studio-ink cursor-pointer p-0.5">
-                        <div class="flex gap-1.5 flex-wrap">
-                            <button onclick="app.setBrushColor('#111111')" class="w-7 h-7 bg-black border border-studio-ink rounded-full"></button>
-                            <button onclick="app.setBrushColor('#ffffff')" class="w-7 h-7 bg-white border border-studio-ink rounded-full"></button>
-                            <button onclick="app.setBrushColor('#2563eb')" class="w-7 h-7 bg-blue-600 border border-studio-ink rounded-full"></button>
-                            <button onclick="app.setBrushColor('#dc2626')" class="w-7 h-7 bg-red-600 border border-studio-ink rounded-full"></button>
-                            <button onclick="app.setBrushColor('#ec4899')" class="w-7 h-7 bg-pink-500 border border-studio-ink rounded-full"></button>
-                            <button onclick="app.setBrushColor('#eab308')" class="w-7 h-7 bg-yellow-500 border border-studio-ink rounded-full"></button>
-                            <button onclick="app.setBrushColor('#10b981')" class="w-7 h-7 bg-emerald-500 border border-studio-ink rounded-full"></button>
-                            <button onclick="app.setBrushColor('#8b5cf6')" class="w-7 h-7 bg-purple-500 border border-studio-ink rounded-full"></button>
+                        <input type="color" id="brushColorInput" value="#2563eb" onchange="app.setBrushColor(this.value)" class="w-7 h-7 sm:w-8 sm:h-8 border-2 border-studio-ink cursor-pointer p-0.5">
+                        <div class="flex gap-1 sm:gap-1.5 flex-wrap">
+                            <button onclick="app.setBrushColor('#111111')" class="w-6 h-6 sm:w-7 sm:h-7 bg-black border border-studio-ink rounded-full"></button>
+                            <button onclick="app.setBrushColor('#ffffff')" class="w-6 h-6 sm:w-7 sm:h-7 bg-white border border-studio-ink rounded-full"></button>
+                            <button onclick="app.setBrushColor('#2563eb')" class="w-6 h-6 sm:w-7 sm:h-7 bg-blue-600 border border-studio-ink rounded-full"></button>
+                            <button onclick="app.setBrushColor('#dc2626')" class="w-6 h-6 sm:w-7 sm:h-7 bg-red-600 border border-studio-ink rounded-full"></button>
+                            <button onclick="app.setBrushColor('#ec4899')" class="w-6 h-6 sm:w-7 sm:h-7 bg-pink-500 border border-studio-ink rounded-full"></button>
+                            <button onclick="app.setBrushColor('#eab308')" class="w-6 h-6 sm:w-7 sm:h-7 bg-yellow-500 border border-studio-ink rounded-full"></button>
+                            <button onclick="app.setBrushColor('#10b981')" class="w-6 h-6 sm:w-7 sm:h-7 bg-emerald-500 border border-studio-ink rounded-full"></button>
+                            <button onclick="app.setBrushColor('#8b5cf6')" class="w-6 h-6 sm:w-7 sm:h-7 bg-purple-500 border border-studio-ink rounded-full"></button>
                         </div>
                     </div>
                 </div>
 
-                <div class="border-t border-slate-200 pt-3">
+                <div class="border-t border-slate-200 pt-2 sm:pt-3">
                     <div class="flex justify-between items-center mb-1">
-                        <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase">BRUSH THICKNESS:</span>
-                        <span id="brushSizeLabel" class="font-mono text-xs font-bold text-blue-600">6 PX</span>
+                        <span class="text-[10px] sm:text-xs font-bold text-slate-600 font-mono uppercase">BRUSH THICKNESS:</span>
+                        <span id="brushSizeLabel" class="font-mono text-[10px] sm:text-xs font-bold text-blue-600">6 PX</span>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2 sm:gap-3">
                         <input type="range" min="2" max="24" value="6" id="brushSizeSlider" oninput="app.setBrushSize(this.value)" class="w-full accent-blue-600 cursor-pointer">
                         <div class="flex gap-1 shrink-0">
-                            <button onclick="app.setBrushSize(2)" class="px-2 py-0.5 bg-white border border-studio-ink font-mono text-[10px] font-bold">THIN</button>
-                            <button onclick="app.setBrushSize(6)" class="px-2 py-0.5 bg-white border border-studio-ink font-mono text-[10px] font-bold">MED</button>
-                            <button onclick="app.setBrushSize(14)" class="px-2 py-0.5 bg-white border border-studio-ink font-mono text-[10px] font-bold">BOLD</button>
+                            <button onclick="app.setBrushSize(2)" class="px-1.5 py-0.5 bg-white border border-studio-ink font-mono text-[9px] sm:text-[10px] font-bold">THIN</button>
+                            <button onclick="app.setBrushSize(6)" class="px-1.5 py-0.5 bg-white border border-studio-ink font-mono text-[9px] sm:text-[10px] font-bold">MED</button>
+                            <button onclick="app.setBrushSize(14)" class="px-1.5 py-0.5 bg-white border border-studio-ink font-mono text-[9px] sm:text-[10px] font-bold">BOLD</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex gap-2 border-t border-slate-200 pt-3">
-                    <button onclick="app.undoLastDoodle()" class="studio-btn flex-1 py-2 bg-white text-slate-800 text-xs">
-                        <i class="fa-solid fa-rotate-left mr-1"></i> UNDO STROKE
+                <div class="flex gap-2 border-t border-slate-200 pt-2 sm:pt-3">
+                    <button onclick="app.undoLastDoodle()" class="studio-btn flex-1 py-1.5 sm:py-2 bg-white text-slate-800 text-[10px] sm:text-xs min-h-0">
+                        <i class="fa-solid fa-rotate-left mr-1"></i> UNDO
                     </button>
-                    <button onclick="app.clearDoodles()" class="studio-btn flex-1 py-2 bg-rose-100 text-rose-800 border-rose-700 text-xs">
-                        <i class="fa-solid fa-trash-can mr-1"></i> CLEAR ALL DOODLES
+                    <button onclick="app.clearDoodles()" class="studio-btn flex-1 py-1.5 sm:py-2 bg-rose-100 text-rose-800 border-rose-700 text-[10px] sm:text-xs min-h-0">
+                        <i class="fa-solid fa-trash-can mr-1"></i> CLEAR ALL
                     </button>
                 </div>
             </div>
 
-            <button onclick="app.navigateTo('export')" class="studio-btn w-full py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base flex items-center justify-center gap-2 mt-2 shadow-solid-sm">
+            <button onclick="app.navigateTo('export')" class="studio-btn w-full py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-base flex items-center justify-center gap-2 mt-1 sm:mt-2 shadow-solid-sm">
                 <span>PROCEED TO FINAL EXPORT</span>
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
@@ -693,38 +699,38 @@
 
     <!-- SCREEN 5: High-Res Export -->
     <section id="screen-export" class="w-full max-w-4xl hidden flex-col items-center">
-        <div class="text-center mb-4 sm:mb-6">
-            <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 05 / Export</span>
-            <h2 class="text-2xl sm:text-3xl font-black uppercase mt-1">Final Photobooth Image</h2>
-            <p class="text-slate-600 text-xs sm:text-sm mt-1 px-2">High-resolution print render. Pure HTML Canvas image export.</p>
+        <div class="text-center mb-3 sm:mb-6">
+            <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-1.5 sm:px-2 py-0.5 bg-blue-50 uppercase">Step 05 / Export</span>
+            <h2 class="text-xl sm:text-3xl font-black uppercase mt-0.5 sm:mt-1">Final Photobooth Image</h2>
+            <p class="text-slate-600 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">High-resolution print render. Pure HTML Canvas image export.</p>
         </div>
 
-        <div class="studio-box p-3 sm:p-6 flex items-center justify-center bg-studio-bg mb-6 sm:mb-8 w-full max-w-sm sm:max-w-md">
+        <div class="studio-box p-2 sm:p-6 flex items-center justify-center bg-studio-bg mb-4 sm:mb-8 w-full max-w-xs sm:max-w-md">
             <canvas id="exportCanvas" class="max-w-full h-auto border-2 border-studio-ink shadow-solid-md"></canvas>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-2.5 sm:gap-3 items-center justify-center w-full max-w-md">
-            <button onclick="app.navigateTo('customize')" class="studio-btn w-full sm:w-auto px-5 py-3.5 bg-white hover:bg-slate-100 text-xs">
+        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-center justify-center w-full max-w-md">
+            <button onclick="app.navigateTo('customize')" class="studio-btn w-full sm:w-auto px-4 py-2.5 sm:py-3.5 bg-white hover:bg-slate-100 text-[11px] sm:text-xs">
                 <i class="fa-solid fa-pen-to-square mr-1"></i> EDIT DESIGN
             </button>
 
-            <button onclick="app.downloadExportImage('jpg')" class="studio-btn w-full sm:w-1/2 py-4 bg-blue-600 hover:bg-blue-700 text-white text-sm flex items-center justify-center gap-2 shadow-solid-sm">
+            <button onclick="app.downloadExportImage('jpg')" class="studio-btn w-full sm:w-1/2 py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 shadow-solid-sm">
                 <i class="fa-solid fa-download"></i>
                 <span>DOWNLOAD JPG</span>
             </button>
 
-            <button onclick="app.downloadExportImage('png')" class="studio-btn w-full sm:w-1/2 py-4 bg-studio-ink hover:bg-slate-800 text-white text-sm flex items-center justify-center gap-2 shadow-solid-sm">
+            <button onclick="app.downloadExportImage('png')" class="studio-btn w-full sm:w-1/2 py-2.5 sm:py-4 bg-studio-ink hover:bg-slate-800 text-white text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 shadow-solid-sm">
                 <i class="fa-solid fa-file-image"></i>
                 <span>DOWNLOAD PNG</span>
             </button>
 
-            <button onclick="app.showQrModal()" class="studio-btn w-full sm:w-auto px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs flex items-center justify-center gap-1.5 shadow-solid-sm">
-                <i class="fa-solid fa-qrcode text-sm"></i>
+            <button onclick="app.showQrModal()" class="studio-btn w-full sm:w-auto px-4 py-2.5 sm:py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs flex items-center justify-center gap-1 sm:gap-1.5 shadow-solid-sm">
+                <i class="fa-solid fa-qrcode text-xs sm:text-sm"></i>
                 <span>SAVE / QR</span>
             </button>
         </div>
 
-        <button onclick="app.startOverPrompt()" class="mt-6 text-xs font-mono font-bold text-slate-500 hover:text-rose-600 underline uppercase">
+        <button onclick="app.startOverPrompt()" class="mt-4 sm:mt-6 text-[10px] sm:text-xs font-mono font-bold text-slate-500 hover:text-rose-600 underline uppercase">
             Start Entire Photobooth Over
         </button>
     </section>
@@ -734,54 +740,54 @@
 <input type="file" id="fallbackFileInput" accept="image/*" multiple class="hidden" onchange="app.handleFileUploadFallback(event)">
 
 <div id="resetModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="studio-box p-5 sm:p-6 bg-white max-w-sm w-full text-center">
-        <h3 class="text-lg sm:text-xl font-black uppercase mb-2">START OVER?</h3>
-        <p class="text-slate-600 text-xs mb-6 leading-relaxed">Are you sure you want to reset your photobooth session? All captured photos and design customizations will be cleared.</p>
-        <div class="flex gap-2.5 justify-center">
-            <button onclick="app.closeResetModal()" class="studio-btn px-4 py-2.5 bg-white hover:bg-slate-100 text-xs">CANCEL</button>
-            <button onclick="app.confirmResetSession()" class="studio-btn px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs">YES, RESET</button>
+    <div class="studio-box p-4 sm:p-6 bg-white max-w-sm w-full text-center">
+        <h3 class="text-base sm:text-xl font-black uppercase mb-1.5 sm:mb-2">START OVER?</h3>
+        <p class="text-slate-600 text-[11px] sm:text-xs mb-4 sm:mb-6 leading-relaxed">Are you sure you want to reset your photobooth session? All captured photos and design customizations will be cleared.</p>
+        <div class="flex gap-2 justify-center">
+            <button onclick="app.closeResetModal()" class="studio-btn px-3.5 py-2 sm:px-4 sm:py-2.5 bg-white hover:bg-slate-100 text-[11px] sm:text-xs">CANCEL</button>
+            <button onclick="app.confirmResetSession()" class="studio-btn px-3.5 py-2 sm:px-4 sm:py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-[11px] sm:text-xs">YES, RESET</button>
         </div>
     </div>
 </div>
 
-<div id="qrModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="studio-box p-5 sm:p-6 bg-white max-w-sm w-full text-center flex flex-col items-center max-h-[90vh] overflow-y-auto">
-        <div class="w-full flex justify-between items-center mb-3 border-b-2 border-studio-ink pb-2">
-            <span class="font-mono text-xs font-bold text-blue-600 uppercase"><i class="fa-solid fa-floppy-disk mr-1"></i> SAVE YOUR PHOTO STRIP</span>
-            <button onclick="app.closeQrModal()" class="text-slate-500 hover:text-black font-bold text-lg leading-none">&times;</button>
+<div id="qrModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="studio-box p-4 sm:p-6 bg-white max-w-sm w-full text-center flex flex-col items-center max-h-[90vh] overflow-y-auto">
+        <div class="w-full flex justify-between items-center mb-2 sm:mb-3 border-b-2 border-studio-ink pb-1.5 sm:pb-2">
+            <span class="font-mono text-[11px] sm:text-xs font-bold text-blue-600 uppercase"><i class="fa-solid fa-floppy-disk mr-1"></i> SAVE YOUR PHOTO STRIP</span>
+            <button onclick="app.closeQrModal()" class="text-slate-500 hover:text-black font-bold text-base sm:text-lg leading-none">&times;</button>
         </div>
         
-        <div class="bg-blue-50 border border-blue-200 p-2 text-left mb-3 w-full">
-            <p class="text-[11px] text-blue-900 leading-snug">
-                <strong>iPhone / Android:</strong> Press & hold (long press) the image below and tap <span class="bg-blue-200 px-1 font-mono font-bold">Add to Photos</span> or <span class="bg-blue-200 px-1 font-mono font-bold">Save Image</span>.
+        <div class="bg-blue-50 border border-blue-200 p-1.5 sm:p-2 text-left mb-2 sm:mb-3 w-full">
+            <p class="text-[10px] sm:text-[11px] text-blue-900 leading-snug">
+                <strong>iPhone / Android:</strong> Press & hold (long press) the image below and tap <span class="bg-blue-200 px-0.5 font-mono font-bold">Add to Photos</span> or <span class="bg-blue-200 px-0.5 font-mono font-bold">Save Image</span>.
             </p>
-            <p class="text-[11px] text-blue-900 leading-snug mt-1">
-                <strong>PC / Desktop:</strong> Right-click the image below and select <span class="bg-blue-200 px-1 font-mono font-bold">Save Image As...</span>.
+            <p class="text-[10px] sm:text-[11px] text-blue-900 leading-snug mt-0.5 sm:mt-1">
+                <strong>PC / Desktop:</strong> Right-click the image below and select <span class="bg-blue-200 px-0.5 font-mono font-bold">Save Image As...</span>.
             </p>
         </div>
 
-        <div class="p-2 bg-slate-100 border-2 border-studio-ink shadow-solid-sm mb-3 w-full flex justify-center">
-            <img id="mobilePreviewImg" src="" alt="Photobooth Render" class="max-h-64 w-auto object-contain border border-studio-ink shadow-sm">
+        <div class="p-1.5 sm:p-2 bg-slate-100 border-2 border-studio-ink shadow-solid-sm mb-2 sm:mb-3 w-full flex justify-center">
+            <img id="mobilePreviewImg" src="" alt="Photobooth Render" class="max-h-48 sm:max-h-64 w-auto object-contain border border-studio-ink shadow-sm">
         </div>
 
-        <div class="w-full flex gap-2 mb-4">
-            <button onclick="app.openImageInNewTab()" class="studio-btn flex-1 py-2 bg-blue-600 text-white text-[11px] font-bold">
+        <div class="w-full flex gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+            <button onclick="app.openImageInNewTab()" class="studio-btn flex-1 py-1.5 sm:py-2 bg-blue-600 text-white text-[10px] sm:text-[11px] font-bold min-h-0">
                 <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> OPEN FULL IMAGE
             </button>
         </div>
 
-        <div class="w-full border-t border-slate-200 pt-3">
-            <span class="font-mono text-[10px] text-slate-500 font-bold block mb-2 uppercase">SCAN TO OPEN SNAPBOOTH ON MOBILE CAMERA:</span>
-            <div class="p-2 bg-white border border-studio-ink inline-block mb-2">
-                <img id="qrCodeImg" src="" alt="Photobooth QR Code" class="w-28 h-28 object-contain">
+        <div class="w-full border-t border-slate-200 pt-2 sm:pt-3">
+            <span class="font-mono text-[9px] sm:text-[10px] text-slate-500 font-bold block mb-1.5 sm:mb-2 uppercase">SCAN TO OPEN SNAPBOOTH ON MOBILE CAMERA:</span>
+            <div class="p-1.5 sm:p-2 bg-white border border-studio-ink inline-block mb-1.5 sm:mb-2">
+                <img id="qrCodeImg" src="" alt="Photobooth QR Code" class="w-20 h-20 sm:w-28 sm:h-28 object-contain">
             </div>
         </div>
 
-        <button onclick="app.closeQrModal()" class="studio-btn w-full py-2.5 bg-studio-ink text-white text-xs font-bold mt-2">CLOSE</button>
+        <button onclick="app.closeQrModal()" class="studio-btn w-full py-2 sm:py-2.5 bg-studio-ink text-white text-[11px] sm:text-xs font-bold mt-1.5 sm:mt-2 min-h-0">CLOSE</button>
     </div>
 </div>
 
-<footer class="w-full bg-white border-t-2 border-studio-ink py-3 sm:py-4 px-4 text-center font-mono text-[10px] sm:text-xs text-slate-600 flex flex-col sm:flex-row justify-between items-center gap-1.5 sm:gap-2 mt-auto">
+<footer class="w-full bg-white border-t-2 border-studio-ink py-2 sm:py-4 px-3 sm:px-4 text-center font-mono text-[9px] sm:text-xs text-slate-600 flex flex-col sm:flex-row justify-between items-center gap-1 sm:gap-2 mt-auto">
     <div>SNAPBOOTH STUDIO // K-STYLE SELF PHOTO BOOTH ENGINE</div>
     <div>OPTIMIZED FOR ALL MOBILE TOUCHSCREENS & DESKTOPS</div>
 </footer>
@@ -801,7 +807,7 @@ const app = {
     currentLayout: 'grid-2x2',
     frameColor: '#ffffff',
     photoCorners: 'sharp',
-    isMirrored: true, // Ensured mirrored state is true by default
+    isMirrored: true,
     mainText: 'SNAPBOOTH 2026',
     subText: 'SNAPBOOTHBYJAMES',
     dateText: '2026.09.18',
@@ -978,8 +984,8 @@ const app = {
         [3, 5, 10].forEach(d => {
             const btn = document.getElementById(`timerBtn-${d}`);
             if (btn) {
-                if (d === dur) btn.className = 'px-2 py-0.5 font-mono text-xs font-bold border border-studio-ink bg-blue-600 text-white';
-                else btn.className = 'px-2 py-0.5 font-mono text-xs font-bold border border-studio-ink bg-white text-studio-ink hover:bg-slate-100';
+                if (d === dur) btn.className = 'px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-ink bg-blue-600 text-white';
+                else btn.className = 'px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-ink bg-white text-studio-ink hover:bg-slate-100';
             }
         });
     },
@@ -1016,10 +1022,10 @@ const app = {
         const btn = document.getElementById('mirrorToggleBtn');
         if (this.isMirrored) {
             if (video) video.classList.add('-scale-x-1');
-            if (btn) btn.innerHTML = '<i class="fa-solid fa-arrows-left-right mr-1"></i> MIRROR: ON';
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-arrows-left-right mr-0.5 sm:mr-1"></i> MIRROR: ON';
         } else {
             if (video) video.classList.remove('-scale-x-1');
-            if (btn) btn.innerHTML = '<i class="fa-solid fa-arrows-left-right mr-1"></i> MIRROR: OFF';
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-arrows-left-right mr-0.5 sm:mr-1"></i> MIRROR: OFF';
         }
     },
 
@@ -1080,7 +1086,6 @@ const app = {
         video.srcObject = this.cameraStream;
         video.classList.remove('hidden');
 
-        // Dynamically apply horizontal mirror class to video element based on application state
         if (this.isMirrored) {
             video.classList.add('-scale-x-1');
         } else {
@@ -1088,7 +1093,7 @@ const app = {
         }
 
         document.getElementById('fallbackCanvas').classList.add('hidden');
-        statusMsg.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE WEBCAM ACTIVE';
+        statusMsg.innerHTML = '<span class="w-1.5 h-1.5 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE WEBCAM ACTIVE';
         this.useFallbackCamera = false;
     },
 
@@ -1100,7 +1105,7 @@ const app = {
 
         video.classList.add('hidden');
         canvas.classList.remove('hidden');
-        statusMsg.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> STUDIO DEMO / UPLOAD MODE ACTIVE';
+        statusMsg.innerHTML = '<span class="w-1.5 h-1.5 sm:w-2.5 sm:h-2.5 rounded-full bg-amber-500"></span> STUDIO DEMO / UPLOAD MODE ACTIVE';
 
         const ctx = canvas.getContext('2d');
         canvas.width = 640;
@@ -1233,11 +1238,11 @@ const app = {
 
         this.capturedPhotos.forEach((imgSrc, idx) => {
             const card = document.createElement('div');
-            card.className = 'studio-box p-3 flex flex-col items-center bg-white';
+            card.className = 'studio-box p-2 sm:p-3 flex flex-col items-center bg-white';
             card.innerHTML = `
-                <div class="w-full flex justify-between items-center mb-2 font-mono text-xs font-bold">
+                <div class="w-full flex justify-between items-center mb-1.5 sm:mb-2 font-mono text-[10px] sm:text-xs font-bold">
                     <span>SHOT #${idx + 1}</span>
-                    <button onclick="app.retakeSinglePhoto(${idx})" class="text-rose-600 hover:underline uppercase text-[10px]">
+                    <button onclick="app.retakeSinglePhoto(${idx})" class="text-rose-600 hover:underline uppercase text-[9px] sm:text-[10px]">
                         <i class="fa-solid fa-arrows-rotate mr-0.5"></i> RETAKE
                     </button>
                 </div>
@@ -1272,7 +1277,7 @@ const app = {
             const btn = document.getElementById(`tabBtn-${t}`);
             if (content) content.classList.add('hidden');
             if (btn) {
-                btn.className = 'shrink-0 px-2.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap';
+                btn.className = 'shrink-0 px-2 sm:px-2.5 py-1.5 sm:py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap';
             }
         });
 
@@ -1280,7 +1285,7 @@ const app = {
         const activeBtn = document.getElementById(`tabBtn-${tab}`);
         if (activeContent) activeContent.classList.remove('hidden');
         if (activeBtn) {
-            activeBtn.className = 'shrink-0 px-2.5 py-2 bg-studio-ink text-white font-bold border-r border-studio-ink whitespace-nowrap';
+            activeBtn.className = 'shrink-0 px-2 sm:px-2.5 py-1.5 sm:py-2 bg-studio-ink text-white font-bold border-r border-studio-ink whitespace-nowrap';
         }
 
         if (tab === 'draw') {
@@ -1296,8 +1301,8 @@ const app = {
         ['portrait', 'landscape', 'square', 'mobile'].forEach(o => {
             const btn = document.getElementById(`orientBtn-${o}`);
             if (btn) {
-                if (o === orient) btn.className = 'studio-btn py-2 text-xs bg-blue-600 text-white flex-col gap-0.5';
-                else btn.className = 'studio-btn py-2 text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5';
+                if (o === orient) btn.className = 'studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-blue-600 text-white flex-col gap-0.5';
+                else btn.className = 'studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-white text-studio-ink hover:bg-slate-100 flex-col gap-0.5';
             }
         });
         const badge = document.getElementById('currentOrientationBadge');
@@ -1350,7 +1355,7 @@ const app = {
         layouts.forEach(l => {
             const btn = document.createElement('button');
             btn.type = 'button';
-            btn.className = `studio-btn p-3 text-left font-mono text-xs w-full ${this.currentLayout === l.id ? 'bg-blue-600 text-white' : 'bg-white text-studio-ink hover:bg-slate-100'}`;
+            btn.className = `studio-btn p-2 sm:p-3 text-left font-mono text-[10px] sm:text-xs w-full ${this.currentLayout === l.id ? 'bg-blue-600 text-white' : 'bg-white text-studio-ink hover:bg-slate-100'}`;
             btn.innerText = l.name;
             btn.addEventListener('click', () => {
                 this.setLayoutGeometry(l.id);
@@ -1412,11 +1417,11 @@ const app = {
         const sharpBtn = document.getElementById('cornerBtn-sharp');
         const roundedBtn = document.getElementById('cornerBtn-rounded');
         if (corners === 'sharp') {
-            if (sharpBtn) sharpBtn.className = 'px-2 py-0.5 text-[10px] font-mono font-bold bg-studio-ink text-white';
-            if (roundedBtn) roundedBtn.className = 'px-2 py-0.5 text-[10px] font-mono font-bold bg-slate-100 text-black';
+            if (sharpBtn) sharpBtn.className = 'px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-bold bg-studio-ink text-white';
+            if (roundedBtn) roundedBtn.className = 'px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-bold bg-slate-100 text-black';
         } else {
-            if (sharpBtn) sharpBtn.className = 'px-2 py-0.5 text-[10px] font-mono font-bold bg-slate-100 text-black';
-            if (roundedBtn) roundedBtn.className = 'px-2 py-0.5 text-[10px] font-mono font-bold bg-studio-ink text-white';
+            if (sharpBtn) sharpBtn.className = 'px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-bold bg-slate-100 text-black';
+            if (roundedBtn) roundedBtn.className = 'px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-bold bg-studio-ink text-white';
         }
         this.renderPhotoboothStrip();
     },
@@ -1451,7 +1456,7 @@ const app = {
     updateFontFamily(font) {
         this.fontClass = font;
         const target = document.getElementById('stripTextMain');
-        if (target) target.className = `font-mono font-bold text-xs sm:text-sm tracking-wider uppercase text-slate-900 ${font}`;
+        if (target) target.className = `font-mono font-bold text-[11px] sm:text-sm tracking-wider uppercase text-slate-900 ${font}`;
     },
 
     addStickerToCanvas(emoji) {
@@ -1479,14 +1484,14 @@ const app = {
 
         this.placedStickers.forEach(s => {
             const el = document.createElement('div');
-            el.className = 'placed-sticker text-2xl pointer-events-auto flex items-center justify-center';
+            el.className = 'placed-sticker text-xl sm:text-2xl pointer-events-auto flex items-center justify-center';
             el.style.left = `${s.x}%`;
             el.style.top = `${s.y}%`;
             el.style.transform = `scale(${s.scale || 1.0})`;
 
             el.innerHTML = `
                 <span>${s.emoji}</span>
-                <button onclick="app.removeSticker(${s.id})" class="absolute -top-2 -right-2 bg-rose-600 text-white rounded-full w-4 h-4 text-[9px] font-bold flex items-center justify-center border border-white">&times;</button>
+                <button onclick="app.removeSticker(${s.id})" class="absolute -top-2 -right-2 bg-rose-600 text-white rounded-full w-3.5 h-3.5 sm:w-4 sm:h-4 text-[8px] sm:text-[9px] font-bold flex items-center justify-center border border-white">&times;</button>
             `;
             layer.appendChild(el);
         });
@@ -1537,7 +1542,7 @@ const app = {
                 canvas.classList.add('pointer-events-auto', 'cursor-crosshair');
             }
             if (btn) {
-                btn.className = 'studio-btn px-3 py-1 bg-blue-600 text-white text-xs font-mono';
+                btn.className = 'studio-btn px-2.5 sm:px-3 py-1 bg-blue-600 text-white text-[10px] sm:text-xs font-mono min-h-0';
                 btn.innerText = 'PEN: ACTIVE';
             }
         } else {
@@ -1546,7 +1551,7 @@ const app = {
                 canvas.classList.add('pointer-events-none');
             }
             if (btn) {
-                btn.className = 'studio-btn px-3 py-1 bg-slate-200 text-slate-800 text-xs font-mono';
+                btn.className = 'studio-btn px-2.5 sm:px-3 py-1 bg-slate-200 text-slate-800 text-[10px] sm:text-xs font-mono min-h-0';
                 btn.innerText = 'PEN: OFF';
             }
         }
@@ -1560,11 +1565,11 @@ const app = {
         const eraserBtn = document.getElementById('toolBtn-eraser');
 
         if (this.isEraser) {
-            if (eraserBtn) eraserBtn.className = 'studio-btn px-3 py-1.5 text-xs bg-blue-600 text-white';
-            if (penBtn) penBtn.className = 'studio-btn px-3 py-1.5 text-xs bg-white text-slate-800';
+            if (eraserBtn) eraserBtn.className = 'studio-btn px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs bg-blue-600 text-white min-h-0';
+            if (penBtn) penBtn.className = 'studio-btn px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs bg-white text-slate-800 min-h-0';
         } else {
-            if (penBtn) penBtn.className = 'studio-btn px-3 py-1.5 text-xs bg-blue-600 text-white';
-            if (eraserBtn) eraserBtn.className = 'studio-btn px-3 py-1.5 text-xs bg-white text-slate-800';
+            if (penBtn) penBtn.className = 'studio-btn px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs bg-blue-600 text-white min-h-0';
+            if (eraserBtn) eraserBtn.className = 'studio-btn px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs bg-white text-slate-800 min-h-0';
         }
     },
 
