@@ -954,6 +954,7 @@ const app = {
         }
 
         if (screenId === 'customize') {
+            this.renderLayoutOptions();
             this.renderPhotoboothStrip();
         } else if (screenId === 'export') {
             this.renderExportCanvas();
@@ -1337,6 +1338,13 @@ const app = {
         this.renderPhotoboothStrip();
     },
 
+    setLayoutGeometry(layoutId) {
+        this.playSound('click');
+        this.currentLayout = layoutId;
+        this.renderLayoutOptions();
+        this.renderPhotoboothStrip();
+    },
+
     renderLayoutOptions() {
         const container = document.getElementById('layoutOptionsGrid');
         if (!container) return;
@@ -1374,13 +1382,12 @@ const app = {
 
         layouts.forEach(l => {
             const btn = document.createElement('button');
-            btn.className = `studio-btn p-3 text-left font-mono text-xs ${this.currentLayout === l.id ? 'bg-blue-600 text-white' : 'bg-white text-studio-ink'}`;
+            btn.type = 'button';
+            btn.className = `studio-btn p-3 text-left font-mono text-xs w-full ${this.currentLayout === l.id ? 'bg-blue-600 text-white' : 'bg-white text-studio-ink hover:bg-slate-100'}`;
             btn.innerText = l.name;
-            btn.onclick = () => {
-                this.currentLayout = l.id;
-                this.renderLayoutOptions();
-                this.renderPhotoboothStrip();
-            };
+            btn.addEventListener('click', () => {
+                this.setLayoutGeometry(l.id);
+            });
             container.appendChild(btn);
         });
     },
@@ -1729,7 +1736,7 @@ const app = {
         photoContainer.innerHTML = '';
         photoContainer.className = 'w-full gap-2 ';
 
-        if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2')) {
+        if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2') || this.currentLayout.includes('grid-2-horiz')) {
             photoContainer.classList.add('grid', 'grid-cols-2');
         } else if (this.currentLayout.includes('grid-2x3')) {
             photoContainer.classList.add('grid', 'grid-cols-3');
@@ -1797,7 +1804,7 @@ const app = {
         const availableWidth = canvas.width - (padding * 2);
         const availableHeight = canvas.height - (padding * 2) - footerHeight;
 
-        if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2')) {
+        if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2') || this.currentLayout.includes('grid-2-horiz')) {
             const cols = 2;
             const rows = Math.ceil(count / cols);
             const cellW = (availableWidth - gap) / cols;
@@ -1937,7 +1944,7 @@ const app = {
         ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
         ctx.lineTo(x + w, y + h - radius);
         ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
-        ctx.lineTo(x + radius, y + h);
+        ctx.lineTo(x + radius, y);
         ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
         ctx.lineTo(x, y + radius);
         ctx.quadraticCurveTo(x, y, x + radius, y);
