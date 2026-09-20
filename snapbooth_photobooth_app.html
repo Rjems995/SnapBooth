@@ -492,15 +492,15 @@
         </div>
 
         <!-- Customization Controls -->
-        <div class="w-full lg:w-1/2 studio-box p-4 sm:p-6 flex flex-col gap-4 sm:gap-6 overflow-hidden">
+        <div class="w-full lg:w-1/2 studio-box p-4 sm:p-6 flex flex-col gap-4 sm:gap-6 min-w-0">
             <div>
                 <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 04 / Customization</span>
                 <h2 class="text-xl sm:text-2xl font-black uppercase mt-1">Customize Studio Strip</h2>
             </div>
 
             <!-- Scrollable Touch Tabs Container -->
-            <div class="w-full border-b-2 border-studio-ink overflow-x-auto no-scrollbar">
-                <div class="flex font-mono text-[11px] sm:text-xs font-bold min-w-max">
+            <div class="w-full max-w-full overflow-x-auto border-b-2 border-studio-ink no-scrollbar">
+                <div class="flex font-mono text-[11px] sm:text-xs font-bold w-max min-w-full">
                     <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="shrink-0 px-3.5 py-2 bg-studio-ink text-white border-r border-studio-ink whitespace-nowrap">
                         1. LAYOUT & ORIENTATION
                     </button>
