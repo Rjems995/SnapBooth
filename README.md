@@ -40,6 +40,8 @@ Typography Controls: Main Title, Subtitle (Default: SNAPBOOTHBYJAMES), Font Styl
 
 Touch-Stretch Stickers: Drag stickers onto the strip and stretch/resize them in real-time using the blue corner handle.
 
+Digital Touch Pen & Freehand Drawing Layer: allowing users to draw doodles, write autographs, draw hearts, or write handwritten notes over the frame.
+
 Photo Corner Styles: Toggle between Sharp cut edges and Rounded smooth photo corners.
 
 300 DPI High-Res Export & Mobile Transfer:
