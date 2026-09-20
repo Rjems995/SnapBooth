@@ -498,25 +498,38 @@
                 <h2 class="text-xl sm:text-2xl font-black uppercase mt-1">Customize Studio Strip</h2>
             </div>
 
-            <!-- Scrollable Touch Tabs Container -->
-            <div class="w-full max-w-full overflow-x-auto border-b-2 border-studio-ink no-scrollbar">
-                <div class="flex font-mono text-[11px] sm:text-xs font-bold w-max min-w-full">
-                    <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="shrink-0 px-2.5 py-2 bg-studio-ink text-white border-r border-studio-ink whitespace-nowrap">
-                        1. LAYOUT
-                    </button>
-                    <button onclick="app.setControlTab('themes')" id="tabBtn-themes" class="shrink-0 px-2.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
-                        2. THEMES
-                    </button>
-                    <button onclick="app.setControlTab('filters')" id="tabBtn-filters" class="shrink-0 px-2.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
-                        3. FILTERS
-                    </button>
-                    <button onclick="app.setControlTab('text')" id="tabBtn-text" class="shrink-0 px-2.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
-                        4. TEXT & STICKERS
-                    </button>
-                    <button onclick="app.setControlTab('draw')" id="tabBtn-draw" class="shrink-0 px-2.5 py-2 bg-white text-studio-ink hover:bg-slate-100 whitespace-nowrap">
-                        <i class="fa-solid fa-pen-nib mr-1"></i>5. DOODLE
-                    </button>
+            <!-- Scrollable Touch Tabs Container with Left & Right Nav Arrows -->
+            <div class="flex items-center w-full border-b-2 border-studio-ink">
+                <!-- Left Arrow -->
+                <button onclick="app.scrollTabs('left')" title="Scroll Left" class="px-2 py-2 bg-slate-100 hover:bg-slate-200 text-studio-ink border-r border-studio-ink font-bold text-xs shrink-0 flex items-center justify-center">
+                    <i class="fa-solid fa-chevron-left text-[11px]"></i>
+                </button>
+
+                <!-- Scrollable Tab Buttons Area -->
+                <div id="tabBarScrollContainer" class="flex-1 overflow-x-auto no-scrollbar scroll-smooth">
+                    <div class="flex font-mono text-[11px] sm:text-xs font-bold w-max">
+                        <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="shrink-0 px-2.5 py-2 bg-studio-ink text-white border-r border-studio-ink whitespace-nowrap">
+                            1. LAYOUT
+                        </button>
+                        <button onclick="app.setControlTab('themes')" id="tabBtn-themes" class="shrink-0 px-2.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
+                            2. THEMES
+                        </button>
+                        <button onclick="app.setControlTab('filters')" id="tabBtn-filters" class="shrink-0 px-2.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
+                            3. FILTERS
+                        </button>
+                        <button onclick="app.setControlTab('text')" id="tabBtn-text" class="shrink-0 px-2.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
+                            4. TEXT & STICKERS
+                        </button>
+                        <button onclick="app.setControlTab('draw')" id="tabBtn-draw" class="shrink-0 px-2.5 py-2 bg-white text-studio-ink hover:bg-slate-100 whitespace-nowrap">
+                            <i class="fa-solid fa-pen-nib mr-1"></i>5. DOODLE
+                        </button>
+                    </div>
                 </div>
+
+                <!-- Right Arrow -->
+                <button onclick="app.scrollTabs('right')" title="Scroll Right" class="px-2 py-2 bg-slate-100 hover:bg-slate-200 text-studio-ink border-l border-studio-ink font-bold text-xs shrink-0 flex items-center justify-center">
+                    <i class="fa-solid fa-chevron-right text-[11px]"></i>
+                </button>
             </div>
 
             <!-- Tab 1: Layout Geometries & Orientation -->
@@ -858,6 +871,18 @@ const app = {
 
         this.setupStickerDragSystem();
         this.setupDoodleSystem();
+    },
+
+    scrollTabs(direction) {
+        this.playSound('click');
+        const container = document.getElementById('tabBarScrollContainer');
+        if (!container) return;
+        const scrollAmount = 140;
+        if (direction === 'left') {
+            container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        } else {
+            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
     },
 
     playSound(type) {
