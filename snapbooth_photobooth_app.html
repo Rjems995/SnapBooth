@@ -492,29 +492,31 @@
         </div>
 
         <!-- Customization Controls -->
-        <div class="w-full lg:w-1/2 studio-box p-4 sm:p-6 flex flex-col gap-4 sm:gap-6">
+        <div class="w-full lg:w-1/2 studio-box p-4 sm:p-6 flex flex-col gap-4 sm:gap-6 overflow-hidden">
             <div>
                 <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 04 / Customization</span>
                 <h2 class="text-xl sm:text-2xl font-black uppercase mt-1">Customize Studio Strip</h2>
             </div>
 
-            <!-- Touch Tabs (Updated for Full Desktop & PC Visibility) -->
-            <div class="flex flex-wrap sm:flex-nowrap w-full border-b-2 border-studio-ink font-mono text-[11px] sm:text-xs font-bold gap-1 sm:gap-0">
-                <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-studio-ink text-white text-center">
-                    1. LAYOUT & ORIENTATION
-                </button>
-                <button onclick="app.setControlTab('themes')" id="tabBtn-themes" class="flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink sm:border-y-0 sm:border-l-0 text-center">
-                    2. THEMES & COLOR
-                </button>
-                <button onclick="app.setControlTab('filters')" id="tabBtn-filters" class="flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink sm:border-y-0 sm:border-l-0 text-center">
-                    3. FILTERS
-                </button>
-                <button onclick="app.setControlTab('text')" id="tabBtn-text" class="flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink sm:border-y-0 sm:border-l-0 text-center">
-                    4. TEXT & STICKERS
-                </button>
-                <button onclick="app.setControlTab('draw')" id="tabBtn-draw" class="flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink sm:border-y-0 sm:border-l-0 text-center">
-                    <i class="fa-solid fa-pen-nib mr-1"></i>5. DOODLE PEN
-                </button>
+            <!-- Scrollable Touch Tabs Container -->
+            <div class="w-full border-b-2 border-studio-ink overflow-x-auto no-scrollbar">
+                <div class="flex font-mono text-[11px] sm:text-xs font-bold min-w-max">
+                    <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="shrink-0 px-3.5 py-2 bg-studio-ink text-white border-r border-studio-ink whitespace-nowrap">
+                        1. LAYOUT & ORIENTATION
+                    </button>
+                    <button onclick="app.setControlTab('themes')" id="tabBtn-themes" class="shrink-0 px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
+                        2. THEMES & COLOR
+                    </button>
+                    <button onclick="app.setControlTab('filters')" id="tabBtn-filters" class="shrink-0 px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
+                        3. FILTERS
+                    </button>
+                    <button onclick="app.setControlTab('text')" id="tabBtn-text" class="shrink-0 px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap">
+                        4. TEXT & STICKERS
+                    </button>
+                    <button onclick="app.setControlTab('draw')" id="tabBtn-draw" class="shrink-0 px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 whitespace-nowrap">
+                        <i class="fa-solid fa-pen-nib mr-1"></i>5. DOODLE PEN
+                    </button>
+                </div>
             </div>
 
             <!-- Tab 1: Layout Geometries & Orientation -->
@@ -1277,7 +1279,7 @@ const app = {
             const btn = document.getElementById(`tabBtn-${t}`);
             if (content) content.classList.add('hidden');
             if (btn) {
-                btn.className = 'flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink sm:border-y-0 sm:border-l-0 text-center';
+                btn.className = 'shrink-0 px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink whitespace-nowrap';
             }
         });
 
@@ -1285,7 +1287,7 @@ const app = {
         const activeBtn = document.getElementById(`tabBtn-${tab}`);
         if (activeContent) activeContent.classList.remove('hidden');
         if (activeBtn) {
-            activeBtn.className = 'flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-studio-ink text-white font-bold text-center';
+            activeBtn.className = 'shrink-0 px-3.5 py-2 bg-studio-ink text-white font-bold border-r border-studio-ink whitespace-nowrap';
         }
 
         if (tab === 'draw') {
