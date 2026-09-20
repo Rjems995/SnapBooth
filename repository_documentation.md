@@ -13,7 +13,7 @@ A modern, responsive, and interactive web-based photobooth web application inspi
   * **Themes**: Classic, Minimal, Haru Blue, Black Film, Pastel Pink, Vintage Retro.
   * **Frame Customizer**: Full color palette selector.
   * **Filters**: B&W, Vintage, Sepia, Warm, Cool Blue, High Contrast, Leica Bright.
-  * **Typography & Stickers**: Customizable title, subtitle, auto-date stamp, and draggable emoji stamps.
+  * **Typography, Stickers & Draw **: Customizable title, subtitle, auto-date stamp, draggable emoji stamps, and draw doodles.
 * **300 DPI High-Res Export**: Direct HTML Canvas export to clean JPG or PNG files without browser UI artifacts.
 
 ## How to Deploy on GitHub Pages
