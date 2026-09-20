@@ -498,13 +498,23 @@
                 <h2 class="text-xl sm:text-2xl font-black uppercase mt-1">Customize Studio Strip</h2>
             </div>
 
-            <!-- Touch Tabs -->
-            <div class="flex border-b-2 border-studio-ink font-mono text-[11px] sm:text-xs font-bold overflow-x-auto no-scrollbar whitespace-nowrap">
-                <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="px-3.5 py-2 bg-studio-ink text-white shrink-0">1. LAYOUT & ORIENTATION</button>
-                <button onclick="app.setControlTab('themes')" id="tabBtn-themes" class="px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink shrink-0">2. THEMES & COLOR</button>
-                <button onclick="app.setControlTab('filters')" id="tabBtn-filters" class="px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink shrink-0">3. FILTERS</button>
-                <button onclick="app.setControlTab('text')" id="tabBtn-text" class="px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink shrink-0">4. TEXT & STICKERS</button>
-                <button onclick="app.setControlTab('draw')" id="tabBtn-draw" class="px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 shrink-0"><i class="fa-solid fa-pen-nib mr-1"></i>5. DOODLE PEN</button>
+            <!-- Touch Tabs (Updated for Full Desktop & PC Visibility) -->
+            <div class="flex flex-wrap sm:flex-nowrap w-full border-b-2 border-studio-ink font-mono text-[11px] sm:text-xs font-bold gap-1 sm:gap-0">
+                <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-studio-ink text-white text-center">
+                    1. LAYOUT & ORIENTATION
+                </button>
+                <button onclick="app.setControlTab('themes')" id="tabBtn-themes" class="flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink sm:border-y-0 sm:border-l-0 text-center">
+                    2. THEMES & COLOR
+                </button>
+                <button onclick="app.setControlTab('filters')" id="tabBtn-filters" class="flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink sm:border-y-0 sm:border-l-0 text-center">
+                    3. FILTERS
+                </button>
+                <button onclick="app.setControlTab('text')" id="tabBtn-text" class="flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink sm:border-y-0 sm:border-l-0 text-center">
+                    4. TEXT & STICKERS
+                </button>
+                <button onclick="app.setControlTab('draw')" id="tabBtn-draw" class="flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink sm:border-y-0 sm:border-l-0 text-center">
+                    <i class="fa-solid fa-pen-nib mr-1"></i>5. DOODLE PEN
+                </button>
             </div>
 
             <!-- Tab 1: Layout Geometries & Orientation -->
@@ -1266,13 +1276,17 @@ const app = {
             const content = document.getElementById(`tabContent-${t}`);
             const btn = document.getElementById(`tabBtn-${t}`);
             if (content) content.classList.add('hidden');
-            if (btn) btn.className = 'px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border-r border-studio-ink shrink-0';
+            if (btn) {
+                btn.className = 'flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink sm:border-y-0 sm:border-l-0 text-center';
+            }
         });
 
         const activeContent = document.getElementById(`tabContent-${tab}`);
         const activeBtn = document.getElementById(`tabBtn-${tab}`);
         if (activeContent) activeContent.classList.remove('hidden');
-        if (activeBtn) activeBtn.className = 'px-3.5 py-2 bg-studio-ink text-white font-bold shrink-0';
+        if (activeBtn) {
+            activeBtn.className = 'flex-1 min-w-fit px-2.5 sm:px-3.5 py-2 bg-studio-ink text-white font-bold text-center';
+        }
 
         if (tab === 'draw') {
             this.toggleDrawingMode(true);
