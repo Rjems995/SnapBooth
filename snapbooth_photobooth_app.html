@@ -362,7 +362,7 @@
         </div>
 
         <div class="relative w-full aspect-video max-h-[500px] studio-box overflow-hidden bg-slate-900 flex items-center justify-center">
-            <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover transform -scale-x-1"></video>
+            <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover transform"></video>
             <canvas id="fallbackCanvas" class="hidden w-full h-full object-cover"></canvas>
 
             <div id="countdownContainer" class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20 hidden">
@@ -390,7 +390,7 @@
                 </div>
                 <div class="flex items-center gap-1.5 pointer-events-auto">
                     <button onclick="app.toggleCameraMirror()" id="mirrorToggleBtn" title="Toggle Selfie Mirror" class="bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink px-2 py-1 font-mono text-[10px] font-bold shadow-solid-sm">
-                        <i class="fa-solid fa-arrows-left-right mr-1"></i> MIRROR: ON
+                        <i class="fa-solid fa-arrows-left-right mr-1"></i> MIRROR: OFF
                     </button>
                     <button onclick="app.switchCameraDevice()" title="Flip Lens" class="bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink p-1.5 font-mono text-xs font-bold shadow-solid-sm">
                         <i class="fa-solid fa-camera-rotate"></i>
@@ -801,7 +801,7 @@ const app = {
     currentLayout: 'grid-2x2',
     frameColor: '#ffffff',
     photoCorners: 'sharp',
-    isMirrored: true,
+    isMirrored: false,
     mainText: 'SNAPBOOTH 2026',
     subText: 'SNAPBOOTHBYJAMES',
     dateText: '2026.09.18',
