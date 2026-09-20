@@ -145,6 +145,7 @@
         .filter-bright { filter: brightness(115%); }
 
         .mirrored-feed {
+            -webkit-transform: scaleX(-1) !important;
             transform: scaleX(-1) !important;
         }
 
@@ -1022,12 +1023,21 @@ const app = {
     applyMirrorState() {
         const video = document.getElementById('webcamVideo');
         const btn = document.getElementById('mirrorToggleBtn');
-        if (this.isMirrored) {
-            if (video) video.classList.add('mirrored-feed');
-            if (btn) btn.innerHTML = '<i class="fa-solid fa-arrows-left-right mr-0.5 sm:mr-1"></i> MIRROR: ON';
-        } else {
-            if (video) video.classList.remove('mirrored-feed');
-            if (btn) btn.innerHTML = '<i class="fa-solid fa-arrows-left-right mr-0.5 sm:mr-1"></i> MIRROR: OFF';
+
+        if (video) {
+            if (this.isMirrored) {
+                video.classList.add('mirrored-feed');
+                video.style.transform = 'scaleX(-1)';
+                video.style.webkitTransform = 'scaleX(-1)';
+            } else {
+                video.classList.remove('mirrored-feed');
+                video.style.transform = 'scaleX(1)';
+                video.style.webkitTransform = 'scaleX(1)';
+            }
+        }
+
+        if (btn) {
+            btn.innerHTML = `<i class="fa-solid fa-arrows-left-right mr-0.5 sm:mr-1"></i> MIRROR: ${this.isMirrored ? 'ON' : 'OFF'}`;
         }
     },
 
@@ -1815,7 +1825,6 @@ const app = {
         let targetCanvasWidth = 800;
         let targetCanvasHeight = 1200;
 
-        // Dynamically compute canvas aspect ratio to perfectly fit vertical strips vs wide grids
         if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2') || this.currentLayout.includes('grid-2-horiz')) {
             const cols = 2;
             const rows = Math.ceil(count / cols);
@@ -1838,7 +1847,6 @@ const app = {
             const subH = subW / aspectRatio;
             targetCanvasHeight = (padding * 2) + heroH + gap + subH + footerHeight;
         } else {
-            // Standard vertical strip layouts (strip-2, strip-3, strip-4, strip-6, polaroid)
             targetCanvasWidth = 700;
             const cellW = targetCanvasWidth - (padding * 2);
             const cellH = cellW / aspectRatio;
