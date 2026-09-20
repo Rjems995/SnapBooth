@@ -362,7 +362,7 @@
         </div>
 
         <div class="relative w-full aspect-video max-h-[500px] studio-box overflow-hidden bg-slate-900 flex items-center justify-center">
-            <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover transform"></video>
+            <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover transform -scale-x-1"></video>
             <canvas id="fallbackCanvas" class="hidden w-full h-full object-cover"></canvas>
 
             <div id="countdownContainer" class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20 hidden">
@@ -390,7 +390,7 @@
                 </div>
                 <div class="flex items-center gap-1.5 pointer-events-auto">
                     <button onclick="app.toggleCameraMirror()" id="mirrorToggleBtn" title="Toggle Selfie Mirror" class="bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink px-2 py-1 font-mono text-[10px] font-bold shadow-solid-sm">
-                        <i class="fa-solid fa-arrows-left-right mr-1"></i> MIRROR: OFF
+                        <i class="fa-solid fa-arrows-left-right mr-1"></i> MIRROR: ON
                     </button>
                     <button onclick="app.switchCameraDevice()" title="Flip Lens" class="bg-white text-studio-ink hover:bg-slate-100 border border-studio-ink p-1.5 font-mono text-xs font-bold shadow-solid-sm">
                         <i class="fa-solid fa-camera-rotate"></i>
@@ -801,7 +801,7 @@ const app = {
     currentLayout: 'grid-2x2',
     frameColor: '#ffffff',
     photoCorners: 'sharp',
-    isMirrored: false,
+    isMirrored: true, // Ensured mirrored state is true by default
     mainText: 'SNAPBOOTH 2026',
     subText: 'SNAPBOOTHBYJAMES',
     dateText: '2026.09.18',
@@ -1079,6 +1079,14 @@ const app = {
     attachStreamToVideo(video, statusMsg) {
         video.srcObject = this.cameraStream;
         video.classList.remove('hidden');
+
+        // Dynamically apply horizontal mirror class to video element based on application state
+        if (this.isMirrored) {
+            video.classList.add('-scale-x-1');
+        } else {
+            video.classList.remove('-scale-x-1');
+        }
+
         document.getElementById('fallbackCanvas').classList.add('hidden');
         statusMsg.innerHTML = '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE WEBCAM ACTIVE';
         this.useFallbackCamera = false;
