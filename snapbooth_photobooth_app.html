@@ -66,7 +66,6 @@
             touch-action: manipulation;
         }
 
-        /* Studio Box Geometry */
         .studio-box {
             background-color: #FFFFFF;
             border: 2px solid #111111;
@@ -102,7 +101,6 @@
             box-shadow: 4px 4px 0px #2563EB;
         }
 
-        /* Buttons */
         .studio-btn {
             border: 2px solid #111111;
             box-shadow: 3px 3px 0px #111111;
@@ -132,7 +130,6 @@
             scrollbar-width: none;
         }
 
-        /* Photo Filters */
         .filter-bw { filter: grayscale(100%) contrast(110%); }
         .filter-vintage { filter: sepia(30%) contrast(105%); }
         .filter-sepia { filter: sepia(80%); }
@@ -141,7 +138,6 @@
         .filter-contrast { filter: contrast(140%); }
         .filter-bright { filter: brightness(115%); }
 
-        /* Camera Flash Overlay */
         #flashOverlay {
             opacity: 0;
             pointer-events: none;
@@ -151,7 +147,6 @@
             opacity: 1;
         }
 
-        /* Interactive Sticker Drag Layer */
         .placed-sticker {
             position: absolute;
             cursor: move;
@@ -186,7 +181,6 @@
         </div>
     </div>
 
-    <!-- Responsive Stepper Tracker -->
     <div id="stepIndicator" class="flex items-center gap-1 sm:gap-1.5 font-mono text-[10px] sm:text-xs font-bold border-2 border-studio-ink bg-studio-bg px-2 sm:px-3 py-1 sm:py-1.5 shadow-solid-sm overflow-x-auto no-scrollbar">
         <span id="step1" class="text-blue-600 font-extrabold underline">01<span class="hidden md:inline">.SHOTS</span></span>
         <span class="text-slate-300">/</span>
@@ -199,7 +193,6 @@
         <span id="step5" class="text-slate-400">05<span class="hidden md:inline">.EXPORT</span></span>
     </div>
 
-    <!-- Right Controls -->
     <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
         <button id="soundToggleBtn" onclick="app.toggleSound()" title="Sound Effects" class="w-8 h-8 sm:w-9 sm:h-9 bg-white border-2 border-studio-ink hover:bg-slate-100 flex items-center justify-center shadow-solid-sm transition-all">
             <i class="fa-solid fa-volume-high text-xs"></i>
@@ -232,7 +225,6 @@
             <span>START PHOTOBOOTH</span>
         </button>
 
-        <!-- Feature Cards -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4 mt-10 sm:mt-16 w-full text-left">
             <div class="studio-box p-3 sm:p-4">
                 <span class="font-mono text-[10px] sm:text-xs text-blue-600 font-bold block mb-0.5 sm:mb-1">01 / SHOT FORMATS</span>
@@ -266,7 +258,6 @@
         </div>
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 w-full mb-6 sm:mb-8">
-            <!-- 2 Shots -->
             <div onclick="app.selectShotOption(2)" id="shot-opt-2" class="studio-card-interactive p-3 sm:p-5 flex flex-col items-center justify-between group">
                 <div class="text-center w-full mb-2 sm:mb-3">
                     <span class="font-mono text-[10px] sm:text-xs text-slate-500 block">OPTION A</span>
@@ -282,7 +273,6 @@
                 </div>
             </div>
 
-            <!-- 3 Shots -->
             <div onclick="app.selectShotOption(3)" id="shot-opt-3" class="studio-card-interactive p-3 sm:p-5 flex flex-col items-center justify-between group">
                 <div class="text-center w-full mb-2 sm:mb-3">
                     <span class="font-mono text-[10px] sm:text-xs text-slate-500 block">OPTION B</span>
@@ -299,7 +289,6 @@
                 </div>
             </div>
 
-            <!-- 4 Shots -->
             <div onclick="app.selectShotOption(4)" id="shot-opt-4" class="studio-card-interactive selected p-3 sm:p-5 flex flex-col items-center justify-between group">
                 <div class="text-center w-full mb-2 sm:mb-3">
                     <span class="font-mono text-[10px] sm:text-xs text-slate-500 block">OPTION C</span>
@@ -317,7 +306,6 @@
                 </div>
             </div>
 
-            <!-- 6 Shots -->
             <div onclick="app.selectShotOption(6)" id="shot-opt-6" class="studio-card-interactive p-3 sm:p-5 flex flex-col items-center justify-between group">
                 <div class="text-center w-full mb-2 sm:mb-3">
                     <span class="font-mono text-[10px] sm:text-xs text-slate-500 block">OPTION D</span>
@@ -358,7 +346,6 @@
                 <h2 class="text-xl sm:text-3xl font-black uppercase mt-0.5">Camera Feed</h2>
             </div>
 
-            <!-- Timer Selector (3s, 5s, 10s) -->
             <div class="flex items-center gap-2">
                 <div class="border-2 border-studio-ink bg-white p-1 flex items-center gap-1 shadow-solid-sm">
                     <span class="font-mono text-[9px] sm:text-[10px] font-bold px-1 uppercase text-slate-500"><i class="fa-solid fa-stopwatch"></i> TIMER:</span>
@@ -374,20 +361,16 @@
             </div>
         </div>
 
-        <!-- Live Camera Feed Viewport Box -->
         <div class="relative w-full aspect-video max-h-[500px] studio-box overflow-hidden bg-slate-900 flex items-center justify-center">
             <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover transform -scale-x-1"></video>
             <canvas id="fallbackCanvas" class="hidden w-full h-full object-cover"></canvas>
 
-            <!-- Countdown Overlay -->
             <div id="countdownContainer" class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20 hidden">
                 <span id="countdownNumber" class="text-8xl sm:text-9xl font-black text-white font-mono animate-bounce">3</span>
             </div>
 
-            <!-- Flash Effect Overlay -->
             <div id="flashOverlay" class="absolute inset-0 bg-white z-30"></div>
 
-            <!-- Live Camera Filter Selector -->
             <button id="liveFilterToggleBtn" onclick="app.toggleLiveFiltersUI()" title="Show Live Filters" class="hidden absolute top-3 left-3 z-30 bg-black/80 text-white border-2 border-white px-2 py-1 font-mono text-[10px] font-bold shadow-solid-sm flex items-center gap-1.5 pointer-events-auto hover:bg-black">
                 <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> FILTERS
             </button>
@@ -401,7 +384,6 @@
                 <button onclick="app.toggleLiveFiltersUI()" title="Hide Filter Bar" class="ml-1 text-slate-300 hover:text-white px-1.5 py-0.5 text-xs font-bold leading-none">&times;</button>
             </div>
 
-            <!-- Camera Status Bar -->
             <div class="absolute bottom-3 left-3 right-3 flex justify-between items-center z-10 pointer-events-auto">
                 <div id="cameraStatusMsg" class="bg-studio-ink text-white font-mono text-[10px] sm:text-xs px-2.5 py-1 flex items-center gap-2 border border-white pointer-events-auto">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> LIVE CAMERA
@@ -420,7 +402,6 @@
             </div>
         </div>
 
-        <!-- Camera Controls -->
         <div class="flex flex-col sm:flex-row gap-3 items-center justify-center mt-4 sm:mt-6 w-full">
             <button id="startCaptureBtn" onclick="app.startPhotoCaptureSequence()" class="studio-btn w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-base flex items-center justify-center gap-3 shadow-solid-sm">
                 <i class="fa-solid fa-camera-retro text-lg"></i>
@@ -458,7 +439,6 @@
     <!-- SCREEN 4: Customization Studio -->
     <section id="screen-customize" class="w-full max-w-6xl hidden flex-col lg:flex-row gap-6 lg:gap-8 items-start">
         
-        <!-- Preview Box -->
         <div class="w-full lg:w-1/2 flex flex-col items-center lg:sticky lg:top-20">
             <div class="w-full flex items-center justify-between mb-2">
                 <span class="font-mono text-[10px] sm:text-xs font-bold text-slate-600 uppercase"><i class="fa-solid fa-eye mr-1"></i> LIVE STRIP PREVIEW</span>
@@ -474,7 +454,7 @@
                         SNAPBOOTH STUDIO
                     </div>
 
-                    <div id="stripPhotosContainer" class="w-full flex flex-col gap-2 sm:gap-3"></div>
+                    <div id="stripPhotosContainer" class="w-full"></div>
 
                     <div id="stripFooterArea" class="w-full text-center mt-3 pt-2 border-t border-slate-200">
                         <p id="stripTextMain" class="font-mono font-bold text-xs sm:text-sm tracking-wider uppercase text-slate-900">SNAPBOOTH 2026</p>
@@ -482,30 +462,23 @@
                         <p id="stripDate" class="font-mono text-[8px] sm:text-[9px] text-slate-400 mt-0.5 sm:mt-1">2026.09.18</p>
                     </div>
 
-                    <!-- Draggable Sticker Container -->
                     <div id="placedStickersLayer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
-                    
-                    <!-- Touch Drawing Doodle Canvas Layer -->
                     <canvas id="doodleCanvas" class="absolute inset-0 pointer-events-none z-20"></canvas>
                 </div>
             </div>
         </div>
 
-        <!-- Customization Controls -->
         <div class="w-full lg:w-1/2 studio-box p-4 sm:p-6 flex flex-col gap-4 sm:gap-6 min-w-0">
             <div>
                 <span class="font-mono text-[10px] sm:text-xs font-bold text-blue-600 border border-blue-600 px-2 py-0.5 bg-blue-50 uppercase">Step 04 / Customization</span>
                 <h2 class="text-xl sm:text-2xl font-black uppercase mt-1">Customize Studio Strip</h2>
             </div>
 
-            <!-- Scrollable Touch Tabs Container with Left & Right Nav Arrows -->
             <div class="flex items-center w-full border-b-2 border-studio-ink">
-                <!-- Left Arrow -->
                 <button onclick="app.scrollTabs('left')" title="Scroll Left" class="px-2 py-2 bg-slate-100 hover:bg-slate-200 text-studio-ink border-r border-studio-ink font-bold text-xs shrink-0 flex items-center justify-center">
                     <i class="fa-solid fa-chevron-left text-[11px]"></i>
                 </button>
 
-                <!-- Scrollable Tab Buttons Area -->
                 <div id="tabBarScrollContainer" class="flex-1 overflow-x-auto no-scrollbar scroll-smooth">
                     <div class="flex font-mono text-[11px] sm:text-xs font-bold w-max">
                         <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="shrink-0 px-2.5 py-2 bg-studio-ink text-white border-r border-studio-ink whitespace-nowrap">
@@ -526,13 +499,11 @@
                     </div>
                 </div>
 
-                <!-- Right Arrow -->
                 <button onclick="app.scrollTabs('right')" title="Scroll Right" class="px-2 py-2 bg-slate-100 hover:bg-slate-200 text-studio-ink border-l border-studio-ink font-bold text-xs shrink-0 flex items-center justify-center">
                     <i class="fa-solid fa-chevron-right text-[11px]"></i>
                 </button>
             </div>
 
-            <!-- Tab 1: Layout Geometries & Orientation -->
             <div id="tabContent-layouts" class="flex flex-col gap-4">
                 <div>
                     <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1.5">PHOTO ORIENTATION / ASPECT RATIO:</span>
@@ -562,7 +533,6 @@
                 </div>
             </div>
 
-            <!-- Tab 2: Themes & Color -->
             <div id="tabContent-themes" class="hidden flex-col gap-4">
                 <div>
                     <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-2">PRESET STUDIO THEMES:</span>
@@ -600,7 +570,6 @@
                 </div>
             </div>
 
-            <!-- Tab 3: Photo Filters -->
             <div id="tabContent-filters" class="hidden flex-col gap-3">
                 <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block">APPLY FILTER TO ALL SNAPSHOTS:</span>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -615,7 +584,6 @@
                 </div>
             </div>
 
-            <!-- Tab 4: Text & Touch Stickers -->
             <div id="tabContent-text" class="hidden flex-col gap-4">
                 <div class="flex flex-col gap-2">
                     <label class="text-[11px] font-mono font-bold text-slate-700">TITLE TEXT (LINE 1):</label>
@@ -654,7 +622,6 @@
                 </div>
             </div>
 
-            <!-- Tab 5: Touch Drawing Brush & Doodle Tool -->
             <div id="tabContent-draw" class="hidden flex-col gap-4">
                 <div class="flex items-center justify-between bg-blue-50 border-2 border-blue-600 p-2.5">
                     <div class="flex items-center gap-2">
@@ -666,7 +633,6 @@
                     </button>
                 </div>
 
-                <!-- Tool Mode & Brush Colors -->
                 <div>
                     <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase block mb-1.5">TOOL & BRUSH COLOR:</span>
                     <div class="flex flex-wrap items-center gap-2">
@@ -693,7 +659,6 @@
                     </div>
                 </div>
 
-                <!-- Brush Thickness Slider -->
                 <div class="border-t border-slate-200 pt-3">
                     <div class="flex justify-between items-center mb-1">
                         <span class="text-[11px] sm:text-xs font-bold text-slate-600 font-mono uppercase">BRUSH THICKNESS:</span>
@@ -709,7 +674,6 @@
                     </div>
                 </div>
 
-                <!-- Doodle Actions -->
                 <div class="flex gap-2 border-t border-slate-200 pt-3">
                     <button onclick="app.undoLastDoodle()" class="studio-btn flex-1 py-2 bg-white text-slate-800 text-xs">
                         <i class="fa-solid fa-rotate-left mr-1"></i> UNDO STROKE
@@ -767,10 +731,8 @@
 
 </main>
 
-<!-- Hidden File Input for Custom Upload Fallback -->
 <input type="file" id="fallbackFileInput" accept="image/*" multiple class="hidden" onchange="app.handleFileUploadFallback(event)">
 
-<!-- Custom Reset Session Confirmation Modal -->
 <div id="resetModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="studio-box p-5 sm:p-6 bg-white max-w-sm w-full text-center">
         <h3 class="text-lg sm:text-xl font-black uppercase mb-2">START OVER?</h3>
@@ -782,7 +744,6 @@
     </div>
 </div>
 
-<!-- Mobile Transfer & Save Modal -->
 <div id="qrModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="studio-box p-5 sm:p-6 bg-white max-w-sm w-full text-center flex flex-col items-center max-h-[90vh] overflow-y-auto">
         <div class="w-full flex justify-between items-center mb-3 border-b-2 border-studio-ink pb-2">
@@ -799,7 +760,6 @@
             </p>
         </div>
 
-        <!-- Rendered High-Res Image for Long-Press / Right-Click Saving -->
         <div class="p-2 bg-slate-100 border-2 border-studio-ink shadow-solid-sm mb-3 w-full flex justify-center">
             <img id="mobilePreviewImg" src="" alt="Photobooth Render" class="max-h-64 w-auto object-contain border border-studio-ink shadow-sm">
         </div>
@@ -821,7 +781,6 @@
     </div>
 </div>
 
-<!-- Footer -->
 <footer class="w-full bg-white border-t-2 border-studio-ink py-3 sm:py-4 px-4 text-center font-mono text-[10px] sm:text-xs text-slate-600 flex flex-col sm:flex-row justify-between items-center gap-1.5 sm:gap-2 mt-auto">
     <div>SNAPBOOTH STUDIO // K-STYLE SELF PHOTO BOOTH ENGINE</div>
     <div>OPTIMIZED FOR ALL MOBILE TOUCHSCREENS & DESKTOPS</div>
@@ -1732,16 +1691,29 @@ const app = {
         if (!strip || !photoContainer) return;
 
         strip.style.backgroundColor = this.frameColor;
-
         photoContainer.innerHTML = '';
-        photoContainer.className = 'w-full gap-2 ';
+        photoContainer.className = 'w-full gap-2';
 
         if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2') || this.currentLayout.includes('grid-2-horiz')) {
             photoContainer.classList.add('grid', 'grid-cols-2');
+            strip.style.maxWidth = '340px';
+            strip.style.padding = '12px';
         } else if (this.currentLayout.includes('grid-2x3')) {
             photoContainer.classList.add('grid', 'grid-cols-3');
+            strip.style.maxWidth = '360px';
+            strip.style.padding = '12px';
+        } else if (this.currentLayout.includes('polaroid')) {
+            photoContainer.classList.add('flex', 'flex-col', 'gap-4');
+            strip.style.maxWidth = '260px';
+            strip.style.padding = '16px 16px 36px 16px';
+        } else if (this.currentLayout.includes('hero-3')) {
+            photoContainer.classList.add('grid', 'grid-cols-2');
+            strip.style.maxWidth = '320px';
+            strip.style.padding = '12px';
         } else {
             photoContainer.classList.add('flex', 'flex-col');
+            strip.style.maxWidth = '250px';
+            strip.style.padding = '12px';
         }
 
         let aspectClass = 'aspect-[3/4]';
@@ -1751,10 +1723,23 @@ const app = {
 
         const cornerClass = (this.photoCorners === 'rounded') ? 'rounded-lg overflow-hidden' : '';
 
-        this.capturedPhotos.forEach((imgSrc) => {
+        this.capturedPhotos.forEach((imgSrc, idx) => {
             const img = document.createElement('img');
             img.src = imgSrc;
-            img.className = `w-full object-cover border border-studio-ink ${aspectClass} ${cornerClass} ${this.getFilterClass()}`;
+            
+            let extraLayoutStyles = '';
+            if (this.currentLayout === 'hero-3' && idx === 0) {
+                extraLayoutStyles = 'col-span-2 aspect-video';
+            } else {
+                extraLayoutStyles = aspectClass;
+            }
+
+            if (this.currentLayout.includes('polaroid')) {
+                img.className = `w-full object-cover border-2 border-studio-ink p-1 bg-white shadow-sm ${extraLayoutStyles} ${cornerClass} ${this.getFilterClass()}`;
+            } else {
+                img.className = `w-full object-cover border border-studio-ink ${extraLayoutStyles} ${cornerClass} ${this.getFilterClass()}`;
+            }
+
             photoContainer.appendChild(img);
         });
 
@@ -1797,14 +1782,29 @@ const app = {
 
     drawImagesToExportCanvas(ctx, canvas, images) {
         const count = images.length;
-        const padding = 60;
-        const gap = 30;
-        const footerHeight = 240;
+        let padding = 60;
+        let gap = 30;
+        let footerHeight = 240;
+
+        if (this.currentLayout.includes('polaroid')) {
+            padding = 80;
+            gap = 50;
+            footerHeight = 320;
+        }
 
         const availableWidth = canvas.width - (padding * 2);
         const availableHeight = canvas.height - (padding * 2) - footerHeight;
 
-        if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2') || this.currentLayout.includes('grid-2-horiz')) {
+        if (this.currentLayout === 'hero-3' && count === 3) {
+            const heroH = availableHeight * 0.55;
+            const subW = (availableWidth - gap) / 2;
+            const subH = availableHeight - heroH - gap;
+
+            this.drawImageWithFilter(ctx, images[0], padding, padding, availableWidth, heroH);
+            this.drawImageWithFilter(ctx, images[1], padding, padding + heroH + gap, subW, subH);
+            this.drawImageWithFilter(ctx, images[2], padding + subW + gap, padding + heroH + gap, subW, subH);
+
+        } else if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2') || this.currentLayout.includes('grid-2-horiz')) {
             const cols = 2;
             const rows = Math.ceil(count / cols);
             const cellW = (availableWidth - gap) / cols;
@@ -1818,6 +1818,22 @@ const app = {
 
                 this.drawImageWithFilter(ctx, img, x, y, cellW, cellH);
             });
+
+        } else if (this.currentLayout.includes('grid-2x3')) {
+            const cols = 3;
+            const rows = Math.ceil(count / cols);
+            const cellW = (availableWidth - (gap * (cols - 1))) / cols;
+            const cellH = (availableHeight - (gap * (rows - 1))) / rows;
+
+            images.forEach((img, idx) => {
+                const r = Math.floor(idx / cols);
+                const c = idx % cols;
+                const x = padding + c * (cellW + gap);
+                const y = padding + r * (cellH + gap);
+
+                this.drawImageWithFilter(ctx, img, x, y, cellW, cellH);
+            });
+
         } else {
             const cellH = (availableHeight - (gap * (count - 1))) / count;
             images.forEach((img, idx) => {
@@ -1909,6 +1925,14 @@ const app = {
         const isRounded = (this.photoCorners === 'rounded');
         const radius = isRounded ? 24 : 0;
 
+        if (this.currentLayout.includes('polaroid')) {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(x - 8, y - 8, w + 16, h + 16);
+            ctx.strokeStyle = '#111111';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(x - 8, y - 8, w + 16, h + 16);
+        }
+
         if (isRounded) {
             this.drawRoundedRectPath(ctx, x, y, w, h, radius);
             ctx.clip();
@@ -1944,7 +1968,7 @@ const app = {
         ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
         ctx.lineTo(x + w, y + h - radius);
         ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
-        ctx.lineTo(x + radius, y);
+        ctx.lineTo(x + radius, y + h);
         ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
         ctx.lineTo(x, y + radius);
         ctx.quadraticCurveTo(x, y, x + radius, y);
