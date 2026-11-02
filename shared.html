@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex,nofollow,noarchive">
+    <title>Your SnapBooth Photo Strip</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; background: #f5f5f0; color: #111; font: 16px/1.5 system-ui, sans-serif; }
+        main { max-width: 620px; margin: 0 auto; padding: 32px 20px; text-align: center; }
+        .brand { color: #2563eb; font: bold 12px monospace; letter-spacing: .12em; }
+        h1 { margin: 12px 0; font-size: clamp(26px, 6vw, 38px); line-height: 1.2; }
+        .card { border: 2px solid #111; box-shadow: 5px 5px #111; padding: 20px; background: white; margin-top: 24px; }
+        #sharedPhoto { display: block; max-width: 100%; max-height: 65vh; margin: 0 auto 20px; object-fit: contain; }
+        .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+        .button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border: 2px solid #111; background: #2563eb; color: white; font: bold 14px system-ui, sans-serif; text-decoration: none; cursor: pointer; }
+        .secondary { background: white; color: #111; }
+        .muted { color: #52525b; font-size: 14px; }
+        #pageStatus { margin: 16px 0; }
+        footer { margin-top: 28px; }
+        footer a { color: #2563eb; }
+        [hidden] { display: none !important; }
+        @media (prefers-color-scheme: dark) {
+            body { background: #09090b; color: #f4f4f5; }
+            .card { background: #18181b; border-color: #71717a; box-shadow: 5px 5px #52525b; }
+            .muted { color: #a1a1aa; }
+            .brand, footer a { color: #60a5fa; }
+        }
+    </style>
+    <script src="./shared.js" defer></script>
+</head>
+<body>
+    <main>
+        <span class="brand">SNAPBOOTH BY JAMES</span>
+        <h1>Your photo strip is here.</h1>
+        <p id="pageStatus" role="status">Loading your photo...</p>
+        <section id="sharedPhotoCard" class="card" hidden aria-label="Shared photo strip">
+            <img id="sharedPhoto" alt="Your finished SnapBooth photo strip">
+            <div class="actions">
+                <a id="downloadSharedPhoto" class="button" download="SNAPBOOTH.jpg">DOWNLOAD PHOTO</a>
+                <button id="shareSharedPhoto" class="button secondary" hidden>SHARE PHOTO</button>
+            </div>
+            <p id="sharedPhotoExpiry" class="muted"></p>
+            <p class="muted">On mobile, you can also press and hold the image to save it.</p>
+        </section>
+        <button id="retrySharedPhoto" class="button secondary" hidden onclick="window.location.reload()">TRY AGAIN</button>
+        <footer><a href="/">Make your own SnapBooth strip</a></footer>
+    </main>
+</body>
+</html>
