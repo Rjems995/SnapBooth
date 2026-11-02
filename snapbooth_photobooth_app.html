@@ -489,6 +489,8 @@
             <p class="text-slate-600 dark:text-zinc-400 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">Inspect your photos. Tap retake on any single frame to replace it.</p>
         </div>
 
+        <p id="reviewStatusMsg" role="alert" class="hidden w-full mb-3 text-sm text-rose-700 dark:text-rose-300 text-center"></p>
+
         <div id="photoReviewGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 w-full mb-4 sm:mb-8"></div>
 
         <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center items-center w-full">
@@ -861,6 +863,8 @@ const app = {
     photoOrientation: 'portrait',
     capturedPhotos: [],
     cameraStream: null,
+    cameraStartId: 0,
+    isRetaking: false,
     useFallbackCamera: false,
     soundEnabled: true,
     isDarkMode: false,
@@ -1167,32 +1171,77 @@ const app = {
         document.getElementById('cameraShotCounter').innerText = `SHOT 1 OF ${this.selectedShotCount}`;
 
         this.stopWebcam();
+        const startId = this.cameraStartId;
+        statusMsg.innerText = 'STARTING CAMERA...';
 
         try {
-            this.cameraStream = await navigator.mediaDevices.getUserMedia({
-                video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: this.facingMode },
-                audio: false
-            });
-            this.attachStreamToVideo(video, statusMsg);
-        } catch (err1) {
+            let stream;
             try {
-                this.cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-                this.attachStreamToVideo(video, statusMsg);
-            } catch (err2) {
-                this.enableFallbackCamera();
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: this.facingMode },
+                    audio: false
+                });
+            } catch (err) {
+                if (startId !== this.cameraStartId) return false;
+                stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
             }
+
+            if (startId !== this.cameraStartId) {
+                stream.getTracks().forEach(track => track.stop());
+                return false;
+            }
+
+            this.cameraStream = stream;
+            await this.attachStreamToVideo(video, statusMsg);
+            return startId === this.cameraStartId;
+        } catch (err) {
+            if (startId !== this.cameraStartId) return false;
+            this.stopWebcam();
+            this.enableFallbackCamera();
+            return false;
         }
     },
 
-    attachStreamToVideo(video, statusMsg) {
+    async attachStreamToVideo(video, statusMsg) {
         video.srcObject = this.cameraStream;
         video.classList.remove('hidden');
 
         this.applyMirrorState();
 
         document.getElementById('fallbackCanvas').classList.add('hidden');
-        statusMsg.innerHTML = '<span class="w-1.5 h-1.5 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE WEBCAM ACTIVE';
         this.useFallbackCamera = false;
+        await this.waitForCameraReady(video);
+        statusMsg.innerHTML = '<span class="w-1.5 h-1.5 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE WEBCAM ACTIVE';
+    },
+
+    waitForCameraReady(video, timeoutMs = 10000) {
+        const stream = this.cameraStream;
+        return new Promise((resolve, reject) => {
+            const events = ['loadeddata', 'canplay', 'playing'];
+            const cleanup = () => {
+                clearTimeout(timeout);
+                events.forEach(event => video.removeEventListener(event, checkReady));
+                video.removeEventListener('error', fail);
+            };
+            const fail = () => {
+                cleanup();
+                reject(new Error('The camera did not provide a usable video frame.'));
+            };
+            const checkReady = () => {
+                if (!stream || this.cameraStream !== stream || video.srcObject !== stream ||
+                    !stream.getVideoTracks().some(track => track.readyState === 'live')) {
+                    fail();
+                } else if (video.readyState >= 2 && video.videoWidth > 0 && video.videoHeight > 0 && !video.paused) {
+                    cleanup();
+                    resolve();
+                }
+            };
+            const timeout = setTimeout(fail, timeoutMs);
+            events.forEach(event => video.addEventListener(event, checkReady));
+            video.addEventListener('error', fail);
+            Promise.resolve().then(() => video.play()).then(checkReady, fail);
+            checkReady();
+        });
     },
 
     enableFallbackCamera() {
@@ -1231,13 +1280,18 @@ const app = {
     },
 
     stopWebcam() {
+        this.cameraStartId++;
         if (this.cameraStream) {
             this.cameraStream.getTracks().forEach(track => track.stop());
             this.cameraStream = null;
         }
+        const video = document.getElementById('webcamVideo');
+        video.pause();
+        video.srcObject = null;
     },
 
     async startPhotoCaptureSequence() {
+        if (this.isRetaking) return;
         this.capturedPhotos = [];
         const btn = document.getElementById('startCaptureBtn');
         btn.disabled = true;
@@ -1280,7 +1334,7 @@ const app = {
                     container.classList.add('hidden');
                     resolve();
                 }
-            }, 900);
+            }, 1000);
         });
     },
 
@@ -1333,6 +1387,7 @@ const app = {
     },
 
     renderPhotoReviewGrid() {
+        document.getElementById('reviewStatusMsg').classList.add('hidden');
         const grid = document.getElementById('photoReviewGrid');
         grid.innerHTML = '';
 
@@ -1352,22 +1407,62 @@ const app = {
         });
     },
 
-    async retakeSinglePhoto(index) {
-        this.navigateTo('camera');
-        document.getElementById('cameraShotCounter').innerText = `RETAKING SHOT ${index + 1}`;
-        await this.runCountdown(3);
-        const newPhoto = this.captureSingleFrame();
-        this.capturedPhotos[index] = newPhoto;
-        this.triggerFlash();
-        this.playSound('shutter');
-
-        this.renderPhotoReviewGrid();
-        this.navigateTo('review');
+    retakeSinglePhoto(index) {
+        return this.retakePhotos(index);
     },
 
     retakeAllPhotos() {
+        return this.retakePhotos();
+    },
+
+    async retakePhotos(index = null) {
+        if (this.isRetaking || this.currentScreen !== 'review') return;
+        this.isRetaking = true;
+        const btn = document.getElementById('startCaptureBtn');
+        const statusMsg = document.getElementById('reviewStatusMsg');
+        const originalPhotos = this.capturedPhotos;
+        const photos = index === null ? [] : originalPhotos.slice();
+        const indices = index === null
+            ? Array.from({ length: this.selectedShotCount }, (_, i) => i)
+            : [index];
+        const isCurrentRetake = () => this.currentScreen === 'camera' && this.capturedPhotos === originalPhotos;
+        btn.disabled = true;
+        btn.classList.add('opacity-50');
+        statusMsg.classList.add('hidden');
         this.navigateTo('camera');
-        this.startPhotoCaptureSequence();
+
+        try {
+            if (!await this.startWebcam()) throw new Error('Camera unavailable.');
+            for (const photoIndex of indices) {
+                if (!isCurrentRetake()) return;
+                document.getElementById('cameraShotCounter').innerText = `RETAKING SHOT ${photoIndex + 1} OF ${this.selectedShotCount}`;
+                await this.runCountdown(this.timerDuration);
+                if (!isCurrentRetake()) return;
+                await this.waitForCameraReady(document.getElementById('webcamVideo'));
+                if (!isCurrentRetake()) return;
+                photos[photoIndex] = this.captureSingleFrame();
+                this.triggerFlash();
+                this.playSound('shutter');
+                if (photoIndex !== indices[indices.length - 1]) {
+                    await new Promise(resolve => setTimeout(resolve, 600));
+                }
+            }
+
+            this.capturedPhotos = photos;
+            this.renderPhotoReviewGrid();
+            this.navigateTo('review');
+        } catch (err) {
+            if (isCurrentRetake()) {
+                this.navigateTo('review');
+                statusMsg.innerText = 'The camera could not complete the retake. Your original photos are safe. Please check camera access and try again.';
+                statusMsg.classList.remove('hidden');
+            }
+        } finally {
+            this.isRetaking = false;
+            btn.disabled = false;
+            btn.classList.remove('opacity-50');
+            document.getElementById('countdownContainer').classList.add('hidden');
+        }
     },
 
     setControlTab(tab) {
