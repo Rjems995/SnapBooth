@@ -20,7 +20,7 @@
             this.element('sharePhotoBtn').disabled = !this.file || this.isSharing;
             this.element('createPhotoLinkBtn').disabled = !this.file || !!this.upload;
             this.element('shareExpiry').disabled = !!this.upload;
-            this.element('createPhotoLinkBtn').textContent = this.upload ? 'CREATING LINK...' : 'CREATE LINK & QR';
+            this.element('createPhotoLinkBtn').textContent = this.upload ? 'Creating link…' : 'Create Link & QR';
         }
 
         clearLink() {

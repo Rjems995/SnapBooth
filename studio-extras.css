@@ -1,4 +1,15 @@
 [hidden] { display: none !important; }
+#studioHeader { border-bottom-width: 1px; }
+body > footer { border-top-width: 1px; }
+#studioHeader button { border-radius: 8px; box-shadow: none; }
+#stepIndicator { border: 0; background: transparent; box-shadow: none; }
+.home-copy > .inline-flex { border: 0; background: transparent; padding-left: 0; box-shadow: none; }
+.editor-settings-header > div:last-child { border-bottom-width: 1px; }
+#tabBarScrollContainer { padding: 4px; }
+#tabBarScrollContainer button { border: 0; border-radius: 6px; }
+#screen-camera [onclick^="app.setTimerDuration"], #screen-camera [onclick="app.toggleCameraMirror()"], #screen-camera [onclick="app.switchCameraDevice()"], #screen-camera [onclick="app.triggerFileUpload()"] { border-radius: 6px; box-shadow: none; }
+#liveFilterBar, #liveFilterToggleBtn { border-width: 1px; border-color: #ffffff40; border-radius: 8px; box-shadow: none; }
+#qrModal select, #qrModal input { border-radius: 6px; }
 .home-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; width: 100%; align-items: center; }
 .home-copy { min-width: 0; text-align: left; padding: 16px 0; }
 .home-headline { font-weight: 800; font-size: clamp(36px, 4.7vw, 62px); line-height: 1.08; letter-spacing: -.055em; margin: 18px 0 24px; }
@@ -19,11 +30,11 @@
 .sample-grid .sample-shot { margin: 0; }
 .home-gallery-caption { position: absolute; bottom: 8px; left: 0; right: 0; font-size: 14px; color: var(--editor-muted); }
 #screen-home > .grid :is(p,span) { font-size: 12px; line-height: 1.5; }
-.draft-resume-card { margin-top: 24px; padding: 18px; border: 2px solid #2563eb; background: var(--editor-panel); color: var(--editor-ink); }
+.draft-resume-card { margin-top: 24px; padding: 18px; border: 1px solid var(--editor-border); border-radius: 10px; background: var(--editor-panel); color: var(--editor-ink); }
 .draft-resume-card h2 { font-size: 18px; font-weight: 700; }
 .draft-resume-card p { font-size: 14px; margin: 8px 0 12px; color: var(--editor-muted); }
 .draft-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-.draft-actions button { min-height: 44px; padding: 10px 14px; border: 1px solid var(--editor-border); font: bold 13px monospace; }
+.draft-actions button { min-height: 44px; padding: 10px 14px; border: 1px solid var(--editor-border); border-radius: 8px; font-size: 14px; font-weight: 600; }
 #resumeDraftBtn { background: #2563eb; color: white; }
 .draft-status { font-size: 12px; color: var(--editor-muted); }
 .home-copy > .draft-status { margin-top: 8px; font-size: 13px; }
@@ -33,8 +44,8 @@
 .export-presets { width: 100%; max-width: 680px; margin: 0 0 20px; text-align: left; }
 .export-presets legend { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
 .export-preset-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.export-preset-options button { min-height: 68px; border: 2px solid var(--editor-border); padding: 10px 12px; font-size: 14px; font-weight: 700; text-align: left; background: var(--editor-panel); color: var(--editor-ink); }
-.export-preset-options button[aria-pressed=true] { border-color: #2563eb; box-shadow: 2px 2px #2563eb; }
+.export-preset-options button { min-height: 68px; border: 1px solid var(--editor-border); border-radius: 8px; padding: 10px 12px; font-size: 14px; font-weight: 600; text-align: left; background: var(--editor-panel); color: var(--editor-ink); }
+.export-preset-options button[aria-pressed=true] { border-color: #2563eb; box-shadow: inset 0 0 0 1px #2563eb; }
 .export-preset-options span { display: block; font-size: 12px; font-weight: 400; margin-top: 4px; color: var(--editor-muted); }
 .export-presets p { font-size: 13px; line-height: 1.5; margin-top: 10px; color: var(--editor-muted); }
 #screen-export #exportCanvas { max-height: 65dvh; object-fit: contain; }

@@ -11,7 +11,7 @@ body .studio-btn { min-height: 44px; }
 #editorSettingsPanel span { font-size: 13px; }
 #editorSettingsPanel h2 { font-size: 20px; }
 #editorSettingsPanel :is(button, select) { min-height: 44px; min-width: 44px; }
-#editorSettingsPanel input:not([type=range]):not([type=color]), #editorSettingsPanel select { font-size: 16px; min-height: 44px; }
+#editorSettingsPanel input:not([type=range]):not([type=color]), #editorSettingsPanel select { font-size: 16px; min-height: 44px; border-radius: 6px; }
 #editorSettingsPanel input[type=color] { width: 44px; height: 44px; }
 #editorSettingsPanel input[type=range] { width: 100%; min-width: 0; height: 44px; accent-color: #2563eb; }
 #editorSettingsPanel .editor-hint, .editor-hint { font-size: 14px; color: var(--editor-muted); line-height: 1.5; }
@@ -29,12 +29,12 @@ body .studio-btn { min-height: 44px; }
 .photo-frame img, #cropPhotoImage { position: absolute; max-width: none; user-select: none; -webkit-user-drag: none; }
 .polaroid-photo { padding: 4px; border: 2px solid #111; background: #fff; }
 .photo-order-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.photo-tile { position: relative; min-width: 0; height: 88px; border: 2px solid var(--editor-border); background: var(--editor-panel); }
-.photo-tile.selected { border-color: #2563eb; outline: 2px solid #2563eb; }
-.photo-select { display: block; width: 100%; height: 100%; padding: 0; overflow: hidden; }
+.photo-tile { position: relative; min-width: 0; height: 88px; border: 1px solid var(--editor-border); border-radius: 6px; background: var(--editor-panel); }
+.photo-tile.selected { border-color: #2563eb; outline: 1px solid #2563eb; }
+.photo-select { display: block; width: 100%; height: 100%; padding: 0; overflow: hidden; border-radius: inherit; }
 .photo-select img { width: 100%; height: 100%; object-fit: cover; user-select: none; pointer-events: none; }
 .photo-number { position: absolute; top: 3px; left: 3px; padding: 2px 5px; background: #111; color: #fff; font: bold 12px monospace; pointer-events: none; }
-.photo-grip { min-width: 44px; min-height: 44px; touch-action: none; cursor: grab; user-select: none; font-size: 24px; border: 1px solid var(--editor-border); color: var(--editor-ink); background: var(--editor-panel); }
+.photo-grip { min-width: 44px; min-height: 44px; touch-action: none; cursor: grab; user-select: none; font-size: 24px; border: 1px solid var(--editor-border); border-radius: 6px; color: var(--editor-ink); background: var(--editor-panel); }
 .photo-tile > .photo-grip { position: absolute; right: 0; bottom: 0; }
 .photo-tile.dragging, [data-photo-index].dragging { opacity: .35; }
 [data-photo-index].drop-target { outline: 3px dashed #2563eb; outline-offset: 2px; }
@@ -42,7 +42,7 @@ body .studio-btn { min-height: 44px; }
 .crop-heading, .zoom-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .crop-heading h3 { font-size: 16px; font-weight: 700; }
 .photo-move-actions { display: flex; gap: 8px; }
-.photo-move-actions button { border: 1px solid var(--editor-border); background: var(--editor-panel); font-size: 20px !important; }
+.photo-move-actions button { border: 1px solid var(--editor-border); border-radius: 6px; background: var(--editor-panel); font-size: 20px !important; }
 .crop-stage { flex-shrink: 0; max-width: 100%; margin: 0 auto; touch-action: none; cursor: grab; }
 .crop-stage:active { cursor: grabbing; }
 .crop-guides { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to right, transparent 33%, #fff6 33%, #fff6 calc(33% + 1px), transparent calc(33% + 1px), transparent 66%, #fff6 66%, #fff6 calc(66% + 1px), transparent calc(66% + 1px)), linear-gradient(to bottom, transparent 33%, #fff6 33%, #fff6 calc(33% + 1px), transparent calc(33% + 1px), transparent 66%, #fff6 66%, #fff6 calc(66% + 1px), transparent calc(66% + 1px)); }
@@ -50,12 +50,12 @@ body .studio-btn { min-height: 44px; }
 #editorActionBar button { min-height: 48px; padding: 10px 16px; font-size: 14px; }
 .editor-back { background: var(--editor-panel); color: var(--editor-ink); }
 .editor-export { flex: 1; gap: 10px; background: #2563eb; color: white; }
-#expandedPreviewDialog { width: min(900px, calc(100vw - 24px)); height: calc(100dvh - 24px); max-width: none; max-height: none; margin: auto; padding: 16px; border: 2px solid var(--editor-border); background: var(--editor-panel); color: var(--editor-ink); }
+#expandedPreviewDialog { width: min(900px, calc(100vw - 24px)); height: calc(100dvh - 24px); max-width: none; max-height: none; margin: auto; padding: 16px; border: 1px solid var(--editor-border); border-radius: 12px; background: var(--editor-panel); color: var(--editor-ink); }
 #expandedPreviewDialog[open] { display: flex; flex-direction: column; gap: 12px; }
 #expandedPreviewDialog::backdrop { background: #000b; }
 .expanded-preview-heading { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
 .expanded-preview-heading h2 { font-size: 18px; font-weight: 700; }
-.expanded-preview-heading button { min-height: 44px; padding: 8px 16px; background: #2563eb; color: white; font-weight: 700; }
+.expanded-preview-heading button { min-height: 44px; padding: 8px 16px; border-radius: 8px; background: #2563eb; color: white; font-weight: 600; }
 #expandedPreviewHost { flex: 1; min-height: 0; }
 #expandedPreviewDialog #photoboothPreviewContainer { display: block; height: 100%; overflow: auto; padding: 16px; }
 @media (min-width: 1024px) {
