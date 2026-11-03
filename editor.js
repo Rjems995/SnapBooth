@@ -169,6 +169,7 @@
 
         setEdit(edit) {
             this.app.photoEdits[this.selected] = normalizeEdit(edit);
+            this.app.sessionDrafts?.schedule();
             this.renderStage();
             const image = document.querySelector(`#stripPhotosContainer [data-crop-index="${this.selected}"]`);
             if (image) this.applyImageCrop(image, this.selected);

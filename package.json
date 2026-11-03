@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build.cjs",
-    "test:browser": "npm run build && node tests/browser-sharing.cjs && node tests/browser-editor.cjs",
+    "test:browser": "npm run build && node tests/browser-sharing.cjs && node tests/browser-studio.cjs",
     "test:editor": "npm run build && node tests/browser-editor.cjs",
+    "test:studio": "npm run build && node tests/browser-studio.cjs",
     "test": "node --test tests/*.test.cjs tests/*.test.mjs"
   },
   "engines": {

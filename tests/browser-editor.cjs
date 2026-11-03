@@ -7,7 +7,7 @@ const { spawn } = require('node:child_process');
 const { connect, waitFor } = require('./browser-sharing.cjs');
 const root = path.join(__dirname, '..');
 
-async function main() {
+async function main(extraChecks = null) {
     const executable = [process.env.SNAPBOOTH_TEST_BROWSER,
         'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
         'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
@@ -22,7 +22,7 @@ async function main() {
         }
         let data = fs.readFileSync(target);
         if (target.endsWith('.html')) data = data.toString().replace(/<link[^>]*href="https:[^>]*>/g, '');
-        response.setHeader('Content-Type', target.endsWith('.css') ? 'text/css' : target.endsWith('.js') ? 'application/javascript' : 'text/html');
+        response.setHeader('Content-Type', target.endsWith('.css') ? 'text/css' : target.endsWith('.js') ? 'application/javascript' : target.endsWith('.png') ? 'image/png' : 'text/html');
         response.end(data);
     });
     await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -30,6 +30,7 @@ async function main() {
     let browser, page;
     try {
         browser = spawn(executable, ['--headless=new', '--disable-gpu', '--no-first-run', '--no-default-browser-check',
+            '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream',
             '--disable-background-networking', '--remote-debugging-port=0', `--user-data-dir=${profile}`, 'about:blank'
         ], { windowsHide: true, stdio: ['ignore', 'ignore', 'pipe'] });
         const endpoint = await new Promise((resolve, reject) => {
@@ -184,6 +185,7 @@ async function main() {
         assert.equal(review.overflow, false, 'review controls must fit narrow phones');
         assert.ok(review.heights.every(height => height>=44), 'review controls must have 44px touch targets');
         console.log('PASS: mobile layout (320px–844px), pinned preview/action, 44px controls, touch pan/pinch/reorder, keyboard ordering, crop persistence, export order, expanded preview, and desktop layout.');
+        if (extraChecks) await extraChecks({ page, artifactDir, origin: `http://127.0.0.1:${server.address().port}` });
     } catch (error) {
         console.error('Editor check failed:', error.stack);
         if (page) {
@@ -207,4 +209,5 @@ async function main() {
         catch (error) { console.error('Temporary browser profile cleanup:', error.message); }
     }
 }
-main().catch(error => { console.error(error.stack); process.exitCode = 1; });
+module.exports = { main };
+if (require.main === module) main().catch(error => { console.error(error.stack); process.exitCode = 1; });

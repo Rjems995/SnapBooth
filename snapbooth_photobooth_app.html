@@ -58,6 +58,7 @@
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./editor.css">
+    <link rel="stylesheet" href="./studio-extras.css">
 
     <style>
         * {
@@ -274,45 +275,72 @@
 <main class="flex-1 max-w-7xl w-full mx-auto p-2 sm:p-6 lg:p-8 flex flex-col justify-center items-center">
 
     <!-- SCREEN 0: Home -->
-    <section id="screen-home" class="w-full max-w-4xl text-center py-3 sm:py-8 flex flex-col items-center justify-center my-auto">
+    <section id="screen-home" class="w-full max-w-6xl text-center py-3 sm:py-8 flex flex-col items-center justify-center my-auto">
+        <div class="home-hero">
+        <div class="home-copy">
         <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:py-1 border-2 border-studio-ink dark:border-zinc-700 bg-white dark:bg-zinc-900 font-mono text-[10px] sm:text-xs font-bold mb-3 sm:mb-6 shadow-solid-sm dark:shadow-solid-sm-dark">
-            <span class="w-2 h-2 bg-blue-600 inline-block"></span> RAW WEBCAM PRINT ENGINE v3.0
+            <span class="w-2 h-2 bg-blue-600 inline-block"></span> A LITTLE STUDIO. A LOT OF MEMORIES.
         </div>
 
-        <h1 class="text-2xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-none mb-3 sm:mb-6">
-            SNAPBOOTH BY JAMES <br/>
-            <span class="bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900 px-1.5 sm:px-3 py-0.5 sm:py-1 inline-block transform -rotate-1 mt-1 sm:mt-2">STUDIO</span>
+        <h1 class="home-headline">
+            Your moments, <br><span>your photo strip.</span>
         </h1>
 
         <p class="text-slate-700 dark:text-zinc-300 font-medium text-xs sm:text-lg max-w-2xl mb-6 sm:mb-10 leading-relaxed px-2">
-            Minimalist photobooth experience tailored for all mobile screens and laptops. Pick your shot count, capture real-time poses in portrait or landscape orientations, and export high-res prints.
+            Grab a friend, strike a pose, and make something worth keeping. Pick your shots, add your style, and take your strip with you.
         </p>
 
         <button onclick="app.navigateTo('shot-select')" class="studio-btn w-full sm:w-auto px-6 sm:px-10 py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-lg flex items-center justify-center gap-2 sm:gap-3 shadow-solid-lg dark:shadow-solid-lg-dark">
             <i class="fa-solid fa-camera text-xs sm:text-base"></i>
             <span>START PHOTOBOOTH</span>
         </button>
+        <aside id="draftResumeCard" class="draft-resume-card" hidden aria-labelledby="draftResumeTitle">
+            <h2 id="draftResumeTitle">Resume your last session</h2>
+            <p id="draftResumeSummary"></p>
+            <div class="draft-actions">
+                <button id="resumeDraftBtn" type="button" onclick="app.sessionDrafts.resume()">RESUME SESSION</button>
+                <button id="deleteDraftBtn" type="button" onclick="app.sessionDrafts.deleteDraft()">DELETE DRAFT</button>
+            </div>
+        </aside>
+        <p id="draftHomeStatus" role="status" class="draft-status"></p>
+        </div>
+        <div class="home-gallery" aria-label="Finished photo strip designs">
+            <figure class="sample-strip sample-film" aria-label="Black Film sample photo strip">
+                <div class="sample-shot pose-one"></div><div class="sample-shot pose-two"></div><div class="sample-shot pose-three"></div><div class="sample-shot pose-four"></div>
+                <figcaption>BLACK FILM<span>JUST US, BEING US.</span></figcaption>
+            </figure>
+            <figure class="sample-strip sample-pink" aria-label="Pastel Pink sample photo strip">
+                <div class="sample-shot pose-four"></div><div class="sample-shot pose-three"></div><div class="sample-shot pose-two"></div>
+                <figcaption>PASTEL PINK<span>KEEP THE GOOD TIMES.</span></figcaption>
+            </figure>
+            <figure class="sample-strip sample-blue" aria-label="Haru Blue sample four-cut photo strip">
+                <div class="sample-grid"><div class="sample-shot pose-one"></div><div class="sample-shot pose-two"></div><div class="sample-shot pose-three"></div><div class="sample-shot pose-four"></div></div>
+                <figcaption>HARU BLUE<span>YOUR PEOPLE. YOUR MOMENT.</span></figcaption>
+            </figure>
+            <p class="home-gallery-caption">A few ways to make it yours.</p>
+        </div>
+        </div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mt-8 sm:mt-16 w-full text-left">
             <div class="studio-box p-2.5 sm:p-4">
-                <span class="font-mono text-[9px] sm:text-xs text-blue-600 dark:text-blue-400 font-bold block mb-0.5 sm:mb-1">01 / SHOT FORMATS</span>
+                <span class="font-mono text-[9px] sm:text-xs text-blue-600 dark:text-blue-400 font-bold block mb-0.5 sm:mb-1">01 / YOUR SHOTS</span>
                 <h3 class="font-extrabold uppercase text-[11px] sm:text-sm">2, 3, 4 & 6 Shots</h3>
-                <p class="text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 mt-0.5">Select exact count prior to camera activation.</p>
+                <p class="text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 mt-0.5">A quick duo or a whole collection of poses.</p>
             </div>
             <div class="studio-box p-2.5 sm:p-4">
-                <span class="font-mono text-[9px] sm:text-xs text-blue-600 dark:text-blue-400 font-bold block mb-0.5 sm:mb-1">02 / ORIENTATION</span>
+                <span class="font-mono text-[9px] sm:text-xs text-blue-600 dark:text-blue-400 font-bold block mb-0.5 sm:mb-1">02 / YOUR FRAME</span>
                 <h3 class="font-extrabold uppercase text-[11px] sm:text-sm">Portrait & Landscape</h3>
-                <p class="text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 mt-0.5">Toggle vertical 3:4, horizontal 4:3, square or mobile.</p>
+                <p class="text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 mt-0.5">Find the framing that feels like you.</p>
             </div>
             <div class="studio-box p-2.5 sm:p-4">
-                <span class="font-mono text-[9px] sm:text-xs text-blue-600 dark:text-blue-400 font-bold block mb-0.5 sm:mb-1">03 / CANVAS TOOLS</span>
+                <span class="font-mono text-[9px] sm:text-xs text-blue-600 dark:text-blue-400 font-bold block mb-0.5 sm:mb-1">03 / YOUR STYLE</span>
                 <h3 class="font-extrabold uppercase text-[11px] sm:text-sm">Stickers & Text</h3>
-                <p class="text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 mt-0.5">Touch draggable overlays & typography.</p>
+                <p class="text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 mt-0.5">Add a little color, a message, or a doodle.</p>
             </div>
             <div class="studio-box p-2.5 sm:p-4">
-                <span class="font-mono text-[9px] sm:text-xs text-blue-600 dark:text-blue-400 font-bold block mb-0.5 sm:mb-1">04 / EXPORT ENGINE</span>
-                <h3 class="font-extrabold uppercase text-[11px] sm:text-sm">300 DPI Rendering</h3>
-                <p class="text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 mt-0.5">Export clean JPG or PNG files directly.</p>
+                <span class="font-mono text-[9px] sm:text-xs text-blue-600 dark:text-blue-400 font-bold block mb-0.5 sm:mb-1">04 / KEEP &amp; SHARE</span>
+                <h3 class="font-extrabold uppercase text-[11px] sm:text-sm">Print it. Post it. Keep it.</h3>
+                <p class="text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 mt-0.5">Save a story, wallpaper, or photo print.</p>
             </div>
         </div>
     </section>
@@ -496,6 +524,7 @@
         <div id="photoReviewGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 w-full mb-4 sm:mb-8"></div>
 
         <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center items-center w-full">
+            <button id="completeSessionBtn" type="button" hidden onclick="app.continuePhotoCaptureSequence()" class="studio-btn px-5 py-3 bg-blue-600 text-white">FINISH TAKING PHOTOS</button>
             <button onclick="app.retakeAllPhotos()" class="studio-btn w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3.5 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-700 dark:border-rose-500 hover:bg-rose-100 dark:hover:bg-rose-900/40 text-[11px] sm:text-xs shadow-solid-sm dark:shadow-solid-sm-dark flex items-center justify-center gap-1.5 sm:gap-2">
                 <i class="fa-solid fa-rotate-left"></i> RETAKE ALL PHOTOS
             </button>
@@ -783,6 +812,7 @@
 
         </div>
         <div id="editorActionBar">
+            <p id="draftSaveStatus" role="status" class="draft-status"></p>
             <button type="button" onclick="app.navigateTo('review')" class="studio-btn editor-back">REVIEW PHOTOS</button>
             <button id="editorExportBtn" onclick="app.navigateTo('export')" class="studio-btn editor-export">
                 <span>FINISH &amp; SAVE</span>
@@ -796,8 +826,21 @@
         <div class="text-center mb-3 sm:mb-6">
             <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 px-1.5 sm:px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40 uppercase">Step 05 / Export</span>
             <h2 class="text-xl sm:text-3xl font-black uppercase mt-0.5 sm:mt-1">Final Photobooth Image</h2>
-            <p class="text-slate-600 dark:text-zinc-400 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">High-resolution print render. Pure HTML Canvas image export.</p>
+            <p class="text-slate-600 dark:text-zinc-400 text-sm mt-1 px-2">Choose a size, then save or share your finished strip.</p>
         </div>
+
+        <fieldset class="export-presets" aria-describedby="exportPresetHint">
+            <legend>Save it your way</legend>
+            <div class="export-preset-options">
+                <button type="button" data-export-preset="original" aria-pressed="true" onclick="app.setExportPreset('original')">Original design<span>Keep your strip's proportions</span></button>
+                <button type="button" data-export-preset="story" aria-pressed="false" onclick="app.setExportPreset('story')">Instagram Story<span>1080 × 1920 px</span></button>
+                <button type="button" data-export-preset="wallpaper" aria-pressed="false" onclick="app.setExportPreset('wallpaper')">Phone Wallpaper<span>1440 × 2560 px</span></button>
+                <button type="button" data-export-preset="strip2x6" aria-pressed="false" onclick="app.setExportPreset('strip2x6')">2×6-inch Strip<span>600 × 1800 px · 300 DPI</span></button>
+                <button type="button" data-export-preset="print4x6" aria-pressed="false" onclick="app.setExportPreset('print4x6')">4×6-inch Print<span>1200 × 1800 px · 300 DPI</span></button>
+            </div>
+            <p id="exportPresetHint">Your complete design fits inside the selected canvas. Photos and decorations are never cut off.</p>
+            <p id="exportDimensions" role="status"></p>
+        </fieldset>
 
         <div class="studio-box p-2 sm:p-6 flex items-center justify-center bg-studio-bg dark:bg-zinc-950 mb-4 sm:mb-8 w-full max-w-xs sm:max-w-md">
             <canvas id="exportCanvas" class="max-w-full h-auto border-2 border-studio-ink dark:border-zinc-700 shadow-solid-md"></canvas>
@@ -808,12 +851,12 @@
                 <i class="fa-solid fa-pen-to-square mr-1"></i> EDIT DESIGN
             </button>
 
-            <button onclick="app.downloadExportImage('jpg')" class="studio-btn w-full py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 shadow-solid-sm dark:shadow-solid-sm-dark">
+            <button data-export-action onclick="app.downloadExportImage('jpg')" class="studio-btn w-full py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 shadow-solid-sm dark:shadow-solid-sm-dark">
                 <i class="fa-solid fa-download"></i>
                 <span>DOWNLOAD JPG</span>
             </button>
 
-            <button onclick="app.downloadExportImage('png')" class="studio-btn w-full py-2.5 sm:py-4 bg-studio-ink dark:bg-zinc-100 hover:bg-slate-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 shadow-solid-sm dark:shadow-solid-sm-dark">
+            <button data-export-action onclick="app.downloadExportImage('png')" class="studio-btn w-full py-2.5 sm:py-4 bg-studio-ink dark:bg-zinc-100 hover:bg-slate-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 shadow-solid-sm dark:shadow-solid-sm-dark">
                 <i class="fa-solid fa-file-image"></i>
                 <span>DOWNLOAD PNG</span>
             </button>
@@ -822,13 +865,14 @@
                 <i class="fa-solid fa-share-nodes"></i> SHARE PHOTO
             </button>
 
-            <button onclick="app.showQrModal()" class="studio-btn w-full sm:w-auto px-4 py-2.5 sm:py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs flex items-center justify-center gap-1 sm:gap-1.5 shadow-solid-sm dark:shadow-solid-sm-dark">
+            <button data-export-action onclick="app.showQrModal()" class="studio-btn w-full sm:w-auto px-4 py-2.5 sm:py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs flex items-center justify-center gap-1 sm:gap-1.5 shadow-solid-sm dark:shadow-solid-sm-dark">
                 <i class="fa-solid fa-qrcode text-xs sm:text-sm"></i>
                 <span>SAVE / QR</span>
             </button>
         </div>
 
         <p id="shareStatus" role="status" class="mt-3 text-sm text-center text-slate-600 dark:text-zinc-300"></p>
+        <p id="draftExportStatus" role="status" class="draft-status mt-2"></p>
 
         <button onclick="app.startOverPrompt()" class="mt-4 sm:mt-6 text-[10px] sm:text-xs font-mono font-bold text-slate-500 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 underline uppercase">
             Start Entire Photobooth Over
@@ -908,13 +952,15 @@
 </div>
 
 <footer class="w-full bg-white dark:bg-zinc-900 border-t-2 border-studio-ink dark:border-zinc-700 py-2 sm:py-4 px-3 sm:px-4 text-center font-mono text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 flex flex-col sm:flex-row justify-between items-center gap-1 sm:gap-2 mt-auto transition-colors">
-    <div>SNAPBOOTH STUDIO // K-STYLE SELF PHOTO BOOTH ENGINE</div>
-    <div>OPTIMIZED FOR ALL MOBILE TOUCHSCREENS & DESKTOPS</div>
+    <div>SNAPBOOTH BY JAMES · LITTLE MOMENTS, KEPT.</div>
+    <div>MADE FOR FRIENDS, FAMILY &amp; YOU</div>
 </footer>
 
 <script src="./assets/qrcode.js"></script>
 <script src="./sharing.js"></script>
 <script src="./editor.js"></script>
+<script src="./export-presets.js"></script>
+<script src="./session-drafts.js"></script>
 <script>
 const app = {
     currentScreen: 'home',
@@ -954,6 +1000,13 @@ const app = {
     audioCtx: null,
     photoSharing: null,
     exportRenderId: 0,
+    exportPreset: 'original',
+    exportIsReady: false,
+    controlTab: 'photos',
+    sessionDrafts: null,
+    isCapturing: false,
+    captureRunId: 0,
+    cancelCountdown: null,
 
     init() {
         this.photoSharing = new window.SnapBoothSharing();
@@ -970,6 +1023,8 @@ const app = {
         this.setupStickerDragSystem();
         this.setupDoodleSystem();
         this.photoEditor = new window.SnapBoothPhotoEditor(this);
+        this.sessionDrafts = new window.SnapBoothSessionDrafts(this);
+        this.sessionDrafts.init();
     },
 
     initTheme() {
@@ -1080,6 +1135,12 @@ const app = {
         else resetBtn.classList.remove('hidden');
 
         if (screenId !== 'camera') {
+            this.captureRunId++;
+            this.isCapturing = false;
+            this.cancelCountdown?.();
+            const captureBtn = document.getElementById('startCaptureBtn');
+            captureBtn.disabled = false;
+            captureBtn.classList.remove('opacity-50');
             this.stopWebcam();
         }
 
@@ -1092,6 +1153,7 @@ const app = {
         }
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        this.sessionDrafts?.schedule();
     },
 
     updateStepIndicator(screenId) {
@@ -1147,6 +1209,7 @@ const app = {
     setTimerDuration(dur) {
         this.playSound('click');
         this.timerDuration = dur;
+        this.sessionDrafts?.schedule();
         [3, 5, 10].forEach(d => {
             const btn = document.getElementById(`timerBtn-${d}`);
             if (btn) {
@@ -1364,32 +1427,62 @@ const app = {
         video.srcObject = null;
     },
 
-    async startPhotoCaptureSequence() {
-        if (this.isRetaking) return;
-        this.capturedPhotos = [];
-        this.photoEdits = [];
+    async startPhotoCaptureSequence(resume = false) {
+        if (this.isRetaking || this.isCapturing) return;
+        this.isCapturing = true;
+        if (!resume) { this.capturedPhotos = []; this.photoEdits = []; }
+        const runId = ++this.captureRunId;
+        const photos = this.capturedPhotos;
         const btn = document.getElementById('startCaptureBtn');
         btn.disabled = true;
         btn.classList.add('opacity-50');
 
-        for (let i = 1; i <= this.selectedShotCount; i++) {
-            document.getElementById('cameraShotCounter').innerText = `SHOT ${i} OF ${this.selectedShotCount}`;
-            await this.runCountdown(this.timerDuration);
-            const photoData = this.captureSingleFrame();
-            this.capturedPhotos.push(photoData);
-            this.triggerFlash();
-            this.playSound('shutter');
-            await new Promise(r => setTimeout(r, 600));
+        try {
+            for (let i = photos.length + 1; i <= this.selectedShotCount; i++) {
+                document.getElementById('cameraShotCounter').innerText = `SHOT ${i} OF ${this.selectedShotCount}`;
+                if (await this.runCountdown(this.timerDuration) === false) return;
+                if (runId !== this.captureRunId || this.currentScreen !== 'camera' || photos !== this.capturedPhotos) return;
+                const photoData = this.captureSingleFrame();
+                this.capturedPhotos.push(photoData);
+                this.sessionDrafts?.schedule();
+                this.triggerFlash();
+                this.playSound('shutter');
+                await new Promise(r => setTimeout(r, 600));
+            }
+
+            if (runId !== this.captureRunId || this.currentScreen !== 'camera' || photos !== this.capturedPhotos) return;
+            this.renderPhotoReviewGrid();
+            this.navigateTo('review');
+        } finally {
+            if (runId === this.captureRunId) {
+                this.isCapturing = false;
+                btn.disabled = false;
+                btn.classList.remove('opacity-50');
+            }
         }
+    },
 
-        btn.disabled = false;
-        btn.classList.remove('opacity-50');
-
-        this.renderPhotoReviewGrid();
-        this.navigateTo('review');
+    async continuePhotoCaptureSequence() {
+        if (this.isCapturing || this.isRetaking || !this.capturedPhotos.length || this.capturedPhotos.length >= this.selectedShotCount) return;
+        const photos = this.capturedPhotos;
+        this.navigateTo('camera');
+        this.isCapturing = true;
+        document.getElementById('startCaptureBtn').disabled = true;
+        const ready = await this.startWebcam();
+        if (this.currentScreen !== 'camera' || photos !== this.capturedPhotos) return;
+        this.isCapturing = false;
+        if (!ready) {
+            this.navigateTo('review');
+            const status = document.getElementById('reviewStatusMsg');
+            status.innerText = 'The camera could not start. Your saved photos are safe. Please check camera access and try again.';
+            status.classList.remove('hidden');
+            return;
+        }
+        return this.startPhotoCaptureSequence(true);
     },
 
     runCountdown(seconds) {
+        this.cancelCountdown?.();
         return new Promise(resolve => {
             const container = document.getElementById('countdownContainer');
             const numText = document.getElementById('countdownNumber');
@@ -1399,7 +1492,15 @@ const app = {
             numText.innerText = current;
             this.playSound('beep');
 
-            const timer = setInterval(() => {
+            let timer;
+            const cancel = () => {
+                clearInterval(timer);
+                container.classList.add('hidden');
+                if (this.cancelCountdown === cancel) this.cancelCountdown = null;
+                resolve(false);
+            };
+            this.cancelCountdown = cancel;
+            timer = setInterval(() => {
                 current--;
                 if (current > 0) {
                     numText.innerText = current;
@@ -1407,7 +1508,8 @@ const app = {
                 } else {
                     clearInterval(timer);
                     container.classList.add('hidden');
-                    resolve();
+                    if (this.cancelCountdown === cancel) this.cancelCountdown = null;
+                    resolve(true);
                 }
             }, 1000);
         });
@@ -1462,6 +1564,10 @@ const app = {
     },
 
     renderPhotoReviewGrid() {
+        const remaining = this.selectedShotCount - this.capturedPhotos.length;
+        const complete = document.getElementById('completeSessionBtn');
+        complete.hidden = remaining <= 0;
+        complete.textContent = `TAKE ${remaining} REMAINING PHOTO${remaining === 1 ? '' : 'S'}`;
         document.getElementById('reviewStatusMsg').classList.add('hidden');
         const grid = document.getElementById('photoReviewGrid');
         grid.innerHTML = '';
@@ -1482,6 +1588,7 @@ const app = {
             `;
             grid.appendChild(card);
         });
+        this.sessionDrafts?.schedule();
     },
 
     retakeSinglePhoto(index) {
@@ -1547,6 +1654,7 @@ const app = {
     },
 
     setControlTab(tab) {
+        this.controlTab = tab;
         this.playSound('click');
         ['photos', 'layouts', 'themes', 'filters', 'text', 'draw'].forEach(t => {
             const content = document.getElementById(`tabContent-${t}`);
@@ -1570,6 +1678,7 @@ const app = {
             this.toggleDrawingMode(false);
         }
         if (this.photoEditor) this.photoEditor.onTabChange(tab);
+        this.sessionDrafts?.schedule();
     },
 
     setPhotoOrientation(orient) {
@@ -1685,6 +1794,7 @@ const app = {
         this.frameColor = color;
         const input = document.getElementById('frameColorInput');
         if (input) input.value = color;
+        this.sessionDrafts?.schedule();
         this.renderPhotoboothStrip();
     },
 
@@ -1728,12 +1838,14 @@ const app = {
 
         document.getElementById('stripTextMain').innerText = this.mainText || 'SNAPBOOTH';
         document.getElementById('stripDate').innerText = this.dateText || '';
+        this.sessionDrafts?.schedule();
     },
 
     updateFontFamily(font) {
         this.fontClass = font;
         const target = document.getElementById('stripTextMain');
         if (target) target.className = `font-mono font-bold text-[11px] sm:text-sm tracking-wider uppercase text-slate-900 ${font}`;
+        this.sessionDrafts?.schedule();
     },
 
     addStickerToCanvas(emoji) {
@@ -1762,6 +1874,7 @@ const app = {
         this.placedStickers.forEach(s => {
             const el = document.createElement('div');
             el.className = 'placed-sticker text-xl sm:text-2xl pointer-events-auto flex items-center justify-center';
+            el.dataset.stickerId = s.id;
             el.style.left = `${s.x}%`;
             el.style.top = `${s.y}%`;
             el.style.transform = `scale(${s.scale || 1.0})`;
@@ -1772,6 +1885,7 @@ const app = {
             `;
             layer.appendChild(el);
         });
+        this.sessionDrafts?.schedule();
     },
 
     removeSticker(id) {
@@ -1797,6 +1911,9 @@ const app = {
                 const y = ((e.clientY - rect.top) / rect.height) * 100;
                 activeItem.style.left = `${Math.max(0, Math.min(90, x))}%`;
                 activeItem.style.top = `${Math.max(0, Math.min(90, y))}%`;
+                const sticker = this.placedStickers.find(item => item.id === Number(activeItem.dataset.stickerId));
+                if (sticker) { sticker.x = Math.max(0, Math.min(90, x)); sticker.y = Math.max(0, Math.min(90, y)); }
+                this.sessionDrafts?.schedule();
             }
         });
 
@@ -1838,6 +1955,7 @@ const app = {
     setToolMode(mode) {
         this.playSound('click');
         this.isEraser = (mode === 'eraser');
+        this.sessionDrafts?.schedule();
         const penBtn = document.getElementById('toolBtn-pen');
         const eraserBtn = document.getElementById('toolBtn-eraser');
 
@@ -1857,6 +1975,7 @@ const app = {
         this.setToolMode('pen');
         const input = document.getElementById('brushColorInput');
         if (input) input.value = color;
+        this.sessionDrafts?.schedule();
     },
 
     setBrushSize(size) {
@@ -1865,6 +1984,7 @@ const app = {
         const slider = document.getElementById('brushSizeSlider');
         if (label) label.innerText = `${size} PX`;
         if (slider) slider.value = size;
+        this.sessionDrafts?.schedule();
     },
 
     undoLastDoodle() {
@@ -1872,6 +1992,7 @@ const app = {
         if (this.drawnPaths.length > 0) {
             this.drawnPaths.pop();
             this.renderDoodleCanvas();
+            this.sessionDrafts?.schedule();
         }
     },
 
@@ -1879,6 +2000,7 @@ const app = {
         this.playSound('click');
         this.drawnPaths = [];
         this.renderDoodleCanvas();
+        this.sessionDrafts?.schedule();
     },
 
     setupDoodleSystem() {
@@ -1906,6 +2028,7 @@ const app = {
                 points: [coords]
             };
             this.drawnPaths.push(this.currentPath);
+            this.sessionDrafts?.schedule();
             this.renderDoodleCanvas();
             e.preventDefault();
         };
@@ -1914,12 +2037,14 @@ const app = {
             if (!this.isDrawingMode || !this.currentPath) return;
             const coords = getCoords(e);
             this.currentPath.points.push(coords);
+            this.sessionDrafts?.schedule();
             this.renderDoodleCanvas();
             e.preventDefault();
         };
 
         const handleEnd = () => {
             this.currentPath = null;
+            this.sessionDrafts?.schedule();
         };
 
         canvas.addEventListener('pointerdown', handleStart);
@@ -2030,6 +2155,7 @@ const app = {
         });
 
         strip.style.width = strip.style.maxWidth;
+        this.sessionDrafts?.schedule();
         if (this.photoEditor) this.photoEditor.render();
         setTimeout(() => {
             this.renderDoodleCanvas();
@@ -2052,6 +2178,8 @@ const app = {
     },
 
     renderExportCanvas() {
+        this.exportIsReady = false;
+        document.querySelectorAll('[data-export-action]').forEach(button => { button.disabled = true; });
         const renderId = ++this.exportRenderId;
         if (this.photoSharing) this.photoSharing.reset();
         const canvas = document.getElementById('exportCanvas');
@@ -2072,7 +2200,7 @@ const app = {
                 loadedCount++;
                 if (loadedCount === photos.length) {
                     this.drawImagesToExportCanvas(ctx, canvas, loadedImages);
-                    if (this.photoSharing) this.photoSharing.prepare(canvas);
+                    if (this.photoSharing) this.photoSharing.prepare(canvas, () => this.createExportBlob('jpg'));
                 }
             };
             img.onerror = () => {
@@ -2257,6 +2385,8 @@ const app = {
             ctx.restore();
         });
 
+        window.SnapBoothExportPresets.compose(canvas, this.exportPreset, this.frameColor);
+        this.updateExportPresetControls(canvas);
         const mobilePreviewImg = document.getElementById('mobilePreviewImg');
         if (mobilePreviewImg) {
             mobilePreviewImg.src = canvas.toDataURL('image/jpeg', 0.95);
@@ -2324,20 +2454,45 @@ const app = {
         ctx.drawImage(img, crop.sx, crop.sy, crop.sw, crop.sh, x, y, w, h);
     },
 
-    downloadExportImage(format) {
+    setExportPreset(preset) {
+        if (!window.SnapBoothExportPresets.PRESETS[preset]) return;
+        this.exportPreset = preset;
+        this.renderExportCanvas();
+        this.sessionDrafts?.schedule();
+    },
+
+    updateExportPresetControls(canvas) {
+        this.exportIsReady = true;
+        document.querySelectorAll('[data-export-action]').forEach(button => { button.disabled = false; });
+        document.querySelectorAll('[data-export-preset]').forEach(button => {
+            button.setAttribute('aria-pressed', String(button.dataset.exportPreset === this.exportPreset));
+        });
+        const preset = window.SnapBoothExportPresets.PRESETS[this.exportPreset];
+        document.getElementById('exportDimensions').textContent = `${preset.label} · ${canvas.width} × ${canvas.height} px${preset.dpi ? ' · 300 DPI' : ''}`;
+    },
+
+    createExportBlob(format) {
+        const canvas = document.getElementById('exportCanvas');
+        const type = format === 'png' ? 'image/png' : 'image/jpeg';
+        const dpi = window.SnapBoothExportPresets.PRESETS[this.exportPreset].dpi;
+        return new Promise((resolve, reject) => {
+            canvas.toBlob(blob => {
+                if (!blob) { reject(new Error('Photo could not be prepared.')); return; }
+                window.SnapBoothExportPresets.withDpi(blob, dpi).then(resolve, reject);
+            }, type, 0.95);
+        });
+    },
+
+    async downloadExportImage(format) {
         this.playSound('click');
+        if (!this.exportIsReady) return;
         const canvas = document.getElementById('exportCanvas');
         if (!canvas) return;
 
-        const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
-        const fileName = `SNAPBOOTH_${Date.now()}.${format}`;
+        const fileName = `SNAPBOOTH_${this.exportPreset}_${Date.now()}.${format}`;
 
         try {
-            canvas.toBlob((blob) => {
-                if (!blob) {
-                    this.showQrModal();
-                    return;
-                }
+                const blob = await this.createExportBlob(format);
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.download = fileName;
@@ -2349,7 +2504,6 @@ const app = {
                     document.body.removeChild(link);
                     URL.revokeObjectURL(url);
                 }, 1000);
-            }, mimeType, 0.95);
         } catch (err) {
             this.showQrModal();
         }
@@ -2362,7 +2516,7 @@ const app = {
         const canvas = document.getElementById('exportCanvas');
         
         if (canvas) {
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+            const dataUrl = this.photoSharing?.previewUrl || canvas.toDataURL('image/jpeg', 0.95);
             if (mobilePreviewImg) {
                 mobilePreviewImg.src = dataUrl;
             }
@@ -2371,12 +2525,13 @@ const app = {
         if (modal) modal.classList.remove('hidden');
     },
 
-    openImageInNewTab() {
+    async openImageInNewTab() {
         this.playSound('click');
         const canvas = document.getElementById('exportCanvas');
         if (!canvas) return;
 
-        canvas.toBlob((blob) => {
+        try {
+            const blob = await this.createExportBlob('jpg');
             if (blob) {
                 const blobUrl = URL.createObjectURL(blob);
                 const win = window.open(blobUrl, '_blank');
@@ -2390,7 +2545,7 @@ const app = {
                     window.location.href = dataUrl;
                 }
             }
-        }, 'image/jpeg', 0.95);
+        } catch { this.showQrModal(); }
     },
 
     closeQrModal() {
@@ -2415,6 +2570,7 @@ const app = {
     confirmResetSession() {
         this.playSound('click');
         this.closeResetModal();
+        if (this.sessionDrafts) { this.sessionDrafts.deleteDraft(); return; }
         this.capturedPhotos = [];
         this.photoEdits = [];
         this.placedStickers = [];

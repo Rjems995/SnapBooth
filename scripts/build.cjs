@@ -18,9 +18,10 @@ async function build() {
     fs.writeFileSync(path.join(output, 'assets', 'studio.css'), css.css);
     html = html.replace('<script src="https://cdn.tailwindcss.com"></script>', '<link rel="stylesheet" href="./assets/studio.css">').replace(configScript[0], '');
     fs.writeFileSync(path.join(output, 'index.html'), html);
-    for (const file of ['shared.html', 'sharing.js', 'shared.js', 'editor.js', 'editor.css']) {
+    for (const file of ['shared.html', 'sharing.js', 'shared.js', 'editor.js', 'editor.css', 'export-presets.js', 'session-drafts.js', 'studio-extras.css']) {
         fs.copyFileSync(path.join(root, file), path.join(output, file));
     }
+    fs.copyFileSync(path.join(root, 'assets', 'demo-photos.png'), path.join(output, 'assets', 'demo-photos.png'));
     fs.copyFileSync(require.resolve('qrcode-generator'), path.join(output, 'assets', 'qrcode.js'));
     console.log('Built SnapBooth and the shared-photo page in dist/.');
 }

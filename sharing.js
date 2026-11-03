@@ -7,6 +7,7 @@
             this.upload = null;
             this.expiryTimer = null;
             this.isSharing = false;
+            this.previewUrl = null;
         }
 
         element(id) { return document.getElementById(id); }
@@ -36,13 +37,15 @@
             if (this.upload) this.upload.abort();
             this.upload = null;
             this.file = null;
+            if (this.previewUrl) URL.revokeObjectURL(this.previewUrl);
+            this.previewUrl = null;
             this.clearLink();
             this.setStatus('');
             this.setStatus('', 'linkStatus');
             this.updateControls();
         }
 
-        prepare(canvas) {
+        prepare(canvas, createBlob = null) {
             this.reset();
             const revision = this.revision;
             return new Promise(resolve => {
@@ -53,10 +56,15 @@
                         return resolve(false);
                     }
                     this.file = new File([blob], `SNAPBOOTH_${Date.now()}.jpg`, { type: 'image/jpeg' });
+                    this.previewUrl = URL.createObjectURL(blob);
+                    this.element('mobilePreviewImg').src = this.previewUrl;
                     this.updateControls();
                     resolve(true);
                 };
-                try { canvas.toBlob(finish, 'image/jpeg', 0.95); }
+                try {
+                    if (createBlob) Promise.resolve().then(createBlob).then(finish, () => finish(null));
+                    else canvas.toBlob(finish, 'image/jpeg', 0.95);
+                }
                 catch { finish(null); }
             });
         }
