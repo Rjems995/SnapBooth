@@ -355,7 +355,7 @@
             <p class="text-slate-600 dark:text-zinc-400 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">Choose how many photos to include in your strip.</p>
         </div>
 
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-5 w-full mb-4 sm:mb-8">
+        <div id="shotOptions" class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-5 w-full mb-4 sm:mb-8">
             <div onclick="app.selectShotOption(2)" id="shot-opt-2" class="studio-card-interactive p-2 sm:p-5 flex flex-col items-center justify-between group">
                 <div class="text-center w-full mb-1 sm:mb-3">
                     <span class="font-mono text-[9px] sm:text-xs text-slate-500 dark:text-zinc-400 block">Option A</span>
@@ -459,7 +459,7 @@
             </div>
         </div>
 
-        <div class="relative w-full aspect-video max-h-[500px] studio-box overflow-hidden bg-slate-900 flex items-center justify-center">
+        <div id="cameraViewport" class="relative w-full aspect-video max-h-[500px] studio-box overflow-hidden bg-slate-900 flex items-center justify-center">
             <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover mirrored-feed"></video>
             <canvas id="fallbackCanvas" class="hidden w-full h-full object-cover"></canvas>
 
@@ -500,7 +500,7 @@
             </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-center justify-center mt-3 sm:mt-6 w-full">
+        <div id="cameraActions" class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-center justify-center mt-3 sm:mt-6 w-full">
             <button id="startCaptureBtn" onclick="app.startPhotoCaptureSequence()" class="studio-btn w-full sm:w-auto px-5 sm:px-8 py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-base flex items-center justify-center gap-2 sm:gap-3 shadow-solid-sm dark:shadow-solid-sm-dark">
                 <i class="fa-solid fa-camera-retro text-sm sm:text-lg"></i>
                 <span>Take Photos</span>
@@ -831,6 +831,12 @@
             <p class="text-slate-600 dark:text-zinc-400 text-sm mt-1 px-2">Choose a size, then save or share your finished strip.</p>
         </div>
 
+        <div id="exportWorkspace">
+        <div id="exportPreviewPanel" class="studio-box p-2 sm:p-6 flex items-center justify-center bg-studio-bg dark:bg-zinc-950">
+            <canvas id="exportCanvas" class="max-w-full h-auto border border-studio-border dark:border-zinc-700 shadow-solid-md"></canvas>
+        </div>
+        <div id="exportControls">
+        <div id="exportOptions">
         <fieldset class="export-presets" aria-describedby="exportPresetHint">
             <legend>Save it your way</legend>
             <div class="export-preset-options">
@@ -844,11 +850,15 @@
             <p id="exportDimensions" role="status"></p>
         </fieldset>
 
-        <div class="studio-box p-2 sm:p-6 flex items-center justify-center bg-studio-bg dark:bg-zinc-950 mb-4 sm:mb-8 w-full max-w-xs sm:max-w-md">
-            <canvas id="exportCanvas" class="max-w-full h-auto border border-studio-border dark:border-zinc-700 shadow-solid-md"></canvas>
+        <p id="shareStatus" role="status" class="mt-3 text-sm text-center text-slate-600 dark:text-zinc-300"></p>
+        <p id="draftExportStatus" role="status" class="draft-status mt-2"></p>
+
+        <button onclick="app.startOverPrompt()" class="mt-4 sm:mt-6 text-[10px] sm:text-xs font-mono font-bold text-slate-500 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 underline">
+            Start Over
+        </button>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 w-full max-w-xl">
+        <div id="exportActions" class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 w-full max-w-xl">
             <button onclick="app.navigateTo('customize')" class="studio-btn w-full sm:w-auto px-4 py-2.5 sm:py-3.5 bg-white dark:bg-zinc-800 text-slate-900 dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700 text-[11px] sm:text-xs">
                 <i class="fa-solid fa-pen-to-square mr-1"></i> Edit Design
             </button>
@@ -873,12 +883,8 @@
             </button>
         </div>
 
-        <p id="shareStatus" role="status" class="mt-3 text-sm text-center text-slate-600 dark:text-zinc-300"></p>
-        <p id="draftExportStatus" role="status" class="draft-status mt-2"></p>
-
-        <button onclick="app.startOverPrompt()" class="mt-4 sm:mt-6 text-[10px] sm:text-xs font-mono font-bold text-slate-500 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 underline">
-            Start Over
-        </button>
+        </div>
+        </div>
     </section>
 
 </main>
@@ -1125,6 +1131,7 @@ const app = {
         });
 
         this.currentScreen = screenId;
+        document.body?.classList.toggle('is-in-session', screenId !== 'home');
         if (this.photoEditor) this.photoEditor.onNavigate(screenId);
         if (screenId !== 'export' && this.photoSharing) {
             this.exportRenderId++;
@@ -1154,7 +1161,7 @@ const app = {
             this.renderExportCanvas();
         }
 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
         this.sessionDrafts?.schedule();
     },
 

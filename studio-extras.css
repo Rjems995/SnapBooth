@@ -58,3 +58,75 @@ body > footer { border-top-width: 1px; }
     .sample-pink { width: 120px; right: 48px; top: 40px; }
     .sample-blue { width: 190px; left: calc(50% - 95px); top: 130px; }
 }
+
+body.is-in-session { height: 100dvh; min-height: 0; overflow: hidden; overscroll-behavior: none; }
+body.is-in-session #studioHeader { flex-shrink: 0; }
+body.is-in-session > main { flex: 1; min-height: 0; padding: 8px; justify-content: flex-start; overflow: hidden; }
+body.is-in-session > footer { display: none; }
+body.is-in-session main > section.flex { height: 100%; max-height: 100%; min-height: 0; margin: 0; }
+body.is-in-session :is(#screen-shot-select, #screen-camera, #screen-review) > div:first-child { flex-shrink: 0; margin-bottom: 0; }
+
+#screen-shot-select.flex { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; justify-items: center; gap: 12px; padding: 0; }
+#shotOptions { min-height: 0; align-self: stretch; margin: 0; padding: 2px; grid-auto-rows: minmax(0, 1fr); overflow-y: auto; overscroll-behavior: contain; }
+#shotOptions .studio-card-interactive { min-height: 0; padding: 8px; gap: 6px; }
+#shotOptions .studio-card-interactive > div:first-child { margin: 0; flex-shrink: 0; }
+#shotOptions .studio-card-interactive > div:nth-child(2) { flex: 1; min-height: 0; max-height: 128px; margin: 0; overflow: hidden; grid-auto-rows: minmax(0, 1fr); }
+#shotOptions .studio-card-interactive > div:nth-child(2) > div { flex: 1; min-height: 0; height: auto; }
+#shotOptions .studio-card-interactive > div:last-child { flex-shrink: 0; margin: 0; border-radius: 6px; }
+#shotSelectionSummary { padding: 12px; }
+#shotSelectionSummary p { margin-bottom: 8px; }
+
+#screen-camera.flex { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 12px; }
+#cameraViewport { min-height: 0; height: 100%; max-height: 100%; aspect-ratio: auto; background: #111; }
+#cameraViewport :is(video, canvas) { object-fit: contain; }
+#cameraActions { margin-top: 0; }
+
+#screen-review.flex { gap: 12px; }
+#screen-review > p { flex-shrink: 0; }
+#photoReviewGrid { flex: 1; min-height: 0; margin: 0; padding: 2px; align-content: start; overflow-y: auto; overscroll-behavior: contain; }
+#screen-review > div:last-child { flex-shrink: 0; }
+
+#screen-export.flex { gap: 12px; }
+#screen-export > div:first-child { flex-shrink: 0; margin: 0; }
+#exportWorkspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; flex: 1; width: 100%; min-height: 0; }
+#exportPreviewPanel { min-width: 0; min-height: 0; height: 100%; padding: 12px; overflow: hidden; }
+#exportPreviewPanel #exportCanvas { width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; }
+#exportControls { display: flex; flex-direction: column; gap: 12px; min-width: 0; min-height: 0; padding: 4px; }
+#exportOptions { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 2px; }
+#exportOptions .export-presets { margin-bottom: 16px; }
+#exportActions { flex-shrink: 0; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-width: none; }
+#exportActions .studio-btn { padding: 10px 8px; font-size: 13px; }
+#exportActions > button:last-child { grid-column: 1 / -1; }
+
+@media (min-width: 640px) {
+    body.is-in-session:not(.is-editing) > main { padding: 16px; }
+}
+@media (min-width: 1024px) {
+    body.is-in-session > main { padding: 20px; }
+    #screen-customize.flex { grid-template-rows: minmax(0, 1fr) auto; }
+    #editorPreviewPanel { position: static; height: 100%; min-height: 0; }
+    #editorPreviewPanel > div:first-child { flex-shrink: 0; }
+    #editorPreviewPanel #photoboothPreviewContainer { flex: 1; height: auto; min-height: 0; }
+    #editorSettingsPanel { height: 100%; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; }
+    #editorActionBar { position: static; }
+}
+@media (max-width: 639px) {
+    #exportWorkspace { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(100px, 28dvh) minmax(0, 1fr); gap: 10px; }
+}
+@media (max-height: 700px) {
+    #screen-shot-select > div:first-child p, #shotOptions .studio-card-interactive > div:first-child > span:first-child { display: none; }
+    #shotSelectionSummary > span { display: none; }
+    #shotSelectionSummary h3 { font-size: 18px; }
+}
+@media (max-width: 639px) and (max-height: 700px) {
+    #exportWorkspace { grid-template-rows: minmax(100px, 20dvh) minmax(0, 1fr); }
+}
+@media (max-height: 500px) {
+    body.is-in-session :is(#screen-shot-select, #screen-review, #screen-export) > div:first-child > :is(span, p) { display: none; }
+    #screen-shot-select.flex, #screen-camera.flex, #screen-review.flex, #screen-export.flex { gap: 8px; }
+    #shotOptions { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+    #shotOptions .studio-card-interactive > div:first-child > p { display: none; }
+    #shotSelectionSummary { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; width: 100%; max-width: none; padding: 8px; }
+    #shotSelectionSummary > p { display: none; }
+    #shotSelectionSummary button { padding: 8px 16px; }
+}
