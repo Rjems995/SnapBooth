@@ -93,7 +93,7 @@ async function main() {
                     .replace(/<link[^>]*href="https:[^>]*>/g, '')
                     .replace('</head>', '<style>.hidden{display:none!important}</style></head>');
             }
-            response.setHeader('Content-Type', target.endsWith('.js') ? 'application/javascript' : 'text/html; charset=utf-8');
+            response.setHeader('Content-Type', target.endsWith('.js') ? 'application/javascript' : target.endsWith('.css') ? 'text/css' : 'text/html; charset=utf-8');
             response.end(content);
         } catch (error) { response.writeHead(500); response.end(error.message); }
     });
@@ -208,4 +208,5 @@ async function main() {
     }
 }
 
-main().catch(error => { console.error(error.stack); process.exitCode = 1; });
+module.exports = { connect, waitFor };
+if (require.main === module) main().catch(error => { console.error(error.stack); process.exitCode = 1; });

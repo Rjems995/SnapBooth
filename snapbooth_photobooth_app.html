@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>SnapBooth — K-Style Photobooth Studio</title>
 
     <!-- Studio Camera Favicon Logo -->
@@ -57,6 +57,7 @@
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./editor.css">
 
     <style>
         * {
@@ -229,7 +230,7 @@
 </head>
 <body class="flex flex-col justify-between min-h-screen">
 
-<header class="w-full bg-white dark:bg-zinc-900 border-b-2 border-studio-ink dark:border-zinc-700 py-2 sm:py-3 px-3 sm:px-6 sticky top-0 z-40 flex items-center justify-between gap-2 transition-colors">
+<header id="studioHeader" class="w-full bg-white dark:bg-zinc-900 border-b-2 border-studio-ink dark:border-zinc-700 py-2 sm:py-3 px-3 sm:px-6 sticky top-0 z-40 flex items-center justify-between gap-2 transition-colors">
     <div class="flex items-center gap-2 sm:gap-3 cursor-pointer shrink-0" onclick="app.navigateTo('home')">
         <div class="w-7 h-7 sm:w-9 sm:h-9 bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono font-bold text-xs sm:text-lg flex items-center justify-center border border-studio-ink dark:border-zinc-700 shadow-solid-sm dark:shadow-solid-sm-dark">
             SB
@@ -486,10 +487,11 @@
         <div class="text-center mb-3 sm:mb-6">
             <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 px-1.5 sm:px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40 uppercase">Step 03 / Review</span>
             <h2 class="text-xl sm:text-3xl font-black uppercase mt-0.5 sm:mt-1">Review Captured Shots</h2>
-            <p class="text-slate-600 dark:text-zinc-400 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">Inspect your photos. Tap retake on any single frame to replace it.</p>
+            <p class="text-slate-600 dark:text-zinc-400 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">Inspect your photos. Drag a photo's grip to change the order, or retake a single shot.</p>
         </div>
 
         <p id="reviewStatusMsg" role="alert" class="hidden w-full mb-3 text-sm text-rose-700 dark:text-rose-300 text-center"></p>
+        <p id="photoOrderAnnouncement" role="status" class="sr-only"></p>
 
         <div id="photoReviewGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 w-full mb-4 sm:mb-8"></div>
 
@@ -508,9 +510,9 @@
     <!-- SCREEN 4: Customization Studio -->
     <section id="screen-customize" class="w-full max-w-6xl hidden flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8 items-start">
         
-        <div class="w-full lg:w-1/2 flex flex-col items-center lg:sticky lg:top-20">
+        <div id="editorPreviewPanel" class="w-full lg:w-1/2 flex flex-col items-center lg:sticky lg:top-20">
             <div class="w-full flex items-center justify-between mb-1.5 sm:mb-2">
-                <span class="font-mono text-[9px] sm:text-xs font-bold text-slate-600 dark:text-zinc-400 uppercase"><i class="fa-solid fa-eye mr-1"></i> LIVE STRIP PREVIEW</span>
+                <button id="expandPreviewBtn" type="button" onclick="app.photoEditor.expandPreview()" class="preview-expand" aria-haspopup="dialog"><i class="fa-solid fa-expand mr-1"></i> EXPAND PREVIEW</button>
                 <div class="flex gap-1 sm:gap-1.5 items-center">
                     <span id="currentOrientationBadge" class="font-mono text-[8px] sm:text-[10px] bg-slate-100 dark:bg-zinc-800 text-slate-800 dark:text-zinc-200 border border-slate-300 dark:border-zinc-600 px-1 sm:px-1.5 py-0.5 font-bold uppercase">PORTRAIT 3:4</span>
                     <span id="currentShotBadge" class="font-mono text-[9px] sm:text-xs bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-800 px-1.5 sm:px-2 py-0.5 font-bold">4 SHOTS</span>
@@ -518,6 +520,7 @@
             </div>
 
             <div id="photoboothPreviewContainer" class="relative w-full flex justify-center items-center p-2 sm:p-6 studio-box min-h-[320px] sm:min-h-[460px] bg-studio-bg dark:bg-zinc-950 overflow-hidden">
+                <div id="previewScaleFrame">
                 <div id="photoboothStrip" class="relative studio-box transition-all duration-200 flex flex-col items-center justify-between p-2.5 sm:p-4" style="background-color: #FFFFFF; width: 100%; max-width: 290px;">
                     <div id="stripHeaderTitle" class="w-full text-center mb-2 font-bold text-slate-800 text-xs uppercase tracking-wider hidden">
                         SNAPBOOTH STUDIO
@@ -534,10 +537,12 @@
                     <div id="placedStickersLayer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
                     <canvas id="doodleCanvas" class="absolute inset-0 pointer-events-none z-20"></canvas>
                 </div>
+                </div>
             </div>
         </div>
 
-        <div class="w-full lg:w-1/2 studio-box p-3 sm:p-6 flex flex-col gap-3 sm:gap-6 min-w-0">
+        <div id="editorSettingsPanel" class="w-full lg:w-1/2 studio-box p-3 sm:p-6 flex flex-col gap-3 sm:gap-6 min-w-0">
+            <div class="editor-settings-header">
             <div>
                 <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 dark:text-blue-400 border border-blue-600 dark:border-blue-400 px-1.5 sm:px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40 uppercase">Step 04 / Customization</span>
                 <h2 class="text-lg sm:text-2xl font-black uppercase mt-0.5 sm:mt-1">Customize Studio Strip</h2>
@@ -550,7 +555,8 @@
 
                 <div id="tabBarScrollContainer" class="flex-1 overflow-x-auto no-scrollbar scroll-smooth">
                     <div class="flex font-mono text-[10px] sm:text-xs font-bold w-max">
-                        <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="shrink-0 px-2 sm:px-2.5 py-1.5 sm:py-2 bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900 border-r border-studio-ink dark:border-zinc-700 whitespace-nowrap">
+                        <button onclick="app.setControlTab('photos')" id="tabBtn-photos" class="shrink-0 px-2 sm:px-2.5 py-1.5 sm:py-2 bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900 border-r border-studio-ink dark:border-zinc-700 whitespace-nowrap">PHOTOS</button>
+                        <button onclick="app.setControlTab('layouts')" id="tabBtn-layouts" class="shrink-0 px-2 sm:px-2.5 py-1.5 sm:py-2 bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 border-r border-studio-ink dark:border-zinc-700 whitespace-nowrap">
                             1. LAYOUT
                         </button>
                         <button onclick="app.setControlTab('themes')" id="tabBtn-themes" class="shrink-0 px-2 sm:px-2.5 py-1.5 sm:py-2 bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700 border-r border-studio-ink dark:border-zinc-700 whitespace-nowrap">
@@ -572,8 +578,30 @@
                     <i class="fa-solid fa-chevron-right text-[9px] sm:text-[11px]"></i>
                 </button>
             </div>
+            </div>
 
-            <div id="tabContent-layouts" class="flex flex-col gap-3 sm:gap-4">
+            <div id="tabContent-photos" class="flex flex-col gap-3">
+                <p class="editor-hint">Tap a photo to crop it. Drag the grip to reorder; you can also use the move buttons below.</p>
+                <div id="photoOrderList" class="photo-order-list" role="group" aria-label="Photo order"></div>
+                <div class="crop-heading">
+                    <h3 id="cropPhotoTitle">Photo 1</h3>
+                    <div class="photo-move-actions">
+                        <button id="movePhotoEarlier" type="button" onclick="app.photoEditor.moveSelected(-1)" aria-label="Move selected photo earlier">&larr;</button>
+                        <button id="movePhotoLater" type="button" onclick="app.photoEditor.moveSelected(1)" aria-label="Move selected photo later">&rarr;</button>
+                    </div>
+                </div>
+                <div id="cropStage" class="crop-stage" tabindex="0" role="group" aria-label="Photo crop. Drag to reposition, pinch to zoom, or use arrow keys and plus or minus.">
+                    <img id="cropPhotoImage" alt="Selected photo crop" draggable="false">
+                    <div class="crop-guides" aria-hidden="true"></div>
+                </div>
+                <p class="editor-hint">Drag to reposition. Pinch or use the slider to zoom.</p>
+                <div class="zoom-heading"><label for="photoZoom">Zoom</label><output id="photoZoomValue" for="photoZoom">100%</output></div>
+                <input id="photoZoom" type="range" min="100" max="300" value="100" step="1" oninput="app.photoEditor.setZoom(Number(this.value) / 100)">
+                <button id="resetPhotoCrop" type="button" class="studio-btn bg-white dark:bg-zinc-800" onclick="app.photoEditor.resetCrop()">RESET THIS CROP</button>
+                <p id="photoEditStatus" role="status" class="editor-hint"></p>
+            </div>
+
+            <div id="tabContent-layouts" class="hidden flex-col gap-3 sm:gap-4">
                 <div>
                     <span class="text-[10px] sm:text-xs font-bold text-slate-600 dark:text-zinc-400 font-mono uppercase block mb-1">PHOTO ORIENTATION / ASPECT RATIO:</span>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
@@ -753,8 +781,11 @@
                 </div>
             </div>
 
-            <button onclick="app.navigateTo('export')" class="studio-btn w-full py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-base flex items-center justify-center gap-2 mt-1 sm:mt-2 shadow-solid-sm dark:shadow-solid-sm-dark">
-                <span>PROCEED TO FINAL EXPORT</span>
+        </div>
+        <div id="editorActionBar">
+            <button type="button" onclick="app.navigateTo('review')" class="studio-btn editor-back">REVIEW PHOTOS</button>
+            <button id="editorExportBtn" onclick="app.navigateTo('export')" class="studio-btn editor-export">
+                <span>FINISH &amp; SAVE</span>
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
         </div>
@@ -807,6 +838,11 @@
 </main>
 
 <input type="file" id="fallbackFileInput" accept="image/*" multiple class="hidden" onchange="app.handleFileUploadFallback(event)">
+
+<dialog id="expandedPreviewDialog" aria-labelledby="expandedPreviewTitle">
+    <div class="expanded-preview-heading"><h2 id="expandedPreviewTitle">Your photo strip</h2><button type="button" onclick="document.getElementById('expandedPreviewDialog').close()">DONE</button></div>
+    <div id="expandedPreviewHost"></div>
+</dialog>
 
 <div id="resetModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="studio-box p-4 sm:p-6 bg-white dark:bg-zinc-900 max-w-sm w-full text-center">
@@ -878,6 +914,7 @@
 
 <script src="./assets/qrcode.js"></script>
 <script src="./sharing.js"></script>
+<script src="./editor.js"></script>
 <script>
 const app = {
     currentScreen: 'home',
@@ -885,6 +922,9 @@ const app = {
     timerDuration: 3,
     photoOrientation: 'portrait',
     capturedPhotos: [],
+    photoEdits: [],
+    photoEditor: null,
+    lastPreviewWidth: 290,
     cameraStream: null,
     cameraStartId: 0,
     isRetaking: false,
@@ -929,6 +969,7 @@ const app = {
 
         this.setupStickerDragSystem();
         this.setupDoodleSystem();
+        this.photoEditor = new window.SnapBoothPhotoEditor(this);
     },
 
     initTheme() {
@@ -1027,6 +1068,7 @@ const app = {
         });
 
         this.currentScreen = screenId;
+        if (this.photoEditor) this.photoEditor.onNavigate(screenId);
         if (screenId !== 'export' && this.photoSharing) {
             this.exportRenderId++;
             this.photoSharing.reset();
@@ -1044,6 +1086,7 @@ const app = {
         if (screenId === 'customize') {
             this.renderLayoutOptions();
             this.renderPhotoboothStrip();
+            if (this.photoEditor) this.photoEditor.render();
         } else if (screenId === 'export') {
             this.renderExportCanvas();
         }
@@ -1179,12 +1222,13 @@ const app = {
         if (!files || files.length === 0) return;
 
         this.capturedPhotos = [];
+        this.photoEdits = [];
         let loaded = 0;
 
-        files.slice(0, this.selectedShotCount).forEach(file => {
+        files.slice(0, this.selectedShotCount).forEach((file, index) => {
             const reader = new FileReader();
             reader.onload = (event) => {
-                this.capturedPhotos.push(event.target.result);
+                this.capturedPhotos[index] = event.target.result;
                 loaded++;
                 if (loaded === Math.min(files.length, this.selectedShotCount)) {
                     this.renderPhotoReviewGrid();
@@ -1323,6 +1367,7 @@ const app = {
     async startPhotoCaptureSequence() {
         if (this.isRetaking) return;
         this.capturedPhotos = [];
+        this.photoEdits = [];
         const btn = document.getElementById('startCaptureBtn');
         btn.disabled = true;
         btn.classList.add('opacity-50');
@@ -1424,9 +1469,11 @@ const app = {
         this.capturedPhotos.forEach((imgSrc, idx) => {
             const card = document.createElement('div');
             card.className = 'studio-box p-2 sm:p-3 flex flex-col items-center bg-white dark:bg-zinc-900';
+            card.dataset.photoIndex = idx;
             card.innerHTML = `
                 <div class="w-full flex justify-between items-center mb-1.5 sm:mb-2 font-mono text-[10px] sm:text-xs font-bold">
                     <span>SHOT #${idx + 1}</span>
+                    <button type="button" class="photo-grip" data-photo-index="${idx}" aria-label="Drag to reorder photo ${idx + 1}. Arrow keys also change its position.">&#x283F;</button>
                     <button onclick="app.retakeSinglePhoto(${idx})" class="text-rose-600 dark:text-rose-400 hover:underline uppercase text-[9px] sm:text-[10px]">
                         <i class="fa-solid fa-arrows-rotate mr-0.5"></i> RETAKE
                     </button>
@@ -1451,6 +1498,7 @@ const app = {
         const btn = document.getElementById('startCaptureBtn');
         const statusMsg = document.getElementById('reviewStatusMsg');
         const originalPhotos = this.capturedPhotos;
+        const originalEdits = this.photoEdits.slice();
         const photos = index === null ? [] : originalPhotos.slice();
         const indices = index === null
             ? Array.from({ length: this.selectedShotCount }, (_, i) => i)
@@ -1479,6 +1527,9 @@ const app = {
             }
 
             this.capturedPhotos = photos;
+            this.photoEdits = photos.map((_, i) => index === null || i === index
+                ? { zoom: 1, x: 0.5, y: 0.5 }
+                : originalEdits[i] || { zoom: 1, x: 0.5, y: 0.5 });
             this.renderPhotoReviewGrid();
             this.navigateTo('review');
         } catch (err) {
@@ -1497,7 +1548,7 @@ const app = {
 
     setControlTab(tab) {
         this.playSound('click');
-        ['layouts', 'themes', 'filters', 'text', 'draw'].forEach(t => {
+        ['photos', 'layouts', 'themes', 'filters', 'text', 'draw'].forEach(t => {
             const content = document.getElementById(`tabContent-${t}`);
             const btn = document.getElementById(`tabBtn-${t}`);
             if (content) content.classList.add('hidden');
@@ -1518,6 +1569,7 @@ const app = {
         } else {
             this.toggleDrawingMode(false);
         }
+        if (this.photoEditor) this.photoEditor.onTabChange(tab);
     },
 
     setPhotoOrientation(orient) {
@@ -1954,34 +2006,39 @@ const app = {
             strip.style.padding = '12px';
         }
 
-        let aspectClass = 'aspect-[3/4]';
-        if (this.photoOrientation === 'landscape') aspectClass = 'aspect-[4/3]';
-        else if (this.photoOrientation === 'square') aspectClass = 'aspect-square';
-        else if (this.photoOrientation === 'mobile') aspectClass = 'aspect-[9/16]';
-
-        const cornerClass = (this.photoCorners === 'rounded') ? 'rounded-lg overflow-hidden' : '';
-
         this.capturedPhotos.forEach((imgSrc, idx) => {
+            const frame = document.createElement('div');
+            frame.className = 'photo-frame';
+            frame.style.aspectRatio = this.getPhotoFrameAspect(idx);
+            if (this.photoCorners === 'rounded') frame.style.borderRadius = '8px';
             const img = document.createElement('img');
+            img.alt = `Photo ${idx + 1}`;
+            img.draggable = false;
+            img.dataset.cropIndex = idx;
+            img.className = this.getFilterClass();
+            img.onload = () => this.photoEditor?.applyImageCrop(img, idx);
             img.src = imgSrc;
-            
-            let extraLayoutStyles = '';
-            if (this.currentLayout === 'hero-3' && idx === 0) {
-                extraLayoutStyles = 'col-span-2 aspect-video';
-            } else {
-                extraLayoutStyles = aspectClass;
-            }
-
+            frame.appendChild(img);
+            let wrapper = frame;
             if (this.currentLayout.includes('polaroid')) {
-                img.className = `w-full object-cover border-2 border-studio-ink p-1 bg-white shadow-sm ${extraLayoutStyles} ${cornerClass} ${this.getFilterClass()}`;
-            } else {
-                img.className = `w-full object-cover border border-studio-ink ${extraLayoutStyles} ${cornerClass} ${this.getFilterClass()}`;
+                wrapper = document.createElement('div');
+                wrapper.className = 'polaroid-photo';
+                wrapper.appendChild(frame);
             }
-
-            photoContainer.appendChild(img);
+            if (this.currentLayout === 'hero-3' && idx === 0) wrapper.style.gridColumn = 'span 2';
+            photoContainer.appendChild(wrapper);
         });
 
-        setTimeout(() => this.renderDoodleCanvas(), 50);
+        strip.style.width = strip.style.maxWidth;
+        if (this.photoEditor) this.photoEditor.render();
+        setTimeout(() => {
+            this.renderDoodleCanvas();
+            this.photoEditor?.fitPreview();
+        }, 50);
+    },
+
+    getPhotoFrameAspect(index) {
+        return this.currentLayout === 'hero-3' && index === 0 ? 1 / 0.55 : this.getAspectRatioValue();
     },
 
     getAspectRatioValue() {
@@ -2088,9 +2145,9 @@ const app = {
             const subW = (availableWidth - gap) / 2;
             const subH = subW / aspectRatio;
 
-            this.drawImageWithFilter(ctx, images[0], padding, padding, availableWidth, heroH);
-            this.drawImageWithFilter(ctx, images[1], padding, padding + heroH + gap, subW, subH);
-            this.drawImageWithFilter(ctx, images[2], padding + subW + gap, padding + heroH + gap, subW, subH);
+            this.drawImageWithFilter(ctx, images[0], padding, padding, availableWidth, heroH, 0);
+            this.drawImageWithFilter(ctx, images[1], padding, padding + heroH + gap, subW, subH, 1);
+            this.drawImageWithFilter(ctx, images[2], padding + subW + gap, padding + heroH + gap, subW, subH, 2);
 
         } else if (this.currentLayout.includes('grid-2x2') || this.currentLayout.includes('grid-3x2') || this.currentLayout.includes('grid-2-horiz')) {
             const cols = 2;
@@ -2103,7 +2160,7 @@ const app = {
                 const x = padding + c * (cellW + gap);
                 const y = padding + r * (cellH + gap);
 
-                this.drawImageWithFilter(ctx, img, x, y, cellW, cellH);
+                this.drawImageWithFilter(ctx, img, x, y, cellW, cellH, idx);
             });
 
         } else if (this.currentLayout.includes('grid-2x3')) {
@@ -2117,7 +2174,7 @@ const app = {
                 const x = padding + c * (cellW + gap);
                 const y = padding + r * (cellH + gap);
 
-                this.drawImageWithFilter(ctx, img, x, y, cellW, cellH);
+                this.drawImageWithFilter(ctx, img, x, y, cellW, cellH, idx);
             });
 
         } else {
@@ -2126,7 +2183,7 @@ const app = {
 
             images.forEach((img, idx) => {
                 const y = padding + idx * (cellH + gap);
-                this.drawImageWithFilter(ctx, img, padding, y, cellW, cellH);
+                this.drawImageWithFilter(ctx, img, padding, y, cellW, cellH, idx);
             });
         }
 
@@ -2163,7 +2220,7 @@ const app = {
         });
 
         const strip = document.getElementById('photoboothStrip');
-        const previewWidth = strip ? strip.offsetWidth : 290;
+        const previewWidth = strip?.offsetWidth || this.lastPreviewWidth;
         const scaleFactor = canvas.width / previewWidth;
 
         this.drawnPaths.forEach(path => {
@@ -2206,7 +2263,7 @@ const app = {
         }
     },
 
-    drawImageWithFilter(ctx, img, x, y, w, h) {
+    drawImageWithFilter(ctx, img, x, y, w, h, index = 0) {
         ctx.save();
 
         const isRounded = (this.photoCorners === 'rounded');
@@ -2233,7 +2290,7 @@ const app = {
         else if (this.activeFilter === 'contrast') ctx.filter = 'contrast(140%)';
         else if (this.activeFilter === 'bright') ctx.filter = 'brightness(115%)';
 
-        this.drawImageCover(ctx, img, x, y, w, h);
+        this.drawImageCover(ctx, img, x, y, w, h, index);
         ctx.restore();
 
         ctx.save();
@@ -2262,24 +2319,9 @@ const app = {
         ctx.closePath();
     },
 
-    drawImageCover(ctx, img, x, y, w, h) {
-        const imgRatio = img.width / img.height;
-        const targetRatio = w / h;
-        let sx, sy, sw, sh;
-
-        if (imgRatio > targetRatio) {
-            sh = img.height;
-            sw = img.height * targetRatio;
-            sx = (img.width - sw) / 2;
-            sy = 0;
-        } else {
-            sw = img.width;
-            sh = img.width / targetRatio;
-            sx = 0;
-            sy = (img.height - sh) / 2;
-        }
-
-        ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+    drawImageCover(ctx, img, x, y, w, h, index = 0) {
+        const crop = window.SnapBoothPhotoEditor.cropRect(img.width, img.height, w, h, this.photoEdits[index]);
+        ctx.drawImage(img, crop.sx, crop.sy, crop.sw, crop.sh, x, y, w, h);
     },
 
     downloadExportImage(format) {
@@ -2374,6 +2416,7 @@ const app = {
         this.playSound('click');
         this.closeResetModal();
         this.capturedPhotos = [];
+        this.photoEdits = [];
         this.placedStickers = [];
         this.drawnPaths = [];
         this.stopWebcam();

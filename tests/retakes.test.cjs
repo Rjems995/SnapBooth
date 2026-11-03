@@ -113,6 +113,11 @@ for (const seconds of [3, 5, 10]) {
     test(`individual retake waits for a frame and uses the ${seconds}s timer`, async () => {
         const h = harness();
         h.app.timerDuration = seconds;
+        h.app.photoEdits = [
+            { zoom: 2, x: 0.2, y: 0.8 }, { zoom: 3, x: 0.3, y: 0.7 },
+            { zoom: 1.5, x: 0.4, y: 0.6 }, { zoom: 2.5, x: 0.5, y: 0.5 }
+        ];
+        const originalEdits = structuredClone(h.app.photoEdits);
         const retake = h.app.retakeSinglePhoto(1);
         await flush();
         assert.equal(h.requests, 1, 'retake must reopen the camera');
@@ -135,6 +140,8 @@ for (const seconds of [3, 5, 10]) {
         await retake;
         assert.deepEqual(h.countdowns, [seconds]);
         assert.deepEqual(Array.from(h.app.capturedPhotos), ['original-1', 'new-1', 'original-3', 'original-4']);
+        assert.deepEqual(JSON.parse(JSON.stringify(h.app.photoEdits[1])), { zoom: 1, x: 0.5, y: 0.5 });
+        for (const index of [0, 2, 3]) assert.deepEqual(h.app.photoEdits[index], originalEdits[index]);
         assert.equal(h.app.currentScreen, 'review');
         assert.equal(h.streams[0].getTracks()[0].readyState, 'ended');
         assert.equal(h.video.srcObject, null);

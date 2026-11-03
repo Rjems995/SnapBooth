@@ -13,6 +13,8 @@ An architectural, tactile web-based photobooth app inspired by Korean self-photo
 - **Live Camera Filters:** Preview and snap photos with real-time filters (`RAW`, `B&W`, `COOL`, `WARM`).
 - **Fail-Safe Fallback Mode:** Automatic studio demo mode and image upload fallback if webcam permissions are denied or unavailable.
 - **Shot Review & Position Swap:** Inspect captured shots in a review grid, swap photo frame positions (`<` / `>`), or retake individual shots without resetting the sequence.
+- **Photo Cropping & Reordering:** In the editor's **Photos** tab, drag each photo to reposition it, pinch or use the 100–300% zoom slider, and reset any individual crop. Drag a grip to change photo order in the editor or review screen; arrow keys and move buttons also work. Crops follow their photos and are applied to exports and shared images. Retaking a photo resets only its crop.
+- **Mobile Editor:** Larger text and 44px controls, a persistent strip preview, independently scrolling settings, and a bottom **Finish & Save** action. Short landscape screens put the preview alongside settings. **Expand Preview** opens a larger scrollable view for drawing and inspecting long strips.
 - **4 Photo Aspect Ratios:**
   - **PORTRAIT (3:4):** Classic studio portrait frame.
   - **LANDSCAPE (4:3):** Horizontal widescreen layout.
@@ -38,7 +40,7 @@ An architectural, tactile web-based photobooth app inspired by Korean self-photo
 ## Tech Stack
 
 - **HTML5 & WebRTC** (`navigator.mediaDevices.getUserMedia`)
-- **Tailwind CSS** (via CDN for sharp brutalist studio UI)
+- **Tailwind CSS** (compiled into local CSS during the build; CDN fallback in the source HTML)
 - **Vanilla JavaScript (ES6+)**
 - **HTML5 Canvas API** (for 300 DPI image rendering and center-crop exports)
 - **Web Audio API** (synthesized sound effects)
@@ -57,9 +59,9 @@ npm test
 npm run build
 ```
 
-On PowerShell systems that block `npm.ps1`, use `npm.cmd` for these commands. The build writes the studio, shared-photo page, and local QR library to `dist/`.
+On PowerShell systems that block `npm.ps1`, use `npm.cmd` for these commands. The build writes the studio, compiled styles, shared-photo page, and local QR library to `dist/`.
 
-Optional browser verification: run `npm run test:browser` with Chrome or Edge installed. Set `SNAPBOOTH_TEST_BROWSER` to the browser executable if it is not in a standard Windows location. This check uses synthetic photos and an isolated local store, decodes the generated QR, and verifies recipient downloads and expiry.
+Optional browser verification: run `npm run test:browser` with Chrome or Edge installed. Set `SNAPBOOTH_TEST_BROWSER` to the browser executable if it is not in a standard Windows location. These checks use synthetic photos and an isolated local store. They verify QR downloads and expiry, mobile and desktop layouts, touch pan/pinch/reordering, crop preservation, and exported framing. Run `npm run test:editor` to check only the editor. Editor screenshots are saved to the ignored `.tmp/` folder.
 
 ## Deploy with expiring photo links
 
@@ -84,6 +86,7 @@ Webcams and native sharing require a secure HTTPS context (or localhost for deve
 snapbooth/
 ├── snapbooth_photobooth_app.html  # Studio source; built as dist/index.html
 ├── sharing.js                    # Native sharing and opt-in link/QR flow
+├── editor.js / editor.css        # Crop geometry, touch editing, reorder, and editor layout
 ├── shared.html / shared.js       # Recipient preview and download page
 ├── server/photo-sharing.mjs      # Expiry, upload, retrieval, and cleanup logic
 ├── netlify/functions/            # Netlify storage and scheduled cleanup adapters
