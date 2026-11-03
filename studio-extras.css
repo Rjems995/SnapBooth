@@ -6,14 +6,14 @@
 .dark .home-headline span { color: #93c5fd; }
 .home-copy > p { font-size: 16px; line-height: 1.7; }
 .home-copy > button { min-height: 52px; padding: 14px 26px; font-size: 15px; }
-.home-gallery { position: relative; height: 540px; min-width: 0; overflow: hidden; }
+.home-gallery { position: relative; height: 580px; width: 100%; max-width: 560px; min-width: 0; justify-self: center; overflow: visible; }
 .sample-strip { position: absolute; border: 1px solid #111; padding: 9px; box-shadow: 7px 10px 0 #0003; }
 .sample-shot { aspect-ratio: 1; background-image: url('./assets/demo-photos.png'); background-size: 200% 200%; background-repeat: no-repeat; margin-bottom: 6px; }
 .pose-one { background-position: 0 0; }.pose-two { background-position: 100% 0; }.pose-three { background-position: 0 100%; }.pose-four { background-position: 100% 100%; }
 .sample-strip figcaption { font: bold 12px/1.4 monospace; letter-spacing: .08em; padding: 7px 0; text-align: center; }
 .sample-strip figcaption span { display: block; font-size: 7px; margin-top: 4px; letter-spacing: .02em; }
-.sample-film { top: 15px; left: 24px; width: 122px; background: #111; color: white; transform: rotate(-11deg); }
-.sample-pink { top: 56px; right: 12px; width: 140px; background: #fce7f3; color: #111; transform: rotate(10deg); }
+.sample-film { top: 24px; left: 56px; width: 122px; background: #111; color: white; transform: rotate(-11deg); }
+.sample-pink { top: 56px; right: 52px; width: 140px; background: #fce7f3; color: #111; transform: rotate(10deg); }
 .sample-blue { z-index: 2; top: 155px; left: calc(50% - 112px); width: 224px; background: #dbeafe; color: #111; transform: rotate(-3deg); padding: 12px; }
 .sample-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .sample-grid .sample-shot { margin: 0; }
@@ -42,8 +42,8 @@
     .home-hero { grid-template-columns: 1fr; gap: 0; }
     .home-copy { padding: 8px; }
     .home-copy > button { width: 100%; }
-    .home-gallery { height: 500px; width: 100%; }
-    .sample-film { width: 110px; left: 28px; top: 18px; }
-    .sample-pink { width: 120px; right: 20px; top: 40px; }
+    .home-gallery { height: 520px; }
+    .sample-film { width: 110px; left: 52px; top: 18px; }
+    .sample-pink { width: 120px; right: 48px; top: 40px; }
     .sample-blue { width: 190px; left: calc(50% - 95px); top: 130px; }
 }
