@@ -19,6 +19,11 @@ body > footer { border-top-width: 1px; }
 .home-copy > button { min-height: 52px; padding: 14px 26px; font-size: 15px; }
 .home-gallery { position: relative; height: 580px; width: 100%; max-width: 560px; min-width: 0; justify-self: center; overflow: visible; }
 .sample-strip { position: absolute; border: 1px solid #111; padding: 9px; box-shadow: 7px 10px 0 #0003; }
+.sample-design-button { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.sample-design-button:hover, .sample-design-button:focus-visible { outline: 2px solid #2563eb; outline-offset: 4px; }
+.dark .sample-design-button:hover, .dark .sample-design-button:focus-visible { outline-color: #93c5fd; }
+.home-design-selection { margin-top: 6px; color: #2563eb; font-size: 14px; font-weight: 600; }
+.dark .home-design-selection { color: #93c5fd; }
 .sample-shot { aspect-ratio: 1; background-image: url('./assets/demo-photos.png'); background-size: 200% 200%; background-repeat: no-repeat; margin-bottom: 6px; }
 .pose-one { background-position: 0 0; }.pose-two { background-position: 100% 0; }.pose-three { background-position: 0 100%; }.pose-four { background-position: 100% 100%; }
 .sample-strip figcaption { font: bold 12px/1.4 monospace; letter-spacing: .08em; padding: 7px 0; text-align: center; }

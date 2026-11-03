@@ -292,7 +292,7 @@
             Grab a friend, strike a pose, and make something worth keeping. Pick your shots, add your style, and take your strip with you.
         </p>
 
-        <button onclick="app.navigateTo('shot-select')" class="studio-btn w-full sm:w-auto px-6 sm:px-10 py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-lg flex items-center justify-center gap-2 sm:gap-3 shadow-solid-lg dark:shadow-solid-lg-dark">
+        <button onclick="app.startPhotobooth()" class="studio-btn w-full sm:w-auto px-6 sm:px-10 py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-lg flex items-center justify-center gap-2 sm:gap-3 shadow-solid-lg dark:shadow-solid-lg-dark">
             <i class="fa-solid fa-camera text-xs sm:text-base"></i>
             <span>Start Photobooth</span>
         </button>
@@ -308,18 +308,21 @@
         </div>
         <div class="home-gallery" aria-label="Finished photo strip designs">
             <figure class="sample-strip sample-film" aria-label="Black Film sample photo strip">
+                <button type="button" class="sample-design-button" onclick="app.startPhotobooth('film')" aria-label="Start with Black Film"></button>
                 <div class="sample-shot pose-one"></div><div class="sample-shot pose-two"></div><div class="sample-shot pose-three"></div><div class="sample-shot pose-four"></div>
                 <figcaption>BLACK FILM<span>JUST US, BEING US.</span></figcaption>
             </figure>
             <figure class="sample-strip sample-pink" aria-label="Pastel Pink sample photo strip">
+                <button type="button" class="sample-design-button" onclick="app.startPhotobooth('cute')" aria-label="Start with Pastel Pink"></button>
                 <div class="sample-shot pose-four"></div><div class="sample-shot pose-three"></div><div class="sample-shot pose-two"></div>
                 <figcaption>PASTEL PINK<span>KEEP THE GOOD TIMES.</span></figcaption>
             </figure>
             <figure class="sample-strip sample-blue" aria-label="Haru Blue sample four-cut photo strip">
+                <button type="button" class="sample-design-button" onclick="app.startPhotobooth('korean')" aria-label="Start with Haru Blue"></button>
                 <div class="sample-grid"><div class="sample-shot pose-one"></div><div class="sample-shot pose-two"></div><div class="sample-shot pose-three"></div><div class="sample-shot pose-four"></div></div>
                 <figcaption>HARU BLUE<span>YOUR PEOPLE. YOUR MOMENT.</span></figcaption>
             </figure>
-            <p class="home-gallery-caption">A few ways to make it yours.</p>
+            <p class="home-gallery-caption">Tap a design to make it yours.</p>
         </div>
         </div>
 
@@ -351,7 +354,8 @@
     <section id="screen-shot-select" class="w-full max-w-4xl hidden flex-col items-center py-2 sm:py-4">
         <div class="text-center mb-4 sm:mb-8">
             <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900 px-1.5 sm:px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40">Step 01 / Photos</span>
-            <h2 class="text-xl sm:text-4xl font-black tracking-tight mt-1 sm:mt-2">How many shots would you like?</h2>
+            <h2 id="shotSelectionHeading" tabindex="-1" class="text-xl sm:text-4xl font-black tracking-tight mt-1 sm:mt-2">How many shots would you like?</h2>
+            <div id="selectedHomeDesign" class="home-design-selection" role="status" hidden></div>
             <p class="text-slate-600 dark:text-zinc-400 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">Choose how many photos to include in your strip.</p>
         </div>
 
@@ -1186,8 +1190,33 @@ const app = {
         }
     },
 
+    startPhotobooth(designKey = null) {
+        const designs = {
+            film: { name: 'Black Film', shots: 4, layout: 'film-4' },
+            cute: { name: 'Pastel Pink', shots: 3, layout: 'strip-3' },
+            korean: { name: 'Haru Blue', shots: 4, layout: 'grid-2x2' }
+        };
+        if (designKey !== null && !Object.hasOwn(designs, designKey)) return;
+        const design = designs[designKey];
+        if (design) {
+            if (!this.capturedPhotos.length) {
+                this.selectShotOption(design.shots);
+                this.setPhotoOrientation('square');
+                this.setPhotoCorners('sharp');
+                this.setLayoutGeometry(design.layout);
+            }
+            this.applyPresetTheme(designKey);
+        }
+        const notice = document.getElementById('selectedHomeDesign');
+        notice.hidden = !design;
+        notice.textContent = design ? `${design.name} selected` : '';
+        this.navigateTo('shot-select');
+        document.getElementById('shotSelectionHeading').focus({ preventScroll: true });
+    },
+
     selectShotOption(count) {
         this.playSound('click');
+        const previousCount = this.selectedShotCount;
         this.selectedShotCount = count;
 
         [2, 3, 4, 6].forEach(num => {
@@ -1202,10 +1231,12 @@ const app = {
         document.getElementById('selectedShotDesc').innerText = `We'll take ${count} photos for your strip.`;
         document.getElementById('currentShotBadge').innerText = `${count} SHOTS`;
 
-        if (count === 2) this.currentLayout = 'strip-2';
-        else if (count === 3) this.currentLayout = 'strip-3';
-        else if (count === 4) this.currentLayout = 'grid-2x2';
-        else if (count === 6) this.currentLayout = 'grid-3x2';
+        if (count !== previousCount) {
+            if (count === 2) this.currentLayout = 'strip-2';
+            else if (count === 3) this.currentLayout = 'strip-3';
+            else if (count === 4) this.currentLayout = 'grid-2x2';
+            else if (count === 6) this.currentLayout = 'grid-3x2';
+        }
 
         this.renderLayoutOptions();
     },
