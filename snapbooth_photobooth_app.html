@@ -240,16 +240,12 @@
         <span>SnapBooth<span class="brand-credit">by James</span></span>
     </button>
 
-    <div id="stepIndicator" aria-label="Session progress" class="flex items-center gap-1 sm:gap-1.5 font-mono text-[9px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-studio-bg dark:bg-zinc-800 px-1.5 sm:px-3 py-0.5 sm:py-1.5 shadow-solid-sm dark:shadow-solid-sm-dark overflow-x-auto no-scrollbar">
-        <span id="step1" class="text-blue-600 dark:text-blue-400 font-extrabold underline">01<span class="hidden md:inline"> Photos</span></span>
-        <span class="text-slate-300 dark:text-zinc-600">/</span>
-        <span id="step2" class="text-slate-400 dark:text-zinc-500">02<span class="hidden md:inline"> Camera</span></span>
-        <span class="text-slate-300 dark:text-zinc-600">/</span>
-        <span id="step3" class="text-slate-400 dark:text-zinc-500">03<span class="hidden md:inline"> Review</span></span>
-        <span class="text-slate-300 dark:text-zinc-600">/</span>
-        <span id="step4" class="text-slate-400 dark:text-zinc-500">04<span class="hidden md:inline"> Design</span></span>
-        <span class="text-slate-300 dark:text-zinc-600">/</span>
-        <span id="step5" class="text-slate-400 dark:text-zinc-500">05<span class="hidden md:inline"> Save</span></span>
+    <div id="stepIndicator" role="group" aria-label="Session progress">
+        <span id="step1">Photos</span><span aria-hidden="true">&rsaquo;</span>
+        <span id="step2">Camera</span><span aria-hidden="true">&rsaquo;</span>
+        <span id="step3">Review</span><span aria-hidden="true">&rsaquo;</span>
+        <span id="step4">Design</span><span aria-hidden="true">&rsaquo;</span>
+        <span id="step5">Save</span>
     </div>
 
     <div class="flex items-center gap-1 sm:gap-2 shrink-0">
@@ -326,9 +322,7 @@
 
     <!-- SCREEN 1: Shot Selection -->
     <section id="screen-shot-select" class="w-full max-w-4xl hidden flex-col items-center py-2 sm:py-4">
-        <div class="text-center mb-4 sm:mb-8">
-            <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900 px-1.5 sm:px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40">Step 01 / Photos</span>
-            <h2 id="shotSelectionHeading" tabindex="-1" class="text-xl sm:text-4xl font-black tracking-tight mt-1 sm:mt-2">How many shots would you like?</h2>
+        <div class="text-center mb-4 sm:mb-8">            <h2 id="shotSelectionHeading" tabindex="-1" class="text-xl sm:text-4xl font-black tracking-tight mt-1 sm:mt-2">How many shots would you like?</h2>
             <div id="selectedHomeDesign" class="home-design-selection" role="status" hidden></div>
             <p class="text-slate-600 dark:text-zinc-400 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">Choose how many photos to include in your strip.</p>
         </div>
@@ -408,24 +402,16 @@
 
     <!-- SCREEN 2: Camera Viewport -->
     <section id="screen-camera" class="w-full max-w-4xl hidden flex-col items-center">
-        <div class="flex flex-wrap items-center justify-between w-full gap-1.5 sm:gap-2 mb-2 sm:mb-4">
-            <div>
-                <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900 px-1.5 sm:px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40">Step 02 / Camera</span>
-                <h2 class="text-lg sm:text-3xl font-black mt-0.5">Strike a pose</h2>
+        <div class="camera-heading">
+            <div class="camera-heading-copy">
+                <h2>Strike a pose</h2>
+                <span id="cameraShotCounter" aria-live="polite">Photo 1 of 4</span>
             </div>
-
-            <div class="flex items-center gap-1.5 sm:gap-2">
-                <div class="border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-900 p-0.5 sm:p-1 flex items-center gap-0.5 sm:gap-1 shadow-solid-sm dark:shadow-solid-sm-dark">
-                    <span class="font-mono text-[8px] sm:text-[10px] font-bold px-0.5 sm:px-1 text-slate-500 dark:text-zinc-400"><i class="fa-solid fa-stopwatch"></i> Timer:</span>
-                    <button onclick="app.setTimerDuration(3)" id="timerBtn-3" aria-pressed="true" class="px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-blue-600 text-white">3s</button>
-                    <button onclick="app.setTimerDuration(5)" id="timerBtn-5" aria-pressed="false" class="px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700">5s</button>
-                    <button onclick="app.setTimerDuration(10)" id="timerBtn-10" aria-pressed="false" class="px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700">10s</button>
-                </div>
-
-                <div class="border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-900 px-2 sm:px-4 py-1 sm:py-2 font-mono text-right shadow-solid-sm dark:shadow-solid-sm-dark">
-                    <span class="text-[8px] sm:text-[10px] text-slate-500 dark:text-zinc-400 block font-bold">Progress</span>
-                    <span id="cameraShotCounter" class="text-xs sm:text-base font-black text-blue-600 dark:text-blue-400">Photo 1 of 4</span>
-                </div>
+            <div class="camera-timer" role="group" aria-label="Countdown timer">
+                <span>Timer</span>
+                <button type="button" onclick="app.setTimerDuration(3)" id="timerBtn-3" aria-label="3 seconds" aria-pressed="true">3s</button>
+                <button type="button" onclick="app.setTimerDuration(5)" id="timerBtn-5" aria-label="5 seconds" aria-pressed="false">5s</button>
+                <button type="button" onclick="app.setTimerDuration(10)" id="timerBtn-10" aria-label="10 seconds" aria-pressed="false">10s</button>
             </div>
         </div>
 
@@ -439,21 +425,21 @@
 
             <div id="flashOverlay" class="absolute inset-0 bg-white z-30"></div>
 
-            <button id="liveFilterToggleBtn" onclick="app.toggleLiveFiltersUI()" title="Show Live Filters" class="hidden absolute top-2 left-2 sm:top-3 sm:left-3 z-30 bg-black/80 text-white border-2 border-white px-1.5 py-0.5 sm:px-2 sm:py-1 font-mono text-[9px] sm:text-[10px] font-bold shadow-solid-sm flex items-center gap-1 pointer-events-auto hover:bg-black">
-                <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Filters
+            <button id="liveFilterToggleBtn" aria-controls="liveFilterBar" aria-expanded="false" onclick="app.toggleLiveFiltersUI()" title="Show Live Filters" class="absolute top-2 left-2 sm:top-3 sm:left-3 z-30 bg-black/80 text-white border-2 border-white px-1.5 py-0.5 sm:px-2 sm:py-1 font-mono text-[9px] sm:text-[10px] font-bold shadow-solid-sm flex items-center gap-1 pointer-events-auto hover:bg-black">
+                Filters
             </button>
 
-            <div id="liveFilterBar" class="absolute top-2 left-2 sm:top-3 sm:left-3 z-30 flex items-center gap-0.5 sm:gap-1 bg-black/80 p-1 sm:p-1.5 border-2 border-white shadow-solid-sm pointer-events-auto">
+            <div id="liveFilterBar" onkeydown="if (event.key === 'Escape') { event.preventDefault(); app.toggleLiveFiltersUI(); }" role="group" aria-label="Camera filters" class="hidden absolute top-2 left-2 sm:top-3 sm:left-3 z-30 flex items-center gap-0.5 sm:gap-1 bg-black/80 p-1 sm:p-1.5 border-2 border-white shadow-solid-sm pointer-events-auto">
                 <span class="text-[8px] sm:text-[10px] font-mono font-bold text-white px-0.5"><i class="fa-solid fa-wand-magic-sparkles"></i>Filters:</span>
-                <button onclick="app.setLiveCameraFilter('original')" class="studio-btn px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono bg-white text-black font-bold min-h-0">Original</button>
-                <button onclick="app.setLiveCameraFilter('bw')" class="studio-btn px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono bg-zinc-800 text-white min-h-0">B&W</button>
-                <button onclick="app.setLiveCameraFilter('cool')" class="studio-btn px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono bg-sky-800 text-white min-h-0">Cool</button>
-                <button onclick="app.setLiveCameraFilter('warm')" class="studio-btn px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono bg-amber-700 text-white min-h-0">Warm</button>
+                <button id="liveFilter-original" aria-pressed="true" onclick="app.setLiveCameraFilter('original')" class="studio-btn px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono bg-white text-black font-bold min-h-0">Original</button>
+                <button id="liveFilter-bw" aria-pressed="false" onclick="app.setLiveCameraFilter('bw')" class="studio-btn px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono bg-zinc-800 text-white min-h-0">B&W</button>
+                <button id="liveFilter-cool" aria-pressed="false" onclick="app.setLiveCameraFilter('cool')" class="studio-btn px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono bg-sky-800 text-white min-h-0">Cool</button>
+                <button id="liveFilter-warm" aria-pressed="false" onclick="app.setLiveCameraFilter('warm')" class="studio-btn px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono bg-amber-700 text-white min-h-0">Warm</button>
                 <button onclick="app.toggleLiveFiltersUI()" title="Hide Filter Bar" class="ml-0.5 text-slate-300 hover:text-white px-1 py-0.5 text-[10px] font-bold leading-none">&times;</button>
             </div>
 
-            <div class="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex justify-between items-center z-10 pointer-events-auto">
-                <div id="cameraStatusMsg" class="bg-studio-ink dark:bg-zinc-900 text-white font-mono text-[8px] sm:text-xs px-1.5 sm:px-2.5 py-0.5 sm:py-1 flex items-center gap-1.5 border border-white dark:border-zinc-700 pointer-events-auto">
+            <div id="cameraUtilityBar" class="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex justify-between items-center z-10 pointer-events-auto">
+                <div id="cameraStatusMsg" role="status" class="bg-studio-ink dark:bg-zinc-900 text-white font-mono text-[8px] sm:text-xs px-1.5 sm:px-2.5 py-0.5 sm:py-1 flex items-center gap-1.5 border border-white dark:border-zinc-700 pointer-events-auto">
                     <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 animate-pulse"></span> Camera ready
                 </div>
                 <div class="flex items-center gap-1 sm:gap-1.5 pointer-events-auto">
@@ -484,9 +470,7 @@
 
     <!-- SCREEN 3: Review Photos -->
     <section id="screen-review" class="w-full max-w-5xl hidden flex-col items-center">
-        <div class="text-center mb-3 sm:mb-6">
-            <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900 px-1.5 sm:px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40">Step 03 / Review</span>
-            <h2 class="text-xl sm:text-3xl font-black mt-0.5 sm:mt-1">Review your photos</h2>
+        <div class="text-center mb-3 sm:mb-6">            <h2 class="text-xl sm:text-3xl font-black mt-0.5 sm:mt-1">Review your photos</h2>
             <p class="text-slate-600 dark:text-zinc-400 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">Keep your favorites. Retake any photo, or drag the handles to change the order.</p>
         </div>
 
@@ -514,10 +498,7 @@
         <div id="editorPreviewPanel" class="w-full lg:w-1/2 flex flex-col items-center lg:sticky lg:top-20">
             <div class="w-full flex items-center justify-between mb-1.5 sm:mb-2">
                 <button id="expandPreviewBtn" type="button" onclick="app.photoEditor.expandPreview()" class="preview-expand" aria-haspopup="dialog"><i class="fa-solid fa-expand mr-1"></i> Expand Preview</button>
-                <div class="flex gap-1 sm:gap-1.5 items-center">
-                    <span id="currentOrientationBadge" class="font-mono text-[8px] sm:text-[10px] bg-slate-100 dark:bg-zinc-800 text-slate-800 dark:text-zinc-200 border border-slate-300 dark:border-zinc-600 px-1 sm:px-1.5 py-0.5 font-bold">PORTRAIT 3:4</span>
-                    <span id="currentShotBadge" class="font-mono text-[9px] sm:text-xs bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-300 dark:border-blue-800 px-1.5 sm:px-2 py-0.5 font-bold">4 SHOTS</span>
-                </div>
+
             </div>
 
             <div id="photoboothPreviewContainer" class="relative w-full flex justify-center items-center p-2 sm:p-6 studio-box min-h-[320px] sm:min-h-[460px] bg-studio-bg dark:bg-zinc-950 overflow-hidden">
@@ -544,9 +525,7 @@
 
         <div id="editorSettingsPanel" class="w-full lg:w-1/2 studio-box p-3 sm:p-6 flex flex-col gap-3 sm:gap-6 min-w-0">
             <div class="editor-settings-header">
-            <div>
-                <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900 px-1.5 sm:px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40">Step 04 / Design</span>
-                <h2 class="text-lg sm:text-2xl font-black mt-0.5 sm:mt-1">Make it yours</h2>
+            <div>                <h2 class="text-lg sm:text-2xl font-black mt-0.5 sm:mt-1">Make it yours</h2>
             </div>
 
             <div class="flex items-center w-full border-b border-studio-border dark:border-zinc-700">
@@ -795,9 +774,7 @@
 
     <!-- SCREEN 5: High-Res Export -->
     <section id="screen-export" class="w-full max-w-4xl hidden flex-col items-center">
-        <div class="text-center mb-3 sm:mb-6">
-            <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900 px-1.5 sm:px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40">Step 05 / Save</span>
-            <h2 class="text-xl sm:text-3xl font-black mt-0.5 sm:mt-1">Your strip is ready</h2>
+        <div class="text-center mb-3 sm:mb-6">            <h2 class="text-xl sm:text-3xl font-black mt-0.5 sm:mt-1">Your strip is ready</h2>
             <p class="text-slate-600 dark:text-zinc-400 text-sm mt-1 px-2">Choose a size, then save or share your finished strip.</p>
         </div>
 
@@ -1202,7 +1179,6 @@ const app = {
 
         document.getElementById('selectedShotText').innerText = `${count} photos selected`;
         document.getElementById('selectedShotDesc').innerText = `We'll take ${count} photos for your strip.`;
-        document.getElementById('currentShotBadge').innerText = `${count} SHOTS`;
 
         if (count !== previousCount) {
             if (count === 2) this.currentLayout = 'strip-2';
@@ -1227,8 +1203,6 @@ const app = {
             const btn = document.getElementById(`timerBtn-${d}`);
             if (btn) {
                 btn.setAttribute('aria-pressed', String(d === dur));
-                if (d === dur) btn.className = 'px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-blue-600 text-white';
-                else btn.className = 'px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700';
             }
         });
     },
@@ -1236,6 +1210,9 @@ const app = {
     setLiveCameraFilter(filter) {
         this.playSound('click');
         this.liveFilter = filter;
+        ['original', 'bw', 'cool', 'warm'].forEach(name => {
+            document.getElementById(`liveFilter-${name}`)?.setAttribute('aria-pressed', String(name === filter));
+        });
         const video = document.getElementById('webcamVideo');
         if (!video) return;
 
@@ -1252,9 +1229,13 @@ const app = {
         if (bar.classList.contains('hidden')) {
             bar.classList.remove('hidden');
             if (toggleBtn) toggleBtn.classList.add('hidden');
+            toggleBtn?.setAttribute('aria-expanded', 'true');
+            document.getElementById(`liveFilter-${this.liveFilter}`)?.focus({ preventScroll: true });
         } else {
             bar.classList.add('hidden');
             if (toggleBtn) toggleBtn.classList.remove('hidden');
+            toggleBtn?.setAttribute('aria-expanded', 'false');
+            toggleBtn?.focus({ preventScroll: true });
         }
     },
 
@@ -1403,7 +1384,7 @@ const app = {
 
         video.classList.add('hidden');
         canvas.classList.remove('hidden');
-        statusMsg.innerHTML = '<span class="w-1.5 h-1.5 sm:w-2.5 sm:h-2.5 rounded-full bg-amber-500"></span> Demo mode / upload photos';
+        statusMsg.innerHTML = '<span class="w-1.5 h-1.5 sm:w-2.5 sm:h-2.5 rounded-full bg-amber-500"></span> Upload photos';
 
         const ctx = canvas.getContext('2d');
         canvas.width = 640;
@@ -1421,9 +1402,9 @@ const app = {
             ctx.fillStyle = '#ffffff';
             ctx.font = 'bold 20px "Space Grotesk", sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('STUDIO DEMO POSE GUIDE', canvas.width / 2, canvas.height / 2 - 10);
+            ctx.fillText('Camera unavailable', canvas.width / 2, canvas.height / 2 - 10);
             ctx.font = '14px "Space Mono", monospace';
-            ctx.fillText('WEBCAM DISCONNECTED / UPLOAD MODE', canvas.width / 2, canvas.height / 2 + 20);
+            ctx.fillText('Choose Upload to use photos from your device.', canvas.width / 2, canvas.height / 2 + 20);
 
             requestAnimationFrame(drawDemo);
         };
@@ -1705,8 +1686,6 @@ const app = {
                 else btn.className = 'studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700 flex-col gap-0.5';
             }
         });
-        const badge = document.getElementById('currentOrientationBadge');
-        if (badge) badge.innerText = orient.toUpperCase();
         this.renderPhotoboothStrip();
     },
 
