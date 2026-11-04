@@ -20,7 +20,7 @@
             this.element('sharePhotoBtn').disabled = !this.file || this.isSharing;
             this.element('createPhotoLinkBtn').disabled = !this.file || !!this.upload;
             this.element('shareExpiry').disabled = !!this.upload;
-            this.element('createPhotoLinkBtn').textContent = this.upload ? 'Creating link…' : 'Create Link & QR';
+            this.element('createPhotoLinkBtn').textContent = this.upload ? 'Creating link…' : 'Create link & QR';
         }
 
         clearLink() {
@@ -107,7 +107,7 @@
                 return;
             }
             if (this.file.size > 4 * 1024 * 1024) {
-                this.setStatus('This photo is too large for a link. Please download it or use Share Photo instead.', 'linkStatus');
+                this.setStatus('This photo is too large for a link. Please download it or use Share photo instead.', 'linkStatus');
                 return;
             }
             const revision = this.revision;

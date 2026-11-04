@@ -264,7 +264,7 @@
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m11 5-5 4H3v6h3l5 4Z"/><path class="sound-on" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/><path class="sound-off" d="m16 9 6 6m0-6-6 6"/></svg>
         </button>
         <button id="resetHeaderBtn" onclick="app.startOverPrompt()" class="hidden text-[9px] sm:text-xs bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900 px-1.5 sm:px-3 py-0.5 sm:py-1 font-bold hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-all shadow-solid-sm dark:shadow-solid-sm-dark">
-            <i class="fa-solid fa-arrow-rotate-left mr-0.5"></i> Start Over
+            <i class="fa-solid fa-arrow-rotate-left mr-0.5"></i> Start over
         </button>
     </div>
 </header>
@@ -286,7 +286,7 @@
         </p>
 
         <button onclick="app.startPhotobooth()" class="studio-btn w-full sm:w-auto px-6 sm:px-10 py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-lg flex items-center justify-center gap-2 sm:gap-3 shadow-solid-lg dark:shadow-solid-lg-dark">
-            <span>Start Photobooth</span>
+            <span>Start photobooth</span>
             <span aria-hidden="true">↗</span>
         </button>
         <p class="home-note">No sign-up. Just you, your camera, and a little fun.</p>
@@ -294,8 +294,8 @@
             <h2 id="draftResumeTitle">Resume your last session</h2>
             <p id="draftResumeSummary"></p>
             <div class="draft-actions">
-                <button id="resumeDraftBtn" type="button" onclick="app.sessionDrafts.resume()">Resume Session</button>
-                <button id="deleteDraftBtn" type="button" onclick="app.sessionDrafts.deleteDraft()">Delete Draft</button>
+                <button id="resumeDraftBtn" type="button" onclick="app.sessionDrafts.resume()">Resume session</button>
+                <button id="deleteDraftBtn" type="button" onclick="app.sessionDrafts.deleteDraft()">Delete draft</button>
             </div>
         </aside>
         <p id="draftHomeStatus" role="status" class="draft-status"></p>
@@ -401,7 +401,7 @@
             <p id="selectedShotDesc" class="text-[11px] sm:text-sm text-slate-600 dark:text-zinc-400 mt-0.5 sm:mt-1 mb-3 sm:mb-5">We'll take 4 photos for your strip.</p>
 
             <button onclick="app.confirmShotsAndOpenCamera()" class="studio-btn w-full py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-base flex items-center justify-center gap-1.5 sm:gap-2 shadow-solid-sm dark:shadow-solid-sm-dark">
-                <span>Open Camera</span>
+                <span>Open camera</span>
                 <i class="fa-solid fa-arrow-right text-[10px] sm:text-sm"></i>
             </button>
         </div>
@@ -425,6 +425,18 @@
         <div id="cameraViewport" class="relative w-full aspect-video max-h-[500px] studio-box overflow-hidden bg-slate-900 flex items-center justify-center">
             <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover mirrored-feed"></video>
             <canvas id="fallbackCanvas" class="hidden w-full h-full object-cover"></canvas>
+
+            <div id="cameraFeedback" class="camera-feedback" hidden>
+                <span class="camera-loading-spinner" aria-hidden="true"></span>
+                <div role="status" aria-live="polite">
+                    <h3 id="cameraFeedbackTitle">Starting your camera</h3>
+                    <p id="cameraFeedbackHint">Allow camera access when your browser asks. You can also upload photos.</p>
+                </div>
+                <div class="camera-feedback-actions">
+                    <button id="retryCameraBtn" type="button" onclick="app.startWebcam()" hidden>Try again</button>
+                    <button type="button" onclick="app.triggerFileUpload()">Upload photos</button>
+                </div>
+            </div>
 
             <div id="countdownContainer" class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-20 hidden">
                 <span id="countdownNumber" class="text-6xl sm:text-9xl font-black text-white font-mono">3</span>
@@ -466,16 +478,16 @@
         <div id="cameraActions" class="flex flex-col sm:flex-row gap-2 sm:gap-3 items-center justify-center mt-3 sm:mt-6 w-full">
             <button id="startCaptureBtn" onclick="app.startPhotoCaptureSequence()" class="studio-btn w-full sm:w-auto px-5 sm:px-8 py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-base flex items-center justify-center gap-2 sm:gap-3 shadow-solid-sm dark:shadow-solid-sm-dark">
                 <i class="fa-solid fa-camera-retro text-sm sm:text-lg"></i>
-                <span>Take Photos</span>
+                <span id="startCaptureLabel">Take photos</span>
             </button>
 
             <button onclick="app.navigateTo('shot-select')" class="studio-btn w-full sm:w-auto px-4 sm:px-5 py-2 sm:py-3 bg-white dark:bg-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-700 text-studio-ink dark:text-zinc-100 text-[11px] sm:text-xs shadow-solid-sm dark:shadow-solid-sm-dark">
-                <i class="fa-solid fa-arrow-left mr-1"></i> Change Photo Count
+                <i class="fa-solid fa-arrow-left mr-1"></i> Change photo count
             </button>
         </div>
     </section>
 
-    <!-- SCREEN 3: Review Photos -->
+    <!-- SCREEN 3: Review photos -->
     <section id="screen-review" class="w-full max-w-5xl hidden flex-col items-center">
         <div class="text-center mb-3 sm:mb-6">            <h2 class="text-xl sm:text-3xl font-black mt-0.5 sm:mt-1">Review your photos</h2>
             <p class="text-slate-600 dark:text-zinc-400 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">Keep your favorites. Retake any photo, or drag the handles to change the order.</p>
@@ -487,13 +499,13 @@
         <div id="photoReviewGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 w-full mb-4 sm:mb-8"></div>
 
         <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center items-center w-full">
-            <button id="completeSessionBtn" type="button" hidden onclick="app.continuePhotoCaptureSequence()" class="studio-btn px-5 py-3 bg-blue-600 text-white">Finish Taking Photos</button>
+            <button id="completeSessionBtn" type="button" hidden onclick="app.continuePhotoCaptureSequence()" class="studio-btn px-5 py-3 bg-blue-600 text-white">Finish taking photos</button>
             <button onclick="app.retakeAllPhotos()" class="studio-btn w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3.5 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-900 hover:bg-rose-100 dark:hover:bg-rose-900/40 text-[11px] sm:text-xs shadow-solid-sm dark:shadow-solid-sm-dark flex items-center justify-center gap-1.5 sm:gap-2">
-                <i class="fa-solid fa-rotate-left"></i> Retake All Photos
+                <i class="fa-solid fa-rotate-left"></i> Retake all photos
             </button>
 
             <button onclick="app.navigateTo('customize')" class="studio-btn w-full sm:w-auto px-6 sm:px-8 py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm shadow-solid-sm dark:shadow-solid-sm-dark flex items-center justify-center gap-1.5 sm:gap-2">
-                <span>Customize Strip</span>
+                <span>Customize strip</span>
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
         </div>
@@ -504,7 +516,7 @@
         
         <div id="editorPreviewPanel" class="w-full lg:w-1/2 flex flex-col items-center lg:sticky lg:top-20">
             <div class="w-full flex items-center justify-between mb-1.5 sm:mb-2">
-                <button id="expandPreviewBtn" type="button" onclick="app.photoEditor.expandPreview()" class="preview-expand" aria-haspopup="dialog"><i class="fa-solid fa-expand mr-1"></i> Expand Preview</button>
+                <button id="expandPreviewBtn" type="button" onclick="app.photoEditor.expandPreview()" class="preview-expand" aria-haspopup="dialog"><i class="fa-solid fa-expand mr-1"></i> Expand preview</button>
 
             </div>
 
@@ -584,7 +596,7 @@
                 <p class="editor-hint">Drag to reposition. Pinch or use the slider to zoom.</p>
                 <div class="zoom-heading"><label for="photoZoom">Zoom</label><output id="photoZoomValue" for="photoZoom">100%</output></div>
                 <input id="photoZoom" type="range" min="100" max="300" value="100" step="1" oninput="app.photoEditor.setZoom(Number(this.value) / 100)">
-                <button id="resetPhotoCrop" type="button" class="studio-btn bg-white dark:bg-zinc-800" onclick="app.photoEditor.resetCrop()">Reset This Crop</button>
+                <button id="resetPhotoCrop" type="button" class="studio-btn bg-white dark:bg-zinc-800" onclick="app.photoEditor.resetCrop()">Reset crop</button>
                 <p id="photoEditStatus" role="status" class="editor-hint"></p>
             </div>
 
@@ -592,19 +604,19 @@
                 <div>
                     <span class="text-[10px] sm:text-xs font-bold text-slate-600 dark:text-zinc-400 font-mono block mb-1">Photo shape</span>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
-                        <button onclick="app.setPhotoOrientation('portrait')" id="orientBtn-portrait" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-blue-600 text-white flex-col gap-0.5">
+                        <button data-choice="orientation" data-value="portrait" aria-pressed="false" onclick="app.setPhotoOrientation('portrait')" id="orientBtn-portrait" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-blue-600 text-white flex-col gap-0.5">
                             <i class="fa-solid fa-mobile-screen text-[10px] sm:text-xs"></i>
                             <span>Portrait (3:4)</span>
                         </button>
-                        <button onclick="app.setPhotoOrientation('landscape')" id="orientBtn-landscape" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700 flex-col gap-0.5">
+                        <button data-choice="orientation" data-value="landscape" aria-pressed="false" onclick="app.setPhotoOrientation('landscape')" id="orientBtn-landscape" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700 flex-col gap-0.5">
                             <i class="fa-solid fa-laptop text-[10px] sm:text-xs"></i>
                             <span>Landscape (4:3)</span>
                         </button>
-                        <button onclick="app.setPhotoOrientation('square')" id="orientBtn-square" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700 flex-col gap-0.5">
+                        <button data-choice="orientation" data-value="square" aria-pressed="false" onclick="app.setPhotoOrientation('square')" id="orientBtn-square" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700 flex-col gap-0.5">
                             <i class="fa-solid fa-square text-[10px] sm:text-xs"></i>
                             <span>Square (1:1)</span>
                         </button>
-                        <button onclick="app.setPhotoOrientation('mobile')" id="orientBtn-mobile" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700 flex-col gap-0.5">
+                        <button data-choice="orientation" data-value="mobile" aria-pressed="false" onclick="app.setPhotoOrientation('mobile')" id="orientBtn-mobile" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700 flex-col gap-0.5">
                             <i class="fa-solid fa-mobile text-[10px] sm:text-xs"></i>
                             <span>Mobile (9:16)</span>
                         </button>
@@ -621,34 +633,34 @@
                 <div>
                     <span class="text-[10px] sm:text-xs font-bold text-slate-600 dark:text-zinc-400 font-mono block mb-1.5 sm:mb-2">Themes</span>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
-                        <button onclick="app.applyPresetTheme('classic')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-white dark:bg-zinc-800 dark:text-zinc-100">Classic</button>
-                        <button onclick="app.applyPresetTheme('minimal')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-slate-100 dark:bg-zinc-700 dark:text-zinc-100">Minimal</button>
-                        <button onclick="app.applyPresetTheme('korean')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-700 dark:border-blue-500">Haru Blue</button>
-                        <button onclick="app.applyPresetTheme('film')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900">Black Film</button>
-                        <button onclick="app.applyPresetTheme('cute')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-pink-100 dark:bg-pink-950/60 text-pink-700 dark:text-pink-300">Pastel Pink</button>
-                        <button onclick="app.applyPresetTheme('retro')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300">Vintage</button>
-                        <button onclick="app.applyPresetTheme('party')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300">Party Y2K</button>
-                        <button onclick="app.applyPresetTheme('wedding')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 font-serif">Editorial</button>
+                        <button data-choice="theme" data-value="classic" aria-pressed="false" onclick="app.applyPresetTheme('classic')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-white dark:bg-zinc-800 dark:text-zinc-100">Classic</button>
+                        <button data-choice="theme" data-value="minimal" aria-pressed="false" onclick="app.applyPresetTheme('minimal')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-slate-100 dark:bg-zinc-700 dark:text-zinc-100">Minimal</button>
+                        <button data-choice="theme" data-value="korean" aria-pressed="false" onclick="app.applyPresetTheme('korean')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-700 dark:border-blue-500">Haru Blue</button>
+                        <button data-choice="theme" data-value="film" aria-pressed="false" onclick="app.applyPresetTheme('film')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900">Black Film</button>
+                        <button data-choice="theme" data-value="cute" aria-pressed="false" onclick="app.applyPresetTheme('cute')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-pink-100 dark:bg-pink-950/60 text-pink-700 dark:text-pink-300">Pastel Pink</button>
+                        <button data-choice="theme" data-value="retro" aria-pressed="false" onclick="app.applyPresetTheme('retro')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300">Vintage</button>
+                        <button data-choice="theme" data-value="party" aria-pressed="false" onclick="app.applyPresetTheme('party')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300">Party Y2K</button>
+                        <button data-choice="theme" data-value="wedding" aria-pressed="false" onclick="app.applyPresetTheme('wedding')" class="studio-btn py-1.5 sm:py-2 text-[10px] sm:text-xs min-h-[32px] sm:min-h-[38px] bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 font-serif">Editorial</button>
                     </div>
                 </div>
 
                 <div class="border-t border-slate-200 dark:border-zinc-700 pt-2 sm:pt-3">
                     <span class="text-[10px] sm:text-xs font-bold text-slate-600 dark:text-zinc-400 font-mono block mb-1.5 sm:mb-2">Frame & corners</span>
                     <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-                        <input type="color" id="frameColorInput" value="#ffffff" onchange="app.updateFrameColor(this.value)" class="w-8 h-8 sm:w-10 sm:h-10 border border-studio-border dark:border-zinc-700 cursor-pointer p-0.5">
+                        <input type="color" id="frameColorInput" aria-label="Custom frame color" value="#ffffff" onchange="app.updateFrameColor(this.value)" class="w-8 h-8 sm:w-10 sm:h-10 border border-studio-border dark:border-zinc-700 cursor-pointer p-0.5">
                         <div class="flex gap-1.5 sm:gap-2 flex-wrap">
-                            <button onclick="app.updateFrameColor('#ffffff')" class="w-6 h-6 sm:w-8 sm:h-8 bg-white border border-studio-border dark:border-zinc-700"></button>
-                            <button onclick="app.updateFrameColor('#111111')" class="w-6 h-6 sm:w-8 sm:h-8 bg-black border border-studio-border dark:border-zinc-700"></button>
-                            <button onclick="app.updateFrameColor('#2563eb')" class="w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 border border-studio-border dark:border-zinc-700"></button>
-                            <button onclick="app.updateFrameColor('#fce7f3')" class="w-6 h-6 sm:w-8 sm:h-8 bg-pink-200 border border-studio-border dark:border-zinc-700"></button>
-                            <button onclick="app.updateFrameColor('#fef3c7')" class="w-6 h-6 sm:w-8 sm:h-8 bg-amber-100 border border-studio-border dark:border-zinc-700"></button>
-                            <button onclick="app.updateFrameColor('#d1fae5')" class="w-6 h-6 sm:w-8 sm:h-8 bg-emerald-100 border border-studio-border dark:border-zinc-700"></button>
+                            <button data-choice="frameColor" data-value="#ffffff" aria-label="White frame" aria-pressed="false" onclick="app.updateFrameColor('#ffffff')" class="w-6 h-6 sm:w-8 sm:h-8 bg-white border border-studio-border dark:border-zinc-700"></button>
+                            <button data-choice="frameColor" data-value="#111111" aria-label="Black frame" aria-pressed="false" onclick="app.updateFrameColor('#111111')" class="w-6 h-6 sm:w-8 sm:h-8 bg-black border border-studio-border dark:border-zinc-700"></button>
+                            <button data-choice="frameColor" data-value="#2563eb" aria-label="Blue frame" aria-pressed="false" onclick="app.updateFrameColor('#2563eb')" class="w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 border border-studio-border dark:border-zinc-700"></button>
+                            <button data-choice="frameColor" data-value="#fce7f3" aria-label="Pink frame" aria-pressed="false" onclick="app.updateFrameColor('#fce7f3')" class="w-6 h-6 sm:w-8 sm:h-8 bg-pink-200 border border-studio-border dark:border-zinc-700"></button>
+                            <button data-choice="frameColor" data-value="#fef3c7" aria-label="Cream frame" aria-pressed="false" onclick="app.updateFrameColor('#fef3c7')" class="w-6 h-6 sm:w-8 sm:h-8 bg-amber-100 border border-studio-border dark:border-zinc-700"></button>
+                            <button data-choice="frameColor" data-value="#d1fae5" aria-label="Mint frame" aria-pressed="false" onclick="app.updateFrameColor('#d1fae5')" class="w-6 h-6 sm:w-8 sm:h-8 bg-emerald-100 border border-studio-border dark:border-zinc-700"></button>
                         </div>
 
                         <div class="ml-auto flex items-center gap-1 border border-studio-border dark:border-zinc-700 p-0.5 sm:p-1 bg-white dark:bg-zinc-900">
                             <span class="text-[9px] sm:text-[10px] font-mono font-bold px-0.5 sm:px-1">Photo corners</span>
-                            <button onclick="app.setPhotoCorners('sharp')" id="cornerBtn-sharp" class="px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-bold bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900">Sharp</button>
-                            <button onclick="app.setPhotoCorners('rounded')" id="cornerBtn-rounded" class="px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-bold bg-slate-100 dark:bg-zinc-800 text-black dark:text-white">Rounded</button>
+                            <button data-choice="corners" data-value="sharp" aria-pressed="false" onclick="app.setPhotoCorners('sharp')" id="cornerBtn-sharp" class="px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-bold bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900">Sharp</button>
+                            <button data-choice="corners" data-value="rounded" aria-pressed="false" onclick="app.setPhotoCorners('rounded')" id="cornerBtn-rounded" class="px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-bold bg-slate-100 dark:bg-zinc-800 text-black dark:text-white">Rounded</button>
                         </div>
                     </div>
                 </div>
@@ -657,14 +669,14 @@
             <div id="tabContent-filters" class="hidden flex-col gap-2.5 sm:gap-3">
                 <span class="text-[10px] sm:text-xs font-bold text-slate-600 dark:text-zinc-400 font-mono block">Photo filter</span>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2">
-                    <button onclick="app.setFilter('original')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-white dark:bg-zinc-800 dark:text-zinc-100">Original</button>
-                    <button onclick="app.setFilter('bw')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-zinc-800 text-white">B&W Mono</button>
-                    <button onclick="app.setFilter('vintage')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200">Vintage</button>
-                    <button onclick="app.setFilter('sepia')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-orange-100 dark:bg-orange-950/60 text-orange-950 dark:text-orange-200">Sepia</button>
-                    <button onclick="app.setFilter('warm')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-rose-50 dark:bg-rose-950/60 text-rose-900 dark:text-rose-200">Warm Tone</button>
-                    <button onclick="app.setFilter('cool')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-sky-50 dark:bg-sky-950/60 text-sky-900 dark:text-sky-200">Cool Blue</button>
-                    <button onclick="app.setFilter('contrast')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-black text-white dark:bg-zinc-100 dark:text-zinc-900">Contrast</button>
-                    <button onclick="app.setFilter('bright')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-emerald-50 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200">Leica Bright</button>
+                    <button data-choice="filter" data-value="original" aria-pressed="false" onclick="app.setFilter('original')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-white dark:bg-zinc-800 dark:text-zinc-100">Original</button>
+                    <button data-choice="filter" data-value="bw" aria-pressed="false" onclick="app.setFilter('bw')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-zinc-800 text-white">B&W</button>
+                    <button data-choice="filter" data-value="vintage" aria-pressed="false" onclick="app.setFilter('vintage')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-amber-50 dark:bg-amber-950/60 text-amber-900 dark:text-amber-200">Vintage</button>
+                    <button data-choice="filter" data-value="sepia" aria-pressed="false" onclick="app.setFilter('sepia')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-orange-100 dark:bg-orange-950/60 text-orange-950 dark:text-orange-200">Sepia</button>
+                    <button data-choice="filter" data-value="warm" aria-pressed="false" onclick="app.setFilter('warm')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-rose-50 dark:bg-rose-950/60 text-rose-900 dark:text-rose-200">Warm</button>
+                    <button data-choice="filter" data-value="cool" aria-pressed="false" onclick="app.setFilter('cool')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-sky-50 dark:bg-sky-950/60 text-sky-900 dark:text-sky-200">Cool</button>
+                    <button data-choice="filter" data-value="contrast" aria-pressed="false" onclick="app.setFilter('contrast')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-black text-white dark:bg-zinc-100 dark:text-zinc-900">Contrast</button>
+                    <button data-choice="filter" data-value="bright" aria-pressed="false" onclick="app.setFilter('bright')" class="studio-btn py-1.5 sm:py-2.5 text-[10px] sm:text-xs min-h-[34px] sm:min-h-[40px] bg-emerald-50 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200">Bright</button>
                 </div>
             </div>
 
@@ -701,7 +713,7 @@
                         <button onclick="app.addStickerToCanvas('🍒')" class="studio-btn p-1.5 sm:p-2 min-h-[32px] sm:min-h-[38px] min-w-[32px] sm:min-w-[38px] bg-white dark:bg-zinc-800 text-sm sm:text-base">🍒</button>
                         <button onclick="app.addStickerToCanvas('🧸')" class="studio-btn p-1.5 sm:p-2 min-h-[32px] sm:min-h-[38px] min-w-[32px] sm:min-w-[38px] bg-white dark:bg-zinc-800 text-sm sm:text-base">🧸</button>
                         <button onclick="app.addStickerToCanvas('🎟️')" class="studio-btn p-1.5 sm:p-2 min-h-[32px] sm:min-h-[38px] min-w-[32px] sm:min-w-[38px] bg-white dark:bg-zinc-800 text-sm sm:text-base">🎟️</button>
-                        <button onclick="app.clearStickers()" class="studio-btn py-1.5 px-2 sm:px-3 min-h-[32px] sm:min-h-[38px] bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-200 dark:border-rose-900 text-[10px] sm:text-xs font-mono">Clear All</button>
+                        <button onclick="app.clearStickers()" class="studio-btn py-1.5 px-2 sm:px-3 min-h-[32px] sm:min-h-[38px] bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-200 dark:border-rose-900 text-[10px] sm:text-xs font-mono">Clear stickers</button>
                     </div>
                 </div>
             </div>
@@ -720,25 +732,25 @@
                 <div>
                     <span class="text-[10px] sm:text-xs font-bold text-slate-600 dark:text-zinc-400 font-mono block mb-1">Tool & color</span>
                     <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                        <button onclick="app.setToolMode('pen')" id="toolBtn-pen" class="studio-btn px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs bg-blue-600 text-white min-h-0">
+                        <button data-choice="tool" data-value="pen" aria-pressed="false" onclick="app.setToolMode('pen')" id="toolBtn-pen" class="studio-btn px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs bg-blue-600 text-white min-h-0">
                             <i class="fa-solid fa-pen mr-1"></i> Pen
                         </button>
-                        <button onclick="app.setToolMode('eraser')" id="toolBtn-eraser" class="studio-btn px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs bg-white dark:bg-zinc-800 text-slate-800 dark:text-zinc-200 min-h-0">
+                        <button data-choice="tool" data-value="eraser" aria-pressed="false" onclick="app.setToolMode('eraser')" id="toolBtn-eraser" class="studio-btn px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs bg-white dark:bg-zinc-800 text-slate-800 dark:text-zinc-200 min-h-0">
                             <i class="fa-solid fa-eraser mr-1"></i> Eraser
                         </button>
 
                         <div class="h-5 sm:h-6 w-px bg-slate-300 dark:bg-zinc-700 mx-0.5 sm:mx-1"></div>
 
-                        <input type="color" id="brushColorInput" value="#2563eb" onchange="app.setBrushColor(this.value)" class="w-7 h-7 sm:w-8 sm:h-8 border border-studio-border dark:border-zinc-700 cursor-pointer p-0.5">
+                        <input type="color" id="brushColorInput" aria-label="Custom brush color" value="#2563eb" onchange="app.setBrushColor(this.value)" class="w-7 h-7 sm:w-8 sm:h-8 border border-studio-border dark:border-zinc-700 cursor-pointer p-0.5">
                         <div class="flex gap-1 sm:gap-1.5 flex-wrap">
-                            <button onclick="app.setBrushColor('#111111')" class="w-6 h-6 sm:w-7 sm:h-7 bg-black border border-studio-border dark:border-zinc-700 rounded-full"></button>
-                            <button onclick="app.setBrushColor('#ffffff')" class="w-6 h-6 sm:w-7 sm:h-7 bg-white border border-studio-border dark:border-zinc-700 rounded-full"></button>
-                            <button onclick="app.setBrushColor('#2563eb')" class="w-6 h-6 sm:w-7 sm:h-7 bg-blue-600 border border-studio-border dark:border-zinc-700 rounded-full"></button>
-                            <button onclick="app.setBrushColor('#dc2626')" class="w-6 h-6 sm:w-7 sm:h-7 bg-red-600 border border-studio-border dark:border-zinc-700 rounded-full"></button>
-                            <button onclick="app.setBrushColor('#ec4899')" class="w-6 h-6 sm:w-7 sm:h-7 bg-pink-500 border border-studio-border dark:border-zinc-700 rounded-full"></button>
-                            <button onclick="app.setBrushColor('#eab308')" class="w-6 h-6 sm:w-7 sm:h-7 bg-yellow-500 border border-studio-border dark:border-zinc-700 rounded-full"></button>
-                            <button onclick="app.setBrushColor('#10b981')" class="w-6 h-6 sm:w-7 sm:h-7 bg-emerald-500 border border-studio-border dark:border-zinc-700 rounded-full"></button>
-                            <button onclick="app.setBrushColor('#8b5cf6')" class="w-6 h-6 sm:w-7 sm:h-7 bg-purple-500 border border-studio-border dark:border-zinc-700 rounded-full"></button>
+                            <button data-choice="brushColor" data-value="#111111" aria-label="Black brush" aria-pressed="false" onclick="app.setBrushColor('#111111')" class="w-6 h-6 sm:w-7 sm:h-7 bg-black border border-studio-border dark:border-zinc-700 rounded-full"></button>
+                            <button data-choice="brushColor" data-value="#ffffff" aria-label="White brush" aria-pressed="false" onclick="app.setBrushColor('#ffffff')" class="w-6 h-6 sm:w-7 sm:h-7 bg-white border border-studio-border dark:border-zinc-700 rounded-full"></button>
+                            <button data-choice="brushColor" data-value="#2563eb" aria-label="Blue brush" aria-pressed="false" onclick="app.setBrushColor('#2563eb')" class="w-6 h-6 sm:w-7 sm:h-7 bg-blue-600 border border-studio-border dark:border-zinc-700 rounded-full"></button>
+                            <button data-choice="brushColor" data-value="#dc2626" aria-label="Red brush" aria-pressed="false" onclick="app.setBrushColor('#dc2626')" class="w-6 h-6 sm:w-7 sm:h-7 bg-red-600 border border-studio-border dark:border-zinc-700 rounded-full"></button>
+                            <button data-choice="brushColor" data-value="#ec4899" aria-label="Pink brush" aria-pressed="false" onclick="app.setBrushColor('#ec4899')" class="w-6 h-6 sm:w-7 sm:h-7 bg-pink-500 border border-studio-border dark:border-zinc-700 rounded-full"></button>
+                            <button data-choice="brushColor" data-value="#eab308" aria-label="Yellow brush" aria-pressed="false" onclick="app.setBrushColor('#eab308')" class="w-6 h-6 sm:w-7 sm:h-7 bg-yellow-500 border border-studio-border dark:border-zinc-700 rounded-full"></button>
+                            <button data-choice="brushColor" data-value="#10b981" aria-label="Green brush" aria-pressed="false" onclick="app.setBrushColor('#10b981')" class="w-6 h-6 sm:w-7 sm:h-7 bg-emerald-500 border border-studio-border dark:border-zinc-700 rounded-full"></button>
+                            <button data-choice="brushColor" data-value="#8b5cf6" aria-label="Purple brush" aria-pressed="false" onclick="app.setBrushColor('#8b5cf6')" class="w-6 h-6 sm:w-7 sm:h-7 bg-purple-500 border border-studio-border dark:border-zinc-700 rounded-full"></button>
                         </div>
                     </div>
                 </div>
@@ -751,9 +763,9 @@
                     <div class="flex items-center gap-2 sm:gap-3">
                         <input type="range" min="2" max="24" value="6" id="brushSizeSlider" oninput="app.setBrushSize(this.value)" class="w-full accent-blue-600 cursor-pointer">
                         <div class="flex gap-1 shrink-0">
-                            <button onclick="app.setBrushSize(2)" class="px-1.5 py-0.5 bg-white dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 font-mono text-[9px] sm:text-[10px] font-bold">Thin</button>
-                            <button onclick="app.setBrushSize(6)" class="px-1.5 py-0.5 bg-white dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 font-mono text-[9px] sm:text-[10px] font-bold">Medium</button>
-                            <button onclick="app.setBrushSize(14)" class="px-1.5 py-0.5 bg-white dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 font-mono text-[9px] sm:text-[10px] font-bold">Bold</button>
+                            <button data-choice="brushSize" data-value="2" aria-pressed="false" onclick="app.setBrushSize(2)" class="px-1.5 py-0.5 bg-white dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 font-mono text-[9px] sm:text-[10px] font-bold">Thin</button>
+                            <button data-choice="brushSize" data-value="6" aria-pressed="false" onclick="app.setBrushSize(6)" class="px-1.5 py-0.5 bg-white dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 font-mono text-[9px] sm:text-[10px] font-bold">Medium</button>
+                            <button data-choice="brushSize" data-value="14" aria-pressed="false" onclick="app.setBrushSize(14)" class="px-1.5 py-0.5 bg-white dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 font-mono text-[9px] sm:text-[10px] font-bold">Bold</button>
                         </div>
                     </div>
                 </div>
@@ -763,7 +775,7 @@
                         <i class="fa-solid fa-rotate-left mr-1"></i> Undo
                     </button>
                     <button onclick="app.clearDoodles()" class="studio-btn flex-1 py-1.5 sm:py-2 bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-200 dark:border-rose-900 text-[10px] sm:text-xs min-h-0">
-                        <i class="fa-solid fa-trash-can mr-1"></i> Clear All
+                        <i class="fa-solid fa-trash-can mr-1"></i> Clear drawing
                     </button>
                 </div>
             </div>
@@ -771,9 +783,9 @@
         </div>
         <div id="editorActionBar">
             <p id="draftSaveStatus" role="status" class="draft-status"></p>
-            <button type="button" onclick="app.navigateTo('review')" class="studio-btn editor-back">Review Photos</button>
+            <button type="button" onclick="app.navigateTo('review')" class="studio-btn editor-back">Review photos</button>
             <button id="editorExportBtn" onclick="app.navigateTo('export')" class="studio-btn editor-export">
-                <span>Finish &amp; Save</span>
+                <span>Save &amp; share</span>
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
         </div>
@@ -808,13 +820,13 @@
         <p id="draftExportStatus" role="status" class="draft-status mt-2"></p>
 
         <button onclick="app.startOverPrompt()" class="mt-4 sm:mt-6 text-[10px] sm:text-xs font-mono font-bold text-slate-500 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 underline">
-            Start Over
+            Start over
         </button>
         </div>
 
         <div id="exportActions" class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 w-full max-w-xl">
             <button onclick="app.navigateTo('customize')" class="studio-btn w-full sm:w-auto px-4 py-2.5 sm:py-3.5 bg-white dark:bg-zinc-800 text-slate-900 dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700 text-[11px] sm:text-xs">
-                <i class="fa-solid fa-pen-to-square mr-1"></i> Edit Design
+                <i class="fa-solid fa-pen-to-square mr-1"></i> Edit strip
             </button>
 
             <button data-export-action onclick="app.downloadExportImage('jpg')" class="studio-btn w-full py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 shadow-solid-sm dark:shadow-solid-sm-dark">
@@ -828,7 +840,7 @@
             </button>
 
             <button id="sharePhotoBtn" onclick="app.photoSharing.sharePhoto()" disabled class="studio-btn w-full py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-wait">
-                <i class="fa-solid fa-share-nodes"></i> Share Photo
+                <i class="fa-solid fa-share-nodes"></i> Share photo
             </button>
 
             <button data-export-action onclick="app.showQrModal()" class="studio-btn w-full sm:w-auto px-4 py-2.5 sm:py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs flex items-center justify-center gap-1 sm:gap-1.5 shadow-solid-sm dark:shadow-solid-sm-dark">
@@ -856,7 +868,7 @@
         <p class="text-slate-600 dark:text-zinc-400 text-[11px] sm:text-xs mb-4 sm:mb-6 leading-relaxed">This will delete your photos, edits, and saved draft. Save your strip first if you want to keep it.</p>
         <div class="flex gap-2 justify-center">
             <button onclick="app.closeResetModal()" class="studio-btn px-3.5 py-2 sm:px-4 sm:py-2.5 bg-white dark:bg-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-700 text-[11px] sm:text-xs">Cancel</button>
-            <button onclick="app.confirmResetSession()" class="studio-btn px-3.5 py-2 sm:px-4 sm:py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-[11px] sm:text-xs">Start Over</button>
+            <button onclick="app.confirmResetSession()" class="studio-btn px-3.5 py-2 sm:px-4 sm:py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-[11px] sm:text-xs">Start over</button>
         </div>
     </div>
 </div>
@@ -896,7 +908,7 @@
                 <option value="3600" selected>1 hour</option>
                 <option value="86400">24 hours</option>
             </select>
-            <button id="createPhotoLinkBtn" onclick="app.photoSharing.createLink()" disabled class="studio-btn w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs disabled:opacity-50">Create Link &amp; QR</button>
+            <button id="createPhotoLinkBtn" onclick="app.photoSharing.createLink()" disabled class="studio-btn w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs disabled:opacity-50">Create link &amp; QR</button>
             <p id="linkStatus" role="status" class="text-xs text-left mt-2 text-slate-600 dark:text-zinc-300"></p>
             <div id="photoLinkResult" class="hidden mt-3">
                 <div class="p-3 bg-white border border-studio-border inline-block mb-2">
@@ -905,7 +917,7 @@
                 <p id="photoLinkExpiry" class="text-xs mb-2 text-slate-600 dark:text-zinc-300"></p>
                 <label for="photoShareUrl" class="block text-left text-xs font-bold mb-1">Photo download link</label>
                 <input id="photoShareUrl" type="url" readonly class="w-full p-2 text-xs border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-800">
-                <button id="copyPhotoLinkBtn" onclick="app.photoSharing.copyLink()" class="studio-btn w-full mt-2 py-2 bg-white dark:bg-zinc-800 text-xs">Copy Link</button>
+                <button id="copyPhotoLinkBtn" onclick="app.photoSharing.copyLink()" class="studio-btn w-full mt-2 py-2 bg-white dark:bg-zinc-800 text-xs">Copy link</button>
             </div>
         </div>
 
@@ -937,6 +949,7 @@ const app = {
     cameraStartId: 0,
     isRetaking: false,
     useFallbackCamera: false,
+    cameraState: 'idle',
     soundEnabled: true,
     isDarkMode: false,
     activeFilter: 'original',
@@ -949,6 +962,16 @@ const app = {
     subText: 'SNAPBOOTHBYJAMES',
     dateText: '2026.09.18',
     fontClass: 'font-mono',
+    themePresets: {
+        classic: { color: '#ffffff', filter: 'original', font: 'font-mono' },
+        minimal: { color: '#f8fafc', filter: 'bw', font: 'font-sans' },
+        korean: { color: '#eff6ff', filter: 'cool', font: 'font-mono' },
+        film: { color: '#111111', filter: 'contrast', font: 'font-mono' },
+        cute: { color: '#fce7f3', filter: 'warm', font: 'font-hand' },
+        retro: { color: '#fef3c7', filter: 'sepia', font: 'font-serif' },
+        party: { color: '#f3e8ff', filter: 'cool', font: 'font-sans' },
+        wedding: { color: '#f5f5f4', filter: 'bright', font: 'font-serif' }
+    },
     placedStickers: [],
     facingMode: 'user',
 
@@ -987,6 +1010,7 @@ const app = {
         this.photoEditor = new window.SnapBoothPhotoEditor(this);
         this.sessionDrafts = new window.SnapBoothSessionDrafts(this);
         this.sessionDrafts.init();
+        this.syncSelectionStates();
     },
 
     initTheme() {
@@ -1304,6 +1328,28 @@ const app = {
         });
     },
 
+    setCameraState(state, error = null) {
+        this.cameraState = state;
+        const loading = state === 'loading';
+        const unavailable = state === 'unavailable';
+        const viewport = document.getElementById('cameraViewport');
+        viewport.setAttribute('data-camera-state', state);
+        viewport.setAttribute('aria-busy', String(loading));
+        document.getElementById('cameraFeedback').hidden = !loading && !unavailable;
+        document.getElementById('retryCameraBtn').hidden = !unavailable;
+        document.getElementById('cameraFeedbackTitle').textContent = loading ? 'Starting your camera'
+            : error?.name === 'NotAllowedError' ? 'Allow camera access' : 'Camera unavailable';
+        document.getElementById('cameraFeedbackHint').textContent = loading
+            ? 'Allow camera access when your browser asks. You can also upload photos.'
+            : error?.name === 'NotAllowedError'
+                ? 'Allow camera access in your browser, then try again. Or upload photos to continue.'
+                : 'Check that your camera is connected and not in use by another app. Or upload photos to continue.';
+        const button = document.getElementById('startCaptureBtn');
+        button.disabled = this.currentScreen === 'camera' && (loading || state === 'idle' || this.isCapturing || this.isRetaking);
+        document.getElementById('startCaptureLabel').textContent = loading ? 'Starting camera…' : unavailable ? 'Upload photos'
+            : this.isCapturing || this.isRetaking ? 'Taking photos…' : 'Take photos';
+    },
+
     async startWebcam() {
         const video = document.getElementById('webcamVideo');
         const statusMsg = document.getElementById('cameraStatusMsg');
@@ -1311,6 +1357,7 @@ const app = {
 
         this.stopWebcam();
         const startId = this.cameraStartId;
+        this.setCameraState('loading');
         statusMsg.innerText = 'Starting camera...';
 
         try {
@@ -1322,6 +1369,7 @@ const app = {
                 });
             } catch (err) {
                 if (startId !== this.cameraStartId) return false;
+                if (err.name === 'NotAllowedError' || err.name === 'SecurityError') throw err;
                 stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
             }
 
@@ -1332,11 +1380,13 @@ const app = {
 
             this.cameraStream = stream;
             await this.attachStreamToVideo(video, statusMsg);
+            if (startId !== this.cameraStartId) return false;
+            this.setCameraState('ready');
             return startId === this.cameraStartId;
         } catch (err) {
             if (startId !== this.cameraStartId) return false;
             this.stopWebcam();
-            this.enableFallbackCamera();
+            this.enableFallbackCamera(err);
             return false;
         }
     },
@@ -1383,8 +1433,9 @@ const app = {
         });
     },
 
-    enableFallbackCamera() {
+    enableFallbackCamera(error = null) {
         this.useFallbackCamera = true;
+        this.setCameraState('unavailable', error);
         const video = document.getElementById('webcamVideo');
         const canvas = document.getElementById('fallbackCanvas');
         const statusMsg = document.getElementById('cameraStatusMsg');
@@ -1420,6 +1471,7 @@ const app = {
 
     stopWebcam() {
         this.cameraStartId++;
+        this.setCameraState('idle');
         if (this.cameraStream) {
             this.cameraStream.getTracks().forEach(track => track.stop());
             this.cameraStream = null;
@@ -1431,7 +1483,10 @@ const app = {
 
     async startPhotoCaptureSequence(resume = false) {
         if (this.isRetaking || this.isCapturing) return;
+        if (this.cameraState === 'unavailable') { this.triggerFileUpload(); return; }
+        if (this.cameraState !== 'ready' || this.currentScreen !== 'camera') return;
         this.isCapturing = true;
+        this.setCameraState('ready');
         if (!resume) { this.capturedPhotos = []; this.photoEdits = []; }
         const runId = ++this.captureRunId;
         const photos = this.capturedPhotos;
@@ -1458,6 +1513,7 @@ const app = {
         } finally {
             if (runId === this.captureRunId) {
                 this.isCapturing = false;
+                this.setCameraState(this.cameraState);
                 btn.disabled = false;
                 btn.classList.remove('opacity-50');
             }
@@ -1663,6 +1719,7 @@ const app = {
             const btn = document.getElementById(`tabBtn-${t}`);
             if (content) content.classList.add('hidden');
             if (btn) {
+                btn.setAttribute('aria-pressed', String(t === tab));
                 btn.className = 'shrink-0 px-2 sm:px-2.5 py-1.5 sm:py-2 bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700 border-r border-studio-border dark:border-zinc-700 whitespace-nowrap';
             }
         });
@@ -1706,6 +1763,8 @@ const app = {
     renderLayoutOptions() {
         const container = document.getElementById('layoutOptionsGrid');
         if (!container) return;
+        const focusedLayout = document.activeElement?.getAttribute('data-choice') === 'layout'
+            ? document.activeElement.getAttribute('data-value') : null;
         container.innerHTML = '';
 
         let layouts = [];
@@ -1713,78 +1772,70 @@ const app = {
 
         if (count === 2) {
             layouts = [
-                { id: 'strip-2', name: '2-SHOT VERTICAL STRIP' },
-                { id: 'grid-2-horiz', name: '2-SHOT HORIZONTAL DUAL' },
-                { id: 'polaroid-2', name: 'POLAROID DUO' }
+                { id: 'strip-2', name: 'Vertical strip' },
+                { id: 'grid-2-horiz', name: 'Side by side' },
+                { id: 'polaroid-2', name: 'Polaroid duo' }
             ];
         } else if (count === 3) {
             layouts = [
-                { id: 'strip-3', name: '3-SHOT CLASSIC STRIP' },
-                { id: 'trio-polaroid', name: 'POLAROID TRIO' },
-                { id: 'hero-3', name: '1 LARGE + 2 SMALL' }
+                { id: 'strip-3', name: 'Classic strip' },
+                { id: 'trio-polaroid', name: 'Polaroid trio' },
+                { id: 'hero-3', name: 'One large, two small' }
             ];
         } else if (count === 4) {
             layouts = [
-                { id: 'grid-2x2', name: '4-CUT KOREAN GRID (2x2)' },
-                { id: 'strip-4', name: '4-SHOT VERTICAL STRIP' },
-                { id: 'film-4', name: 'BLACK FILM STRIP' },
-                { id: 'polaroid-4', name: 'POLAROID QUAD' }
+                { id: 'grid-2x2', name: 'Four-photo grid' },
+                { id: 'strip-4', name: 'Vertical strip' },
+                { id: 'film-4', name: 'Film strip' },
+                { id: 'polaroid-4', name: 'Four Polaroids' }
             ];
         } else if (count === 6) {
             layouts = [
-                { id: 'grid-3x2', name: '3x2 DELUXE GRID' },
-                { id: 'grid-2x3', name: '2x3 TALL COLLAGE' },
-                { id: 'strip-6', name: '6-SHOT MEGA STRIP' }
+                { id: 'grid-3x2', name: 'Wide grid' },
+                { id: 'grid-2x3', name: 'Tall grid' },
+                { id: 'strip-6', name: 'Long strip' }
             ];
         }
 
         layouts.forEach(l => {
             const btn = document.createElement('button');
             btn.type = 'button';
+            btn.setAttribute('data-choice', 'layout');
+            btn.setAttribute('data-value', l.id);
+            btn.setAttribute('aria-pressed', String(this.currentLayout === l.id));
             btn.className = `studio-btn p-2 sm:p-3 text-left font-mono text-[10px] sm:text-xs w-full ${this.currentLayout === l.id ? 'bg-blue-600 text-white' : 'bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700'}`;
             btn.innerText = l.name;
             btn.addEventListener('click', () => {
                 this.setLayoutGeometry(l.id);
             });
             container.appendChild(btn);
+            if (focusedLayout === l.id) btn.focus({ preventScroll: true });
         });
+    },
+
+    syncSelectionStates() {
+        const values = { filter: this.activeFilter, orientation: this.photoOrientation, corners: this.photoCorners,
+            frameColor: this.frameColor.toLowerCase(), brushColor: this.brushColor.toLowerCase(),
+            brushSize: String(this.brushSize), tool: this.isEraser ? 'eraser' : 'pen' };
+        document.querySelectorAll('[data-choice]').forEach(button => {
+            const group = button.dataset.choice;
+            if (group === 'layout') return;
+            const preset = this.themePresets[button.dataset.value];
+            const selected = group === 'theme'
+                ? !!preset && preset.color === this.frameColor.toLowerCase() && preset.filter === this.activeFilter && preset.font === this.fontClass
+                : values[group] === button.dataset.value;
+            button.setAttribute('aria-pressed', String(selected));
+        });
+        document.getElementById(`tabBtn-${this.controlTab}`)?.setAttribute('aria-pressed', 'true');
     },
 
     applyPresetTheme(themeKey) {
         this.playSound('click');
-        if (themeKey === 'classic') {
-            this.updateFrameColor('#ffffff');
-            this.setFilter('original');
-            this.fontClass = 'font-mono';
-        } else if (themeKey === 'minimal') {
-            this.updateFrameColor('#f8fafc');
-            this.setFilter('bw');
-            this.fontClass = 'font-sans';
-        } else if (themeKey === 'korean') {
-            this.updateFrameColor('#eff6ff');
-            this.setFilter('cool');
-            this.fontClass = 'font-mono';
-        } else if (themeKey === 'film') {
-            this.updateFrameColor('#111111');
-            this.setFilter('contrast');
-            this.fontClass = 'font-mono';
-        } else if (themeKey === 'cute') {
-            this.updateFrameColor('#fce7f3');
-            this.setFilter('warm');
-            this.fontClass = 'font-hand';
-        } else if (themeKey === 'retro') {
-            this.updateFrameColor('#fef3c7');
-            this.setFilter('sepia');
-            this.fontClass = 'font-serif';
-        } else if (themeKey === 'party') {
-            this.updateFrameColor('#f3e8ff');
-            this.setFilter('cool');
-            this.fontClass = 'font-sans';
-        } else if (themeKey === 'wedding') {
-            this.updateFrameColor('#f5f5f4');
-            this.setFilter('bright');
-            this.fontClass = 'font-serif';
-        }
+        const preset = this.themePresets[themeKey];
+        if (!preset) return;
+        this.updateFrameColor(preset.color);
+        this.setFilter(preset.filter);
+        this.fontClass = preset.font;
 
         document.getElementById('fontSelect').value = this.fontClass;
         this.updateFontFamily(this.fontClass);
@@ -1843,6 +1894,7 @@ const app = {
 
     updateFontFamily(font) {
         this.fontClass = font;
+        this.syncSelectionStates();
         const target = document.getElementById('stripTextMain');
         if (target) target.className = `font-mono font-bold text-[11px] sm:text-sm tracking-wider uppercase text-slate-900 ${font}`;
         this.sessionDrafts?.schedule();
@@ -1955,6 +2007,7 @@ const app = {
     setToolMode(mode) {
         this.playSound('click');
         this.isEraser = (mode === 'eraser');
+        this.syncSelectionStates();
         this.sessionDrafts?.schedule();
         const penBtn = document.getElementById('toolBtn-pen');
         const eraserBtn = document.getElementById('toolBtn-eraser');
@@ -1980,6 +2033,7 @@ const app = {
 
     setBrushSize(size) {
         this.brushSize = parseInt(size, 10);
+        this.syncSelectionStates();
         const label = document.getElementById('brushSizeLabel');
         const slider = document.getElementById('brushSizeSlider');
         if (label) label.innerText = `${size} px`;
@@ -2101,6 +2155,7 @@ const app = {
     },
 
     renderPhotoboothStrip() {
+        this.syncSelectionStates();
         const strip = document.getElementById('photoboothStrip');
         const photoContainer = document.getElementById('stripPhotosContainer');
         if (!strip || !photoContainer) return;

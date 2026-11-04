@@ -5,6 +5,7 @@ const { main } = require('./browser-editor.cjs');
 const { waitFor } = require('./browser-sharing.cjs');
 
 main(async ({ page, artifactDir }) => {
+    await require('./browser-interactions.cjs')({ page, artifactDir });
     await page.evaluate('app.sessionDrafts.deleteDraft()');
     await page.send('Emulation.setDeviceMetricsOverride', { width:1440, height:1000, deviceScaleFactor:1, mobile:false });
     const home = await page.evaluate(`(async () => {
@@ -60,6 +61,8 @@ main(async ({ page, artifactDir }) => {
     for(const key of ['photos','edits','stickers','paths'])assert.deepEqual(restored[key],expected[key]);
     assert.equal(restored.title,'Friday with friends!');assert.equal(restored.font,'font-hand');assert.equal(restored.frame,'#dbeafe');
     assert.equal(restored.preset,'story');assert.equal(restored.tab,'text');assert.equal(restored.selected,2);
+    assert.equal(await page.evaluate('document.querySelector("[data-choice=filter][aria-pressed=true]").dataset.value'), 'warm');
+    assert.equal(await page.evaluate('document.querySelectorAll("[data-choice=theme][aria-pressed=true]").length'), 0);
     console.log('Refresh and full draft restoration passed. Checking complete-image export sizes and print metadata.');
 
     await page.evaluate('app.navigateTo("export")');

@@ -10,7 +10,10 @@ const appScript = scripts.find(script => script.includes('const app ='));
 
 function element() {
     const classes = new Set(['hidden']);
+    const attributes = new Map();
     return {
+        setAttribute: (name, value) => attributes.set(name, String(value)),
+        getAttribute: name => attributes.get(name) ?? null,
         classList: {
             add: (...names) => names.forEach(name => classes.add(name)),
             remove: (...names) => names.forEach(name => classes.delete(name)),
@@ -107,6 +110,57 @@ const flush = () => new Promise(resolve => setImmediate(resolve));
 
 test('all inline JavaScript parses', () => {
     scripts.forEach(script => new vm.Script(script));
+});
+
+test('initial capture stays blocked until the camera provides a decoded frame', async () => {
+    const h = harness();
+    h.app.currentScreen = 'camera';
+    const originals = h.app.capturedPhotos;
+    const ready = h.app.startWebcam();
+    await flush();
+    assert.equal(h.app.cameraState, 'loading');
+    assert.equal(h.elements.get('cameraFeedback').hidden, false);
+    assert.equal(h.elements.get('cameraViewport').getAttribute('aria-busy'), 'true');
+    assert.equal(h.elements.get('startCaptureBtn').disabled, true);
+    await h.app.startPhotoCaptureSequence();
+    assert.equal(h.app.capturedPhotos, originals, 'an early capture must not discard existing photos');
+    assert.deepEqual(h.countdowns, []);
+    h.video.provideFrame();
+    assert.equal(await ready, true);
+    assert.equal(h.app.cameraState, 'ready');
+    assert.equal(h.elements.get('cameraFeedback').hidden, true);
+    assert.equal(h.elements.get('startCaptureBtn').disabled, false);
+    h.app.stopWebcam();
+});
+
+test('leaving during camera startup prevents a late stream from restoring the ready state', async () => {
+    let resolveMedia;
+    const h = harness({ getUserMedia: () => new Promise(resolve => { resolveMedia = resolve; }) });
+    h.app.currentScreen = 'camera';
+    const ready = h.app.startWebcam();
+    await flush();
+    h.app.navigateTo('home');
+    const lateStream = mediaStream();
+    resolveMedia(lateStream);
+    assert.equal(await ready, false);
+    assert.equal(h.app.cameraState, 'idle');
+    assert.equal(h.elements.get('cameraFeedback').hidden, true);
+    assert.equal(lateStream.getTracks()[0].readyState, 'ended');
+});
+
+test('unavailable camera offers upload instead of capturing the fallback drawing', async () => {
+    const h = harness();
+    h.app.currentScreen = 'camera';
+    h.app.setCameraState('unavailable', { name: 'NotAllowedError' });
+    let uploads = 0;
+    h.app.triggerFileUpload = () => uploads++;
+    const originals = h.app.capturedPhotos;
+    await h.app.startPhotoCaptureSequence();
+    assert.equal(uploads, 1);
+    assert.equal(h.frames, 0);
+    assert.equal(h.app.capturedPhotos, originals);
+    assert.equal(h.elements.get('cameraFeedbackTitle').textContent, 'Allow camera access');
+    assert.equal(h.elements.get('retryCameraBtn').hidden, false);
 });
 
 for (const seconds of [3, 5, 10]) {

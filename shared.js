@@ -72,7 +72,7 @@
                         share.disabled = true;
                         await navigator.share({ files: [file], title: 'My SnapBooth photo strip' });
                     } catch (error) {
-                        if (error.name !== 'AbortError') status.textContent = 'The share menu could not open. Use Download Photo to save your strip.';
+                        if (error.name !== 'AbortError') status.textContent = 'The share menu could not open. Use Download photo to save your strip.';
                     } finally { share.disabled = false; }
                 });
             }
