@@ -93,7 +93,7 @@ async function main() {
                     .replace(/<link[^>]*href="https:[^>]*>/g, '')
                     .replace('</head>', '<style>.hidden{display:none!important}</style></head>');
             }
-            response.setHeader('Content-Type', target.endsWith('.js') ? 'application/javascript' : target.endsWith('.css') ? 'text/css' : target.endsWith('.png') ? 'image/png' : 'text/html; charset=utf-8');
+            response.setHeader('Content-Type', target.endsWith('.js') ? 'application/javascript' : target.endsWith('.css') ? 'text/css' : target.endsWith('.png') ? 'image/png' : target.endsWith('.webp') ? 'image/webp' : 'text/html; charset=utf-8');
             response.end(content);
         } catch (error) { response.writeHead(500); response.end(error.message); }
     });

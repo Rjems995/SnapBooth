@@ -21,7 +21,8 @@ async function build() {
     for (const file of ['shared.html', 'sharing.js', 'shared.js', 'editor.js', 'editor.css', 'export-presets.js', 'session-drafts.js', 'studio-extras.css']) {
         fs.copyFileSync(path.join(root, file), path.join(output, file));
     }
-    fs.copyFileSync(path.join(root, 'assets', 'demo-photos.png'), path.join(output, 'assets', 'demo-photos.png'));
+    fs.copyFileSync(path.join(root, 'assets', 'demo-photos.webp'), path.join(output, 'assets', 'demo-photos.webp'));
+    fs.rmSync(path.join(output, 'assets', 'demo-photos.png'), { force: true });
     fs.copyFileSync(require.resolve('qrcode-generator'), path.join(output, 'assets', 'qrcode.js'));
     console.log('Built SnapBooth and the shared-photo page in dist/.');
 }

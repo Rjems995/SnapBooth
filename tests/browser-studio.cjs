@@ -8,7 +8,7 @@ main(async ({ page, artifactDir }) => {
     await page.evaluate('app.sessionDrafts.deleteDraft()');
     await page.send('Emulation.setDeviceMetricsOverride', { width:1440, height:1000, deviceScaleFactor:1, mobile:false });
     const home = await page.evaluate(`(async () => {
-        const image = new Image(); image.src = './assets/demo-photos.png'; await image.decode();
+        const image = new Image(); image.src = './assets/demo-photos.webp'; await image.decode();
         const copy=document.querySelector('.home-copy').getBoundingClientRect(), gallery=document.querySelector('.home-gallery').getBoundingClientRect();
         return { headline:document.querySelector('.home-headline').textContent.replace(/\\s+/g,' ').trim(), examples:document.querySelectorAll('.sample-strip').length,
             beside:copy.right<=gallery.left, draftHidden:document.getElementById('draftResumeCard').hidden, imageWidth:image.naturalWidth };

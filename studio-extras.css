@@ -24,7 +24,7 @@ body > footer { border-top-width: 1px; }
 .dark .sample-design-button:hover, .dark .sample-design-button:focus-visible { outline-color: #93c5fd; }
 .home-design-selection { margin-top: 6px; color: #2563eb; font-size: 14px; font-weight: 600; }
 .dark .home-design-selection { color: #93c5fd; }
-.sample-shot { aspect-ratio: 1; background-image: url('./assets/demo-photos.png'); background-size: 200% 200%; background-repeat: no-repeat; margin-bottom: 6px; }
+.sample-shot { aspect-ratio: 1; background-image: url('./assets/demo-photos.webp'); background-size: 200% 200%; background-repeat: no-repeat; margin-bottom: 6px; }
 .pose-one { background-position: 0 0; }.pose-two { background-position: 100% 0; }.pose-three { background-position: 0 100%; }.pose-four { background-position: 100% 100%; }
 .sample-strip figcaption { font: bold 12px/1.4 monospace; letter-spacing: .08em; padding: 7px 0; text-align: center; }
 .sample-strip figcaption span { display: block; font-size: 7px; margin-top: 4px; letter-spacing: .02em; }

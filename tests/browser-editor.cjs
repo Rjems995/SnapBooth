@@ -22,7 +22,7 @@ async function main(extraChecks = null) {
         }
         let data = fs.readFileSync(target);
         if (target.endsWith('.html')) data = data.toString().replace(/<link[^>]*href="https:[^>]*>/g, '');
-        response.setHeader('Content-Type', target.endsWith('.css') ? 'text/css' : target.endsWith('.js') ? 'application/javascript' : target.endsWith('.png') ? 'image/png' : 'text/html');
+        response.setHeader('Content-Type', target.endsWith('.css') ? 'text/css' : target.endsWith('.js') ? 'application/javascript' : target.endsWith('.png') ? 'image/png' : target.endsWith('.webp') ? 'image/webp' : 'text/html');
         response.end(data);
     });
     await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
