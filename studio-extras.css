@@ -138,6 +138,10 @@ body.is-in-session :is(#screen-shot-select, #screen-camera, #screen-review) > di
 
 /* Paper, ink and photographs: shared UI styling, separate from printed strips. */
 :root { --studio-paper: #f7f5ef; --studio-ink: #292923; --studio-line: #deddd5; }
+:root {
+    /* A small repeating grain tile adds paper texture without an image download. */
+    --studio-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='grain' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' seed='12' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='.16'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Cpath fill='%23000' filter='url(%23grain)' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
+}
 .dark { --studio-paper: #171816; --studio-ink: #f0eee6; --studio-line: #3c3e37; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--studio-paper); color: var(--studio-ink); }
 .dark body { background: var(--studio-paper); color: var(--studio-ink); }
@@ -302,4 +306,21 @@ body.is-in-session :is(#screen-shot-select, #screen-review, #screen-export) > di
     #cameraActions #startCaptureBtn { flex: 1; width: auto; }
     #cameraActions > button:last-child { width: auto; max-width: 112px; padding: 8px; font-size: 12px; background: transparent; border: 0; }
     #screen-camera #cameraStatusMsg { max-width: none; }
+}
+
+/* Texture belongs to the workspace, so photos and exported strips stay clean. */
+body, .dark body, #studioHeader,
+#editorPreviewPanel #photoboothPreviewContainer, #exportPreviewPanel,
+.dark #editorPreviewPanel #photoboothPreviewContainer, .dark #exportPreviewPanel {
+    background-image: var(--studio-grain);
+    background-size: 180px 180px;
+    background-repeat: repeat;
+    background-blend-mode: multiply;
+}
+.dark body, .dark #studioHeader,
+.dark #editorPreviewPanel #photoboothPreviewContainer, .dark #exportPreviewPanel {
+    background-blend-mode: screen;
+}
+@media (forced-colors: active) {
+    :root { --studio-grain: none; }
 }
