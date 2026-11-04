@@ -59,7 +59,6 @@
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="./editor.css">
-    <link rel="stylesheet" href="./studio-extras.css">
 
     <style>
         * {
@@ -231,43 +230,35 @@
             background-color: rgba(37, 99, 235, 0.1);
         }
     </style>
+    <link rel="stylesheet" href="./studio-extras.css">
 </head>
 <body class="flex flex-col justify-between min-h-screen">
 
 <header id="studioHeader" class="w-full bg-white dark:bg-zinc-900 border-b border-studio-border dark:border-zinc-700 py-2 sm:py-3 px-3 sm:px-6 sticky top-0 z-40 flex items-center justify-between gap-2 transition-colors">
-    <div class="flex items-center gap-2 sm:gap-3 cursor-pointer shrink-0" onclick="app.navigateTo('home')">
-        <div class="w-7 h-7 sm:w-9 sm:h-9 bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono font-bold text-xs sm:text-lg flex items-center justify-center border border-studio-border dark:border-zinc-700 shadow-solid-sm dark:shadow-solid-sm-dark">
-            SB
-        </div>
-        <div>
-            <span class="text-xs sm:text-xl font-extrabold tracking-tighter block leading-none">
-                SNAPBOOTH
-            </span>
-            <span class="text-[8px] sm:text-[10px] font-mono tracking-widest text-slate-600 dark:text-zinc-400 hidden xs:block mt-0.5">
-                K-STYLE PHOTO STUDIO
-            </span>
-        </div>
-    </div>
+    <button type="button" class="studio-brand" onclick="app.navigateTo('home')" aria-label="SnapBooth home">
+        <svg viewBox="0 0 32 40" fill="none" aria-hidden="true"><rect x="3" y="2" width="26" height="36" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 7h16v10H8zM8 21h16v10H8z" fill="currentColor"/><path d="m8 16 5-5 4 4 3-3 4 4M8 30l5-5 4 4 3-3 4 4" stroke="var(--studio-paper)" stroke-width="1.5"/></svg>
+        <span>SnapBooth<span class="brand-credit">by James</span></span>
+    </button>
 
-    <div id="stepIndicator" class="flex items-center gap-1 sm:gap-1.5 font-mono text-[9px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-studio-bg dark:bg-zinc-800 px-1.5 sm:px-3 py-0.5 sm:py-1.5 shadow-solid-sm dark:shadow-solid-sm-dark overflow-x-auto no-scrollbar">
-        <span id="step1" class="text-blue-600 dark:text-blue-400 font-extrabold underline">01<span class="hidden md:inline">.Photos</span></span>
+    <div id="stepIndicator" aria-label="Session progress" class="flex items-center gap-1 sm:gap-1.5 font-mono text-[9px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-studio-bg dark:bg-zinc-800 px-1.5 sm:px-3 py-0.5 sm:py-1.5 shadow-solid-sm dark:shadow-solid-sm-dark overflow-x-auto no-scrollbar">
+        <span id="step1" class="text-blue-600 dark:text-blue-400 font-extrabold underline">01<span class="hidden md:inline"> Photos</span></span>
         <span class="text-slate-300 dark:text-zinc-600">/</span>
-        <span id="step2" class="text-slate-400 dark:text-zinc-500">02<span class="hidden md:inline">.Camera</span></span>
+        <span id="step2" class="text-slate-400 dark:text-zinc-500">02<span class="hidden md:inline"> Camera</span></span>
         <span class="text-slate-300 dark:text-zinc-600">/</span>
-        <span id="step3" class="text-slate-400 dark:text-zinc-500">03<span class="hidden md:inline">.Review</span></span>
+        <span id="step3" class="text-slate-400 dark:text-zinc-500">03<span class="hidden md:inline"> Review</span></span>
         <span class="text-slate-300 dark:text-zinc-600">/</span>
-        <span id="step4" class="text-slate-400 dark:text-zinc-500">04<span class="hidden md:inline">.Design</span></span>
+        <span id="step4" class="text-slate-400 dark:text-zinc-500">04<span class="hidden md:inline"> Design</span></span>
         <span class="text-slate-300 dark:text-zinc-600">/</span>
-        <span id="step5" class="text-slate-400 dark:text-zinc-500">05<span class="hidden md:inline">.Save</span></span>
+        <span id="step5" class="text-slate-400 dark:text-zinc-500">05<span class="hidden md:inline"> Save</span></span>
     </div>
 
     <div class="flex items-center gap-1 sm:gap-2 shrink-0">
-        <button id="themeToggleBtn" onclick="app.toggleTheme()" title="Toggle Dark/Light Mode" class="w-7 h-7 sm:w-9 sm:h-9 bg-white dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 hover:bg-slate-100 dark:hover:bg-zinc-700 text-studio-ink dark:text-zinc-100 flex items-center justify-center shadow-solid-sm dark:shadow-solid-sm-dark transition-all text-xs">
-            <i class="fa-solid fa-moon dark:hidden"></i>
-            <i class="fa-solid fa-sun hidden dark:inline"></i>
+        <button id="themeToggleBtn" aria-label="Toggle light and dark mode" onclick="app.toggleTheme()" title="Toggle Dark/Light Mode" class="w-7 h-7 sm:w-9 sm:h-9 bg-white dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 hover:bg-slate-100 dark:hover:bg-zinc-700 text-studio-ink dark:text-zinc-100 flex items-center justify-center shadow-solid-sm dark:shadow-solid-sm-dark transition-all text-xs">
+            <svg class="dark:hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z"/></svg>
+            <svg class="hidden dark:inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
         </button>
-        <button id="soundToggleBtn" onclick="app.toggleSound()" title="Sound Effects" class="w-7 h-7 sm:w-9 sm:h-9 bg-white dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 hover:bg-slate-100 dark:hover:bg-zinc-700 text-studio-ink dark:text-zinc-100 flex items-center justify-center shadow-solid-sm dark:shadow-solid-sm-dark transition-all text-xs">
-            <i class="fa-solid fa-volume-high"></i>
+        <button id="soundToggleBtn" aria-label="Camera sounds" aria-pressed="true" onclick="app.toggleSound()" title="Sound Effects" class="w-7 h-7 sm:w-9 sm:h-9 bg-white dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 hover:bg-slate-100 dark:hover:bg-zinc-700 text-studio-ink dark:text-zinc-100 flex items-center justify-center shadow-solid-sm dark:shadow-solid-sm-dark transition-all text-xs">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m11 5-5 4H3v6h3l5 4Z"/><path class="sound-on" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/><path class="sound-off" d="m16 9 6 6m0-6-6 6"/></svg>
         </button>
         <button id="resetHeaderBtn" onclick="app.startOverPrompt()" class="hidden text-[9px] sm:text-xs bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900 px-1.5 sm:px-3 py-0.5 sm:py-1 font-bold hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-all shadow-solid-sm dark:shadow-solid-sm-dark">
             <i class="fa-solid fa-arrow-rotate-left mr-0.5"></i> Start Over
@@ -281,22 +272,21 @@
     <section id="screen-home" class="w-full max-w-6xl text-center py-3 sm:py-8 flex flex-col items-center justify-center my-auto">
         <div class="home-hero">
         <div class="home-copy">
-        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:py-1 border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-900 font-mono text-[10px] sm:text-xs font-bold mb-3 sm:mb-6 shadow-solid-sm dark:shadow-solid-sm-dark">
-            <span class="w-2 h-2 bg-blue-600 inline-block"></span> A LITTLE STUDIO. A LOT OF MEMORIES.
-        </div>
+        <p class="home-eyebrow">The photo booth, wherever you are.</p>
 
         <h1 class="home-headline">
             Your moments, <br><span>your photo strip.</span>
         </h1>
 
         <p class="text-slate-700 dark:text-zinc-300 font-medium text-xs sm:text-lg max-w-2xl mb-6 sm:mb-10 leading-relaxed px-2">
-            Grab a friend, strike a pose, and make something worth keeping. Pick your shots, add your style, and take your strip with you.
+            Squeeze in. Be silly. Keep the outtakes. A few photos together, made into a strip you’ll want to save.
         </p>
 
         <button onclick="app.startPhotobooth()" class="studio-btn w-full sm:w-auto px-6 sm:px-10 py-2.5 sm:py-4 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-lg flex items-center justify-center gap-2 sm:gap-3 shadow-solid-lg dark:shadow-solid-lg-dark">
-            <i class="fa-solid fa-camera text-xs sm:text-base"></i>
             <span>Start Photobooth</span>
+            <span aria-hidden="true">↗</span>
         </button>
+        <p class="home-note">No sign-up. Just you, your camera, and a little fun.</p>
         <aside id="draftResumeCard" class="draft-resume-card" hidden aria-labelledby="draftResumeTitle">
             <h2 id="draftResumeTitle">Resume your last session</h2>
             <p id="draftResumeSummary"></p>
@@ -323,32 +313,15 @@
                 <div class="sample-grid"><div class="sample-shot pose-one"></div><div class="sample-shot pose-two"></div><div class="sample-shot pose-three"></div><div class="sample-shot pose-four"></div></div>
                 <figcaption>HARU BLUE<span>YOUR PEOPLE. YOUR MOMENT.</span></figcaption>
             </figure>
-            <p class="home-gallery-caption">Tap a design to make it yours.</p>
+            <p class="home-gallery-caption">A little inspiration. <span>Pick a strip to start.</span></p>
         </div>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 mt-8 sm:mt-16 w-full text-left">
-            <div class="studio-box p-2.5 sm:p-4">
-                <span class="font-mono text-[9px] sm:text-xs text-blue-600 dark:text-blue-400 font-bold block mb-0.5 sm:mb-1">01 / YOUR SHOTS</span>
-                <h3 class="font-extrabold text-[11px] sm:text-sm">2, 3, 4 & 6 Shots</h3>
-                <p class="text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 mt-0.5">A quick duo or a whole collection of poses.</p>
-            </div>
-            <div class="studio-box p-2.5 sm:p-4">
-                <span class="font-mono text-[9px] sm:text-xs text-blue-600 dark:text-blue-400 font-bold block mb-0.5 sm:mb-1">02 / YOUR FRAME</span>
-                <h3 class="font-extrabold text-[11px] sm:text-sm">Portrait & Landscape</h3>
-                <p class="text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 mt-0.5">Find the framing that feels like you.</p>
-            </div>
-            <div class="studio-box p-2.5 sm:p-4">
-                <span class="font-mono text-[9px] sm:text-xs text-blue-600 dark:text-blue-400 font-bold block mb-0.5 sm:mb-1">03 / YOUR STYLE</span>
-                <h3 class="font-extrabold text-[11px] sm:text-sm">Stickers & Text</h3>
-                <p class="text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 mt-0.5">Add a little color, a message, or a doodle.</p>
-            </div>
-            <div class="studio-box p-2.5 sm:p-4">
-                <span class="font-mono text-[9px] sm:text-xs text-blue-600 dark:text-blue-400 font-bold block mb-0.5 sm:mb-1">04 / KEEP &amp; SHARE</span>
-                <h3 class="font-extrabold text-[11px] sm:text-sm">Print it. Post it. Keep it.</h3>
-                <p class="text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 mt-0.5">Save a story, wallpaper, or photo print.</p>
-            </div>
-        </div>
+        <ol class="home-how" aria-label="How it works">
+            <li><span class="home-how-number">01</span><div><h2>Find your good side</h2><p>Pick 2, 3, 4 or 6 photos. A timer gives you time to pose.</p></div></li>
+            <li><span class="home-how-number">02</span><div><h2>Make it feel like you</h2><p>Choose a frame. Add a note, a sticker, a little color.</p></div></li>
+            <li><span class="home-how-number">03</span><div><h2>Keep it close</h2><p>Save to your phone, share with a friend, or print a copy.</p></div></li>
+        </ol>
     </section>
 
     <!-- SCREEN 1: Shot Selection -->
@@ -360,73 +333,65 @@
             <p class="text-slate-600 dark:text-zinc-400 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">Choose how many photos to include in your strip.</p>
         </div>
 
-        <div id="shotOptions" class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-5 w-full mb-4 sm:mb-8">
-            <div onclick="app.selectShotOption(2)" id="shot-opt-2" class="studio-card-interactive p-2 sm:p-5 flex flex-col items-center justify-between group">
-                <div class="text-center w-full mb-1 sm:mb-3">
-                    <span class="font-mono text-[9px] sm:text-xs text-slate-500 dark:text-zinc-400 block">Option A</span>
-                    <span class="text-base sm:text-2xl font-black">2 Shots 📸</span>
-                    <p class="text-[9px] sm:text-[11px] text-slate-500 dark:text-zinc-400 mt-0.5">Vertical Duo / Mini Strip</p>
-                </div>
-                <div class="w-16 sm:w-24 h-22 sm:h-32 bg-slate-100 dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 p-1 sm:p-2 flex flex-col gap-1 sm:gap-2 justify-center my-1 sm:my-2">
-                    <div class="w-full h-8 sm:h-11 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[8px] sm:text-[9px] font-bold">#1</div>
-                    <div class="w-full h-8 sm:h-11 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[8px] sm:text-[9px] font-bold">#2</div>
-                </div>
-                <div class="w-full text-center py-1 sm:py-2 bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono text-[9px] sm:text-xs font-bold mt-1 sm:mt-2">
-                    Select 2 Shots
-                </div>
-            </div>
+        <div id="shotOptions" role="group" aria-label="Number of photos" class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-5 w-full mb-4 sm:mb-8">
+            <button type="button" aria-label="2 photos" aria-pressed="false" onclick="app.selectShotOption(2)" id="shot-opt-2" class="studio-card-interactive p-2 sm:p-5 flex flex-col items-center justify-between group">
+                <span class="text-center w-full mb-1 sm:mb-3">
+                    <span class="font-mono text-[9px] sm:text-xs text-slate-500 dark:text-zinc-400 block"></span>
+                    <span class="text-base sm:text-2xl font-black">2 photos</span>
+                    <span class="text-[9px] sm:text-[11px] text-slate-500 dark:text-zinc-400 mt-0.5">Vertical Duo / Mini Strip</span>
+                </span>
+                <span class="w-16 sm:w-24 h-22 sm:h-32 bg-slate-100 dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 p-1 sm:p-2 flex flex-col gap-1 sm:gap-2 justify-center my-1 sm:my-2">
+                    <span class="w-full h-8 sm:h-11 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[8px] sm:text-[9px] font-bold">#1</span>
+                    <span class="w-full h-8 sm:h-11 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[8px] sm:text-[9px] font-bold">#2</span>
+                </span>
+                <span class="w-full text-center py-1 sm:py-2 bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono text-[9px] sm:text-xs font-bold mt-1 sm:mt-2" aria-hidden="true"><span class="shot-choose">Choose</span><span class="shot-selected">&#10003; Selected</span></span>
+            </button>
 
-            <div onclick="app.selectShotOption(3)" id="shot-opt-3" class="studio-card-interactive p-2 sm:p-5 flex flex-col items-center justify-between group">
-                <div class="text-center w-full mb-1 sm:mb-3">
-                    <span class="font-mono text-[9px] sm:text-xs text-slate-500 dark:text-zinc-400 block">Option B</span>
-                    <span class="text-base sm:text-2xl font-black">3 Shots 📸</span>
-                    <p class="text-[9px] sm:text-[11px] text-slate-500 dark:text-zinc-400 mt-0.5">Trio Strip & Polaroid</p>
-                </div>
-                <div class="w-16 sm:w-24 h-22 sm:h-32 bg-slate-100 dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 p-1 sm:p-2 flex flex-col gap-0.5 sm:gap-1 justify-center my-1 sm:my-2">
-                    <div class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#1</div>
-                    <div class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#2</div>
-                    <div class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#3</div>
-                </div>
-                <div class="w-full text-center py-1 sm:py-2 bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono text-[9px] sm:text-xs font-bold mt-1 sm:mt-2">
-                    Select 3 Shots
-                </div>
-            </div>
+            <button type="button" aria-label="3 photos" aria-pressed="false" onclick="app.selectShotOption(3)" id="shot-opt-3" class="studio-card-interactive p-2 sm:p-5 flex flex-col items-center justify-between group">
+                <span class="text-center w-full mb-1 sm:mb-3">
+                    <span class="font-mono text-[9px] sm:text-xs text-slate-500 dark:text-zinc-400 block"></span>
+                    <span class="text-base sm:text-2xl font-black">3 photos</span>
+                    <span class="text-[9px] sm:text-[11px] text-slate-500 dark:text-zinc-400 mt-0.5">Trio Strip & Polaroid</span>
+                </span>
+                <span class="w-16 sm:w-24 h-22 sm:h-32 bg-slate-100 dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 p-1 sm:p-2 flex flex-col gap-0.5 sm:gap-1 justify-center my-1 sm:my-2">
+                    <span class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#1</span>
+                    <span class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#2</span>
+                    <span class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#3</span>
+                </span>
+                <span class="w-full text-center py-1 sm:py-2 bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono text-[9px] sm:text-xs font-bold mt-1 sm:mt-2" aria-hidden="true"><span class="shot-choose">Choose</span><span class="shot-selected">&#10003; Selected</span></span>
+            </button>
 
-            <div onclick="app.selectShotOption(4)" id="shot-opt-4" class="studio-card-interactive selected p-2 sm:p-5 flex flex-col items-center justify-between group">
-                <div class="text-center w-full mb-1 sm:mb-3">
-                    <span class="font-mono text-[9px] sm:text-xs text-slate-500 dark:text-zinc-400 block">Option C</span>
-                    <span class="text-base sm:text-2xl font-black">4 Shots 📸</span>
-                    <p class="text-[9px] sm:text-[11px] text-slate-500 dark:text-zinc-400 mt-0.5">Classic K-Style 4-Cut</p>
-                </div>
-                <div class="w-16 sm:w-24 h-22 sm:h-32 bg-slate-100 dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 p-1 sm:p-2 grid grid-cols-2 gap-0.5 sm:gap-1.5 items-center my-1 sm:my-2">
-                    <div class="w-full h-7 sm:h-10 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#1</div>
-                    <div class="w-full h-7 sm:h-10 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#2</div>
-                    <div class="w-full h-7 sm:h-10 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#3</div>
-                    <div class="w-full h-7 sm:h-10 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#4</div>
-                </div>
-                <div class="w-full text-center py-1 sm:py-2 bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono text-[9px] sm:text-xs font-bold mt-1 sm:mt-2">
-                    Select 4 Shots
-                </div>
-            </div>
+            <button type="button" aria-label="4 photos" aria-pressed="true" onclick="app.selectShotOption(4)" id="shot-opt-4" class="studio-card-interactive selected p-2 sm:p-5 flex flex-col items-center justify-between group">
+                <span class="text-center w-full mb-1 sm:mb-3">
+                    <span class="font-mono text-[9px] sm:text-xs text-slate-500 dark:text-zinc-400 block"></span>
+                    <span class="text-base sm:text-2xl font-black">4 photos</span>
+                    <span class="text-[9px] sm:text-[11px] text-slate-500 dark:text-zinc-400 mt-0.5">Classic K-Style 4-Cut</span>
+                </span>
+                <span class="w-16 sm:w-24 h-22 sm:h-32 bg-slate-100 dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 p-1 sm:p-2 grid grid-cols-2 gap-0.5 sm:gap-1.5 items-center my-1 sm:my-2">
+                    <span class="w-full h-7 sm:h-10 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#1</span>
+                    <span class="w-full h-7 sm:h-10 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#2</span>
+                    <span class="w-full h-7 sm:h-10 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#3</span>
+                    <span class="w-full h-7 sm:h-10 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[7px] sm:text-[8px] font-bold">#4</span>
+                </span>
+                <span class="w-full text-center py-1 sm:py-2 bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono text-[9px] sm:text-xs font-bold mt-1 sm:mt-2" aria-hidden="true"><span class="shot-choose">Choose</span><span class="shot-selected">&#10003; Selected</span></span>
+            </button>
 
-            <div onclick="app.selectShotOption(6)" id="shot-opt-6" class="studio-card-interactive p-2 sm:p-5 flex flex-col items-center justify-between group">
-                <div class="text-center w-full mb-1 sm:mb-3">
-                    <span class="font-mono text-[9px] sm:text-xs text-slate-500 dark:text-zinc-400 block">Option D</span>
-                    <span class="text-base sm:text-2xl font-black">6 Shots 📸</span>
-                    <p class="text-[9px] sm:text-[11px] text-slate-500 dark:text-zinc-400 mt-0.5">3x2 Grid & Deluxe Collage</p>
-                </div>
-                <div class="w-16 sm:w-24 h-22 sm:h-32 bg-slate-100 dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 p-1 sm:p-1.5 grid grid-cols-2 gap-0.5 sm:gap-1 items-center my-1 sm:my-2">
-                    <div class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#1</div>
-                    <div class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#2</div>
-                    <div class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#3</div>
-                    <div class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#4</div>
-                    <div class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#5</div>
-                    <div class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#6</div>
-                </div>
-                <div class="w-full text-center py-1 sm:py-2 bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono text-[9px] sm:text-xs font-bold mt-1 sm:mt-2">
-                    Select 6 Shots
-                </div>
-            </div>
+            <button type="button" aria-label="6 photos" aria-pressed="false" onclick="app.selectShotOption(6)" id="shot-opt-6" class="studio-card-interactive p-2 sm:p-5 flex flex-col items-center justify-between group">
+                <span class="text-center w-full mb-1 sm:mb-3">
+                    <span class="font-mono text-[9px] sm:text-xs text-slate-500 dark:text-zinc-400 block"></span>
+                    <span class="text-base sm:text-2xl font-black">6 photos</span>
+                    <span class="text-[9px] sm:text-[11px] text-slate-500 dark:text-zinc-400 mt-0.5">3x2 Grid & Deluxe Collage</span>
+                </span>
+                <span class="w-16 sm:w-24 h-22 sm:h-32 bg-slate-100 dark:bg-zinc-800 border border-studio-border dark:border-zinc-700 p-1 sm:p-1.5 grid grid-cols-2 gap-0.5 sm:gap-1 items-center my-1 sm:my-2">
+                    <span class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#1</span>
+                    <span class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#2</span>
+                    <span class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#3</span>
+                    <span class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#4</span>
+                    <span class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#5</span>
+                    <span class="w-full h-5 sm:h-7 bg-white dark:bg-zinc-900 border border-studio-border dark:border-zinc-700 flex items-center justify-center font-mono text-[6px] sm:text-[7px] font-bold">#6</span>
+                </span>
+                <span class="w-full text-center py-1 sm:py-2 bg-studio-ink dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono text-[9px] sm:text-xs font-bold mt-1 sm:mt-2" aria-hidden="true"><span class="shot-choose">Choose</span><span class="shot-selected">&#10003; Selected</span></span>
+            </button>
         </div>
 
         <div id="shotSelectionSummary" class="w-full max-w-xl studio-box p-3 sm:p-6 text-center">
@@ -452,9 +417,9 @@
             <div class="flex items-center gap-1.5 sm:gap-2">
                 <div class="border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-900 p-0.5 sm:p-1 flex items-center gap-0.5 sm:gap-1 shadow-solid-sm dark:shadow-solid-sm-dark">
                     <span class="font-mono text-[8px] sm:text-[10px] font-bold px-0.5 sm:px-1 text-slate-500 dark:text-zinc-400"><i class="fa-solid fa-stopwatch"></i> Timer:</span>
-                    <button onclick="app.setTimerDuration(3)" id="timerBtn-3" class="px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-blue-600 text-white">3s</button>
-                    <button onclick="app.setTimerDuration(5)" id="timerBtn-5" class="px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700">5s</button>
-                    <button onclick="app.setTimerDuration(10)" id="timerBtn-10" class="px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700">10s</button>
+                    <button onclick="app.setTimerDuration(3)" id="timerBtn-3" aria-pressed="true" class="px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-blue-600 text-white">3s</button>
+                    <button onclick="app.setTimerDuration(5)" id="timerBtn-5" aria-pressed="false" class="px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700">5s</button>
+                    <button onclick="app.setTimerDuration(10)" id="timerBtn-10" aria-pressed="false" class="px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700">10s</button>
                 </div>
 
                 <div class="border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-900 px-2 sm:px-4 py-1 sm:py-2 font-mono text-right shadow-solid-sm dark:shadow-solid-sm-dark">
@@ -496,7 +461,7 @@
                         <i class="fa-solid fa-arrows-left-right mr-0.5 sm:mr-1"></i> Mirror: On
                     </button>
                     <button onclick="app.switchCameraDevice()" title="Switch Camera" class="bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700 border border-studio-border dark:border-zinc-700 p-1 sm:p-1.5 font-mono text-[10px] sm:text-xs font-bold shadow-solid-sm dark:shadow-solid-sm-dark">
-                        <i class="fa-solid fa-camera-rotate"></i>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 6 9 3h6l2 3h3v14H4V6Z"/><path d="M8 11a4 4 0 0 1 7-1l1 1m0-3v3h-3m3 4a4 4 0 0 1-7 1l-1-1m0 3v-3h3"/></svg>
                     </button>
                     <button onclick="app.triggerFileUpload()" title="Upload Photos" class="bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700 border border-studio-border dark:border-zinc-700 px-1.5 py-0.5 sm:px-2 sm:py-1 font-mono text-[9px] sm:text-[10px] font-bold shadow-solid-sm dark:shadow-solid-sm-dark">
                         <i class="fa-solid fa-upload"></i> Upload
@@ -522,7 +487,7 @@
         <div class="text-center mb-3 sm:mb-6">
             <span class="font-mono text-[9px] sm:text-xs font-bold text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900 px-1.5 sm:px-2 py-0.5 bg-blue-50 dark:bg-blue-950/40">Step 03 / Review</span>
             <h2 class="text-xl sm:text-3xl font-black mt-0.5 sm:mt-1">Review your photos</h2>
-            <p class="text-slate-600 dark:text-zinc-400 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">Inspect your photos. Drag a photo's grip to change the order, or retake a single shot.</p>
+            <p class="text-slate-600 dark:text-zinc-400 text-[11px] sm:text-sm mt-0.5 sm:mt-1 px-2">Keep your favorites. Retake any photo, or drag the handles to change the order.</p>
         </div>
 
         <p id="reviewStatusMsg" role="alert" class="hidden w-full mb-3 text-sm text-rose-700 dark:text-rose-300 text-center"></p>
@@ -586,7 +551,7 @@
 
             <div class="flex items-center w-full border-b border-studio-border dark:border-zinc-700">
                 <button onclick="app.scrollTabs('left')" title="Scroll Left" class="px-1.5 sm:px-2 py-1.5 sm:py-2 bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-studio-ink dark:text-zinc-100 border-r border-studio-border dark:border-zinc-700 font-bold text-[10px] sm:text-xs shrink-0 flex items-center justify-center">
-                    <i class="fa-solid fa-chevron-left text-[9px] sm:text-[11px]"></i>
+                    <span aria-hidden="true">&#8249;</span>
                 </button>
 
                 <div id="tabBarScrollContainer" class="flex-1 overflow-x-auto no-scrollbar scroll-smooth">
@@ -611,7 +576,7 @@
                 </div>
 
                 <button onclick="app.scrollTabs('right')" title="Scroll Right" class="px-1.5 sm:px-2 py-1.5 sm:py-2 bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-studio-ink dark:text-zinc-100 border-l border-studio-border dark:border-zinc-700 font-bold text-[10px] sm:text-xs shrink-0 flex items-center justify-center">
-                    <i class="fa-solid fa-chevron-right text-[9px] sm:text-[11px]"></i>
+                    <span aria-hidden="true">&#8250;</span>
                 </button>
             </div>
             </div>
@@ -884,7 +849,7 @@
 
             <button data-export-action onclick="app.showQrModal()" class="studio-btn w-full sm:w-auto px-4 py-2.5 sm:py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs flex items-center justify-center gap-1 sm:gap-1.5 shadow-solid-sm dark:shadow-solid-sm-dark">
                 <i class="fa-solid fa-qrcode text-xs sm:text-sm"></i>
-                <span>Save / QR</span>
+                <span>Get a QR download link</span>
             </button>
         </div>
 
@@ -965,8 +930,8 @@
 </div>
 
 <footer class="w-full bg-white dark:bg-zinc-900 border-t border-studio-border dark:border-zinc-700 py-2 sm:py-4 px-3 sm:px-4 text-center font-mono text-[9px] sm:text-xs text-slate-600 dark:text-zinc-400 flex flex-col sm:flex-row justify-between items-center gap-1 sm:gap-2 mt-auto transition-colors">
-    <div>SNAPBOOTH BY JAMES · LITTLE MOMENTS, KEPT.</div>
-    <div>MADE FOR FRIENDS, FAMILY &amp; YOU</div>
+    <div>Made by James. For the moments in between.</div>
+    <div>Take a photo. Keep a memory.</div>
 </footer>
 
 <script src="./assets/qrcode.js"></script>
@@ -1116,7 +1081,7 @@ const app = {
     toggleSound() {
         this.soundEnabled = !this.soundEnabled;
         const btn = document.getElementById('soundToggleBtn');
-        btn.innerHTML = this.soundEnabled ? '<i class="fa-solid fa-volume-high text-xs"></i>' : '<i class="fa-solid fa-volume-xmark text-xs text-rose-600"></i>';
+        btn.setAttribute("aria-pressed", String(this.soundEnabled));
     },
 
     navigateTo(screenId) {
@@ -1181,13 +1146,19 @@ const app = {
         
         ['step1', 'step2', 'step3', 'step4', 'step5'].forEach(st => {
             const el = document.getElementById(st);
-            if (el) el.className = 'text-slate-400 dark:text-zinc-500';
+            if (el) {
+                el.className = 'text-slate-400 dark:text-zinc-500';
+                el.removeAttribute('aria-current');
+            }
         });
 
         const activeStep = steps[screenId];
         if (activeStep) {
             const el = document.getElementById(activeStep);
-            if (el) el.className = 'text-blue-600 dark:text-blue-400 font-bold underline';
+            if (el) {
+                el.className = 'text-blue-600 dark:text-blue-400 font-bold';
+                el.setAttribute('aria-current', 'step');
+            }
         }
     },
 
@@ -1223,6 +1194,7 @@ const app = {
         [2, 3, 4, 6].forEach(num => {
             const card = document.getElementById(`shot-opt-${num}`);
             if (card) {
+                card.setAttribute('aria-pressed', String(num === count));
                 if (num === count) card.classList.add('selected');
                 else card.classList.remove('selected');
             }
@@ -1254,6 +1226,7 @@ const app = {
         [3, 5, 10].forEach(d => {
             const btn = document.getElementById(`timerBtn-${d}`);
             if (btn) {
+                btn.setAttribute('aria-pressed', String(d === dur));
                 if (d === dur) btn.className = 'px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-blue-600 text-white';
                 else btn.className = 'px-1.5 py-0.5 font-mono text-[10px] sm:text-xs font-bold border border-studio-border dark:border-zinc-700 bg-white dark:bg-zinc-800 text-studio-ink dark:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-700';
             }
