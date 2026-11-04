@@ -6,8 +6,8 @@
     <title>SnapBooth — K-Style Photobooth Studio</title>
     <link rel="preload" as="image" href="./assets/demo-photos.webp" fetchpriority="high">
 
-    <!-- Studio Camera Favicon Logo -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23111111'/%3E%3Cpath d='M30 36 L38 26 L62 26 L70 36 Z' fill='%232563EB'/%3E%3Crect x='20' y='36' width='60' height='44' rx='8' fill='%23FFFFFF'/%3E%3Ccircle cx='50' cy='58' r='14' fill='%23111111'/%3E%3Ccircle cx='50' cy='58' r='8' fill='%232563EB'/%3E%3Ccircle cx='68' cy='44' r='3.5' fill='%23DC2626'/%3E%3C/svg%3E">
+    <!-- SnapBooth smile-strip mark -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20width%3D%2248%22%20height%3D%2248%22%20rx%3D%2210%22%20fill%3D%22%23f7f5ef%22%2F%3E%3Cg%20transform%3D%22rotate(-8%2024%2024)%22%3E%3Crect%20x%3D%2211%22%20y%3D%223%22%20width%3D%2226%22%20height%3D%2242%22%20rx%3D%222%22%20fill%3D%22%23292923%22%2F%3E%3Cpath%20d%3D%22M15%207h18v14H15zM15%2024h18v14H15z%22%20fill%3D%22%23f7f5ef%22%2F%3E%3Cpath%20d%3D%22M20%2012v1m8-1v1m-8%203q4%204%208%200M19%2029l3%201-3%201m9-2v2m-8%202q4%204%208-1%22%20fill%3D%22none%22%20stroke%3D%22%23292923%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M21%2041h6%22%20stroke%3D%22%23f7f5ef%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -236,8 +236,15 @@
 
 <header id="studioHeader" class="w-full bg-white dark:bg-zinc-900 border-b border-studio-border dark:border-zinc-700 py-2 sm:py-3 px-3 sm:px-6 sticky top-0 z-40 flex items-center justify-between gap-2 transition-colors">
     <button type="button" class="studio-brand" onclick="app.navigateTo('home')" aria-label="SnapBooth home">
-        <svg viewBox="0 0 32 40" fill="none" aria-hidden="true"><rect x="3" y="2" width="26" height="36" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 7h16v10H8zM8 21h16v10H8z" fill="currentColor"/><path d="m8 16 5-5 4 4 3-3 4 4M8 30l5-5 4 4 3-3 4 4" stroke="var(--studio-paper)" stroke-width="1.5"/></svg>
-        <span>SnapBooth<span class="brand-credit">by James</span></span>
+        <svg class="brand-mark" viewBox="0 0 40 48" fill="none" aria-hidden="true">
+            <g transform="rotate(-8 20 24)">
+                <rect x="7" y="3" width="26" height="42" rx="2" fill="currentColor"/>
+                <path d="M11 7h18v14H11zM11 24h18v14H11z" fill="var(--studio-paper)"/>
+                <path d="M16 12v1m8-1v1m-8 3q4 4 8 0M15 29l3 1-3 1m9-2v2m-8 2q4 4 8-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M17 41h6" stroke="var(--studio-paper)" stroke-width="1.5" stroke-linecap="round"/>
+            </g>
+        </svg>
+        <span>SnapBooth<span class="brand-credit">by James<svg class="signature-stroke" viewBox="0 0 80 8" fill="none" aria-hidden="true"><path d="M3 5c20-3 46-4 73-2M57 6l12-1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span></span>
     </button>
 
     <div id="stepIndicator" role="group" aria-label="Session progress">

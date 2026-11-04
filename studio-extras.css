@@ -143,9 +143,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .dark body { background: var(--studio-paper); color: var(--studio-ink); }
 #studioHeader { background: var(--studio-paper); border-color: var(--studio-line); padding: 14px 32px; }
 #studioHeader .studio-brand { display: flex; align-items: center; gap: 10px; min-height: 44px; text-align: left; background: transparent; border: 0; border-radius: 0; color: var(--studio-ink); }
-.studio-brand svg { width: 28px; height: 35px; }
+.studio-brand .brand-mark { width: 34px; height: 42px; flex-shrink: 0; }
 .studio-brand > span { font-size: 22px; font-weight: 650; letter-spacing: -1px; line-height: 1.05; }
-.brand-credit { display: block; font: italic 12px/1.6 Georgia, serif; letter-spacing: 0; }
+.brand-credit { position: relative; display: block; width: max-content; margin: 2px 0 0 2px; padding-bottom: 3px; font: 600 18px/1 'Caveat', 'Segoe Print', 'Comic Sans MS', cursive; letter-spacing: -.025em; transform: rotate(-4deg); }
+.brand-credit .signature-stroke { position: absolute; left: -2px; bottom: -2px; width: 100%; height: 7px; opacity: .65; }
 #studioHeader :is(#themeToggleBtn, #soundToggleBtn) { width: 44px; height: 44px; border: 0; background: transparent; font-size: 15px; }
 #soundToggleBtn[aria-pressed=true] .sound-off, #soundToggleBtn[aria-pressed=false] .sound-on { display: none; }
 #studioHeader #resetHeaderBtn { min-height: 44px; padding: 8px 10px; border: 0; box-shadow: none; background: transparent; color: var(--editor-muted); font-size: 12px; font-weight: 500; }
@@ -226,7 +227,7 @@ body.is-in-session :is(#screen-shot-select, #screen-review, #screen-export) > di
 @media (max-width: 767px) {
     #studioHeader { padding: 8px 16px; }
     .studio-brand > span { font-size: 19px; }
-    .studio-brand svg { width: 24px; height: 32px; }
+    .studio-brand .brand-mark { width: 30px; height: 38px; }
     #screen-home { padding: 24px 8px; }
     #screen-home .home-hero { gap: 28px; }
     #screen-home .home-copy { padding: 0 8px; }
@@ -242,7 +243,7 @@ body.is-in-session :is(#screen-shot-select, #screen-review, #screen-export) > di
 @media (max-width: 639px) {
     body.is-in-session #studioHeader { padding: 6px 8px; gap: 4px; }
     body.is-in-session .studio-brand > span { font-size: 16px; }
-    body.is-in-session .studio-brand svg, body.is-in-session .brand-credit { display: none; }
+    body.is-in-session .studio-brand .brand-mark, body.is-in-session .brand-credit { display: none; }
     body.is-in-session #stepIndicator { display: none; }
     #shotOptions { gap: 8px; max-height: 100%; }
     #shotOptions .studio-card-interactive { padding: 10px; gap: 6px; }
