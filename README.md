@@ -1,111 +1,148 @@
-# SNAPBOOTH — K-Style Photobooth Studio
+# SnapBooth
 
-An architectural, tactile web-based photobooth app inspired by Korean self-photo booth culture (Life Four Cuts, Haru Film). The camera, editor, downloads, and native photo sharing run in the browser. Optional expiring photo links use Netlify Functions and Netlify Blobs.
+Take photo strips with your friends, right in your browser.
 
-**Live Studio App:** [https://snapboothbyjames.netlify.app/](https://snapboothbyjames.netlify.app/)
+SnapBooth is a browser-based photo booth by James, inspired by Korean photo studios. Take photos or upload your own, customize a strip, then download, print, or share it. Camera capture, editing, downloads, and draft storage work in the browser. Optional expiring photo links use Netlify Functions and Netlify Blobs.
 
----
+[Open SnapBooth](https://snapboothbyjames.netlify.app/)
 
-## Key Features
+## Run locally
 
-- **Shot Selection First:** Choose 2, 3, 4, or 6 shots prior to camera activation. The selection dynamically configures photo sequence counts, review grids, and layout geometries.
-- **WebRTC Camera Engine:** Real-time webcam feed with configurable timer countdowns (3S, 5S, 10S), photo flash effect, sound cues, selfie mirror toggle (`MIRROR: ON / OFF`), and front/rear camera lens switching.
-- **Live Camera Filters:** Preview and snap photos with real-time filters (`RAW`, `B&W`, `COOL`, `WARM`).
-- **Fail-Safe Fallback Mode:** Automatic studio demo mode and image upload fallback if webcam permissions are denied or unavailable.
-- **Shot Review & Position Swap:** Inspect captured shots in a review grid, swap photo frame positions (`<` / `>`), or retake individual shots without resetting the sequence.
-- **Photo Cropping & Reordering:** In the editor's **Photos** tab, drag each photo to reposition it, pinch or use the 100–300% zoom slider, and reset any individual crop. Drag a grip to change photo order in the editor or review screen; arrow keys and move buttons also work. Crops follow their photos and are applied to exports and shared images. Retaking a photo resets only its crop.
-- **Mobile Editor:** Larger text and 44px controls, a persistent strip preview, independently scrolling settings, and a bottom **Finish & Save** action. Short landscape screens put the preview alongside settings. **Expand Preview** opens a larger scrollable view for drawing and inspecting long strips.
-- **Local Draft Recovery:** Photos and design changes save automatically in this browser. After a refresh, choose **Resume your last session** or **Delete Draft** on the homepage. Drafts include crops, order, theme, text, stickers, drawings, and export choice. Partial captures can resume taking the remaining shots. Draft photos stay on the device; creating a temporary share link remains a separate action.
-- **Finished-Strip Homepage:** Tap Black Film, Pastel Pink, or Haru Blue to start with that theme. New sessions also use the example's photo count, square framing, and layout; you can change the count before opening the camera. Choosing a theme with photos already in progress keeps those photos and their layout. The examples sit beside **Start Photobooth**, with the headline “Your moments, your photo strip.” The fictional demo portraits and generation prompt are documented in [`assets/README.md`](assets/README.md).
-- **4 Photo Aspect Ratios:**
-  - **PORTRAIT (3:4):** Classic studio portrait frame.
-  - **LANDSCAPE (4:3):** Horizontal widescreen layout.
-  - **SQUARE (1:1):** Grid-style formatting.
-  - **MOBILE (9:16):** Tall individual photo framing. Export presets separately size the complete image for stories, wallpapers, or prints.
-- **Studio Design Engine:**
-  - **Preset Themes:** Classic, Minimal, Haru Blue, Black Film, Pastel Pink, Vintage, Party Y2K, Editorial.
-  - **Frame Palette:** Custom RGB color picker + rapid preset swatches.
-  - **Photo Filters:** B&W, Vintage, Sepia, Warm Tone, Cool Blue, Contrast, Leica Bright.
-  - **Typography Controls:** Custom Main Title, Subtitle (Default: `SNAPBOOTHBYJAMES`), Font Styles, and Date Stamp (`YYYY.MM.DD`).
-  - **Touch-Stretch Stickers:** Drag stickers onto the strip and stretch/resize them in real-time using the corner handle.
-  - **Digital Touch Pen & Freehand Drawing Layer:** Draw doodles, write autographs, draw hearts, or write handwritten notes directly over the frame.
-  - **Photo Corner Styles:** Toggle between Sharp cut edges and Rounded smooth photo corners.
-- **Export Presets & Mobile Transfer:**
-  - Export the original design, Instagram Story (1080×1920), Phone Wallpaper (1440×2560), 2×6-inch Strip (600×1800), or 4×6-inch Print (1200×1800).
-  - Presets size the complete image and fit the entire design without cutting off photos, text, or decorations. Extra space uses the frame color. The photo orientation control continues to set individual photo framing.
-  - Print presets include 300-DPI density metadata in JPEG and PNG files. Browser downloads, native sharing, QR transfer, and full-image previews use the selected output size.
-  - Blob object URLs for reliable saving across mobile Safari, Chrome, and desktop browsers.
-  - **Share Photo:** Opens the device's native share menu with the finished JPEG where file sharing is supported. Unsupported browsers offer local saving and optional link creation. Cancelling the share menu does not upload anything.
-  - **Save / QR Modal:** Tap-and-hold mobile photo saving plus an explicit **Create Link & QR** action. The QR points to the finished strip's download page.
-  - **Expiring Links:** Choose 15 minutes, 1 hour (default), or 24 hours. Only the finished strip is uploaded, and QR images are generated locally without sending the link to a QR service.
+Install **Node.js 22 or newer**, then run these commands from the repository folder in PowerShell:
 
----
-
-## Tech Stack
-
-- **HTML5 & WebRTC** (`navigator.mediaDevices.getUserMedia`)
-- **Tailwind CSS** (compiled into local CSS during the build; CDN fallback in the source HTML)
-- **Vanilla JavaScript (ES6+)**
-- **HTML5 Canvas API** (for cropped photo layouts and whole-image export presets)
-- **IndexedDB** (local draft state and photo storage; unchanged photos are stored once)
-- **Web Audio API** (synthesized sound effects)
-- **Netlify Functions + Blobs** (optional temporary photo storage)
-- **qrcode-generator** (locally generated QR images)
-
----
-
-## Build and test
-
-Use Node.js 22 or newer:
-
-```sh
-npm ci
-npm test
-npm run build
+```powershell
+npm.cmd ci
+npm.cmd run build
+npx.cmd serve dist
 ```
 
-On PowerShell systems that block `npm.ps1`, use `npm.cmd` for these commands. The build writes the studio, compiled styles, shared-photo page, and local QR library to `dist/`.
+If prompted, allow `npx` to install `serve`. Open the local address printed in the terminal, usually `http://localhost:3000`. Keep the terminal running while using the app; press **Ctrl+C** to stop the server.
 
-Optional browser verification: run `npm run test:browser` with Chrome or Edge installed. Set `SNAPBOOTH_TEST_BROWSER` to the browser executable if it is not in a standard Windows location. These checks use synthetic photos and isolated local storage. They verify QR downloads and expiry, mobile and desktop layouts, touch editing, refresh/resume/delete, partial capture recovery, every export size, and PNG/JPEG print density. Run `npm run test:editor` for the editor or `npm run test:studio` for the editor, homepage, drafts, and export presets. Screenshots are saved to the ignored `.tmp/` folder.
+On macOS, Linux, or shells without PowerShell's script restriction, use `npm` and `npx` instead of `npm.cmd` and `npx.cmd`.
 
-Drafts belong to the current browser profile and site address. Clearing browser data removes them; private browsing may not retain them after the browser closes. If storage is unavailable or full, the app reports that saving failed and keeps the current session usable. **Delete Draft** and the confirmed **Start Over** action remove the saved record and its photos.
+After editing source files, run `npm.cmd run build` again and refresh the browser. The build writes the published app to `dist/`; edit the source files rather than the generated files in that folder.
 
-## Deploy with expiring photo links
+Camera access requires HTTPS or localhost. Allow camera permission when prompted. If the camera cannot start, choose **Try again** or **Upload photos**. Temporary QR download links require the Netlify backend; the local static server supports the booth, editor, downloads, and native sharing where available.
 
-1. Connect this repository to the existing Netlify site using a Git-based deployment, or deploy through Netlify CLI with function support.
-2. Use the included `netlify.toml`: build command `npm run build`, publish directory `dist`, functions directory `netlify/functions`.
-3. Deploy the site. [Netlify supplies Blobs credentials to Functions automatically](https://docs.netlify.com/build/data-and-storage/netlify-blobs/); no storage secret belongs in the HTML.
-4. Export a strip, open **Save / QR**, choose an expiry, and select **Create Link & QR**. Scan the code on another device to preview and download that strip.
+## Using the booth
 
-The photo endpoint checks expiry on every request and sends `no-store` headers. Expired links stop serving the image immediately, even before the hourly cleanup deletes expired stored photos. Copies already downloaded to a device remain on that device. Files larger than 4 MiB can still be downloaded or shared directly, but cannot be uploaded as temporary links.
+1. Choose **Start photobooth**, or select a Black Film, Pastel Pink, or Haru Blue example on the homepage.
+2. Pick **2, 3, 4, or 6 photos**, then choose **Open camera**.
+3. Select a **3-, 5-, or 10-second timer** and choose **Take photos**. You can also upload existing photos.
+4. Review the results, reorder them, or retake individual photos.
+5. Choose **Customize strip** to adjust framing, themes, filters, text, stickers, and drawings.
+6. Choose **Save & share**, select an export size, and download a JPG or PNG, share the photo, or create a QR download link.
 
-To exercise the Functions and Blobs locally, run `netlify dev` from the repository using an installed [Netlify CLI](https://docs.netlify.com/cli/get-started/). The automated tests use an isolated in-memory store and require no Netlify account or live photo uploads.
+## Features
 
-Static hosts, including GitHub Pages and static-only Netlify Drop uploads, can serve the contents of `dist/` for the studio, downloads, and [native file sharing where supported](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share). Temporary links require the Netlify Functions deployment; static-only hosts show a fallback message when link creation is attempted.
+### Camera and review
 
-Webcams and native sharing require a secure HTTPS context (or localhost for development).
+- Clear loading and permission feedback. Capture stays disabled until the camera provides a usable video frame.
+- Retry or upload options when camera access is unavailable. The unavailable-camera illustration is never captured as a photo.
+- Mirror preview, front/rear camera switching where supported, flash and sound effects, and live Original, B&W, Cool, and Warm filters.
+- Individual and full-session retakes restart the camera, wait for readiness, and respect the selected timer. Failed retakes preserve the originals.
+- Drag handles, move buttons, and keyboard controls for reordering photos.
 
----
+### Editing
 
-## Repository Structure
+- Reposition photos inside their frames, pinch to zoom or use the **100–300%** slider, and reset individual crops. Crops follow photos when reordered; retaking a photo resets only that photo's crop.
+- Portrait **3:4**, landscape **4:3**, square **1:1**, and tall **9:16** framing for individual photos.
+- Strip, grid, and Polaroid layouts matched to the photo count.
+- Eight themes: Classic, Minimal, Haru Blue, Black Film, Pastel Pink, Vintage, Party Y2K, and Editorial.
+- Custom frame colors, sharp or rounded corners, photo filters, title text, fonts, and a date label.
+- Draggable, resizable stickers and freehand drawing with pen, eraser, brush sizes, undo, and clear actions.
+- Checkmarks and accessible selected states for layouts, themes, filters, framing, colors, and drawing tools. Custom changes clear preset markers that no longer match. Draft restoration also restores selection indicators.
+
+### Interface and homepage
+
+- A custom smiling photo-strip logo, handwritten-style **by James** signature, and matching browser tab icon.
+- Warm paper colors, subtle SVG grain, and light and dark themes. Texture stays on the workspace surfaces, not on photos or exported strips, and is removed in forced-colors mode.
+- A booth that fits the viewport, with independently scrolling settings, a persistent mobile preview, and a reachable main action. **Expand preview** opens a larger view for inspecting or drawing on a strip.
+- Keyboard-accessible choices, clear focus states, larger touch targets, and reduced-motion support.
+- Selectable homepage examples. A fresh session adopts the selected example's theme, photo count, square framing, and layout. If photos are already in progress, selecting an example applies its theme while preserving the photos and layout.
+- A shared, preloaded **58 KB WebP** for the homepage examples, reduced from the original 2.37 MB PNG. The fictional demo portraits and their generation prompt are documented in [assets/README.md](assets/README.md).
+
+### Draft recovery
+
+Photos and edits save automatically in IndexedDB on the current device. After a refresh, the homepage offers **Resume your last session** and **Delete draft**. Saved sessions include crops, photo order, design settings, text, stickers, drawings, and the export preset. Partial captures can continue with the remaining photos.
+
+Drafts belong to the current browser profile and site address. Clearing browser data removes them; private browsing may not retain them. If storage is unavailable or full, the app reports the problem while keeping the current session usable. **Delete draft** and the confirmed **Start over** action remove the saved draft and its photos.
+
+### Downloads and sharing
+
+Export presets size the **complete strip**, separately from individual photo framing:
+
+| Preset | Output size |
+| --- | --- |
+| Original design | Keeps the strip's proportions |
+| Instagram Story | 1080 × 1920 px |
+| Phone Wallpaper | 1440 × 2560 px |
+| 2×6-inch Strip | 600 × 1800 px, 300 DPI |
+| 4×6-inch Print | 1200 × 1800 px, 300 DPI |
+
+Each preset fits the whole design without cutting off text, photos, or decorations. Extra space uses the frame color. Print presets include density metadata in both JPG and PNG files.
+
+**Share photo** opens the device's share menu with the finished JPEG where file sharing is supported. Other browsers offer local saving and optional link creation. Cancelling the share menu does not create a photo link.
+
+**Get a QR download link** opens a save-and-transfer dialog. Choose **15 minutes**, **1 hour**, or **24 hours**, then select **Create link & QR** to upload only the finished strip. The QR points to that strip's download page, and the QR image is generated locally without a third-party QR service. Anyone with the link can download the strip until it expires.
+
+## Checks
+
+```powershell
+npm.cmd test
+npm.cmd run test:browser
+```
+
+The unit tests cover camera readiness and retakes, crop geometry, photo ordering, draft recovery, export sizes and print metadata, and photo-sharing behavior.
+
+Browser checks require Chrome or Edge. Set `SNAPBOOTH_TEST_BROWSER` to the executable path if it is not in a standard Windows location. They use synthetic camera input, test photos, temporary browser profiles, and isolated storage; no real camera or live photo upload is required.
+
+| Command | Coverage |
+| --- | --- |
+| `npm.cmd run test:browser` | Sharing and the complete studio browser checks |
+| `npm.cmd run test:editor` | Responsive editor, touch gestures, keyboard ordering, crops, previews, and exports |
+| `npm.cmd run test:studio` | Editor checks plus camera loading/permission recovery, selected settings, homepage, draft recovery, and export presets |
+
+Browser commands build the app before testing. Screenshots are saved in the ignored `.tmp/` folder. Interaction checks in `tests/browser-interactions.cjs` run as part of the studio suite.
+
+## Deploy with photo links
+
+The included `netlify.toml` configures:
+
+- Build command: `npm run build`
+- Publish directory: `dist`
+- Functions directory: `netlify/functions`
+- Node.js: `22`
+- Expired-photo cleanup: hourly
+
+Connect the repository to Netlify for a Git-based deployment, or deploy with Netlify CLI including Functions. The backend uses Netlify Blobs for temporary photo storage; no storage secret belongs in the HTML. To exercise the backend locally, run `netlify dev` with Netlify CLI installed and the site configured.
+
+Photo endpoints check expiry on every request and send `no-store` headers. Links stop serving photos at expiry, even before cleanup removes stored files. Already-downloaded copies remain on the recipient's device. Temporary links accept finished JPEGs up to **4 MiB**; larger images can still be downloaded or shared directly.
+
+Static hosts can serve `dist/` for camera capture, editing, downloads, and supported native sharing. Temporary photo links require the Netlify Functions backend; static-only deployments show a fallback message when link creation is attempted.
+
+## Project structure
 
 ```text
-snapbooth/
-├── snapbooth_photobooth_app.html  # Studio source; built as dist/index.html
-├── sharing.js                    # Native sharing and opt-in link/QR flow
-├── editor.js / editor.css        # Crop geometry, touch editing, reorder, and editor layout
-├── session-drafts.js             # Local snapshot validation, IndexedDB, and resume/delete
-├── export-presets.js             # Whole-image sizes and PNG/JPEG print density
-├── studio-extras.css             # Homepage, draft controls, and export preset styles
-├── assets/                       # Original fictional homepage demo portraits and prompt
-├── shared.html / shared.js       # Recipient preview and download page
-├── server/photo-sharing.mjs      # Expiry, upload, retrieval, and cleanup logic
-├── netlify/functions/            # Netlify storage and scheduled cleanup adapters
-├── netlify.toml                  # Build and Functions configuration
-├── scripts/build.cjs             # Static asset packaging
-└── tests/                        # Camera and sharing regression tests
+snapbooth_photobooth_app.html  Main app and UI; built as dist/index.html
+studio-extras.css             Branding, texture, responsive screens, and interaction styles
+editor.js / editor.css        Crop geometry, touch editing, reordering, and preview layout
+session-drafts.js             IndexedDB storage, draft validation, resume, and deletion
+export-presets.js             Whole-image export sizes and JPG/PNG print metadata
+sharing.js                   Native sharing and optional photo-link/QR flow
+shared.html / shared.js       Recipient preview and download page
+assets/                      Homepage WebP, original source image, and asset notes
+server/photo-sharing.mjs      Upload, retrieval, expiry, and cleanup logic
+netlify/functions/           Netlify storage and scheduled cleanup adapters
+netlify.toml                 Build and Functions configuration
+scripts/build.cjs            Tailwind compilation and static asset packaging
+tests/                       Unit tests and Chrome/Edge integration checks
 ```
+
+The app uses vanilla JavaScript, Tailwind CSS, Canvas, IndexedDB, and Web Audio. Tailwind is compiled locally during the build; the source HTML retains its CDN configuration. QR generation uses `qrcode-generator`, and the optional backend uses `@netlify/blobs`.
+
+`dist/`, `node_modules/`, `.tmp/`, and local environment files are ignored by Git.
 
 ## License
 
-Distributed under the MIT License. Feel free to remix, customize, and share!
+MIT.
